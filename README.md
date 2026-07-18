@@ -1,10 +1,10 @@
-# raylib-app
+# net.b12n.rljlt — raylib examples in jolt
 
-A suite of [raylib](https://github.com/raysan5/raylib) examples ported to **jolt**
-(native Clojure — no JVM). Unlike the other projects in this repo, these call a
-**real external C library**: raylib is the upstream C game library (raysan5/raylib),
-and jolt binds it directly over its C ABI with `jolt.ffi` — the same mechanism
-`glimmer-gl` uses for OpenGL and `fps-demo` uses for libc / CoreGraphics.
+A community suite of [raylib](https://github.com/raysan5/raylib) examples written in
+**jolt** (native Clojure — no JVM). These call a **real external C library**: raylib is
+the upstream C game library (raysan5/raylib), and jolt binds it directly over its C ABI
+with `jolt.ffi` — no wrapper library, no codegen, just the shared `libraylib` loaded at
+runtime and called through the FFI.
 
 All the FFI bindings and an ergonomic keyword-argument drawing API live in one
 shared namespace, `net.b12n.rljlt.raylib`; each example is a small namespace on top of it.
@@ -186,10 +186,25 @@ draws its cube with rlgl immediate mode (`rlVertex3f`, scalar) inside `BeginMode
 rlgl for geometry — is the path for any 3D example here until jolt gains native
 by-value struct support for `Vector3`-taking functions.
 
+## Documentation
+
+- [`docs/guide/`](docs/guide/index.md) — patterns & pitfalls, each with source
+  citations (mirrored to the [b12n umbrella wiki](https://github.com/burinc/b12n-wikis)):
+  - [`color-by-value.md`](docs/guide/color-by-value.md) — why `Color` crosses the FFI as a packed `:uint`
+  - [`struct-by-value-pointer-trick.md`](docs/guide/struct-by-value-pointer-trick.md) — `Camera2D`/`Camera3D` by pointer on AArch64 (+ the x86-64 caveat)
+  - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md) — the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
+  - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md) — the positional-binds / keyword-wrappers two-layer design
+  - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
+  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 42, and the four-touchpoint recipe for adding one
+
+Sibling project: [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — tree-sitter from
+Jolt, the same `jolt.ffi` mechanism applied to a by-value-*returning* C API that
+needs a full C shim this repo avoids.
+
 ## Layout
 
 ```
-raylib-app/
+b12n-rljlt/
 ├── deps.edn                 ; libraylib :jolt/native + one alias per example
 └── src/net/b12n/rljlt/
     ├── raylib.clj           ; ALL bindings + the kwarg API + Color palette + guards

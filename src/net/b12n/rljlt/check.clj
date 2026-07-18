@@ -51,4 +51,4 @@
             net.b12n.rljlt.wireframe-shapes))
 
 (defn -main [& _]
-  (println "raylib-app: all example namespaces compiled OK"))
+  (println "net.b12n.rljlt: all example namespaces compiled OK"))

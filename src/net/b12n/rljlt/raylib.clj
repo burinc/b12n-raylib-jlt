@@ -317,4 +317,4 @@
   (when (and shot-path (= frame at))
     (flush-batch)
     (take-screenshot shot-path)
-    (binding [*out* *err*] (println "[raylib-app] SHOT" shot-path))))
+    (binding [*out* *err*] (println "[net.b12n.rljlt] SHOT" shot-path))))
