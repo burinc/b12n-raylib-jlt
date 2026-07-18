@@ -173,6 +173,39 @@
     (quad-3f (shade-color color 0.4)  [a000 a100 a101 a001])   ; bottom -y
     (rl-end)))
 
+(defn sphere!
+  "Draw a sphere via rlgl immediate mode (lat/long tessellation), faces shaded
+  from the packed `:color` for depth (brighter toward +y). Must be called inside
+  a BeginMode3D block (see with-camera-3d). Keyword args:
+    :pos    [x y z] centre        (default [0 0 0])
+    :radius a number              (default 0.5)
+    :rings  latitude bands        (default 12)
+    :slices longitude sectors     (default 16)
+    :color  a packed Color        (default BLACK)"
+  [& {:keys [pos radius rings slices color]
+      :or {pos [0.0 0.0 0.0] radius 0.5 rings 12 slices 16 color BLACK}}]
+  (let [[cx cy cz] pos
+        two-pi (* 2.0 Math/PI)]
+    (rl-begin RL-TRIANGLES)
+    (dotimes [i rings]
+      (let [lat0 (- (* Math/PI (/ (double i) rings)) (/ Math/PI 2.0))
+            lat1 (- (* Math/PI (/ (double (inc i)) rings)) (/ Math/PI 2.0))
+            y0 (Math/sin lat0) y1 (Math/sin lat1)
+            r0 (Math/cos lat0) r1 (Math/cos lat1)
+            brightness (+ 0.45 (* 0.55 (/ (+ y0 y1 2.0) 4.0)))
+            shaded (shade-color color brightness)]
+        (dotimes [j slices]
+          (let [lon0 (* two-pi (/ (double j) slices))
+                lon1 (* two-pi (/ (double (inc j)) slices))
+                s0 (Math/sin lon0) c0 (Math/cos lon0)
+                s1 (Math/sin lon1) c1 (Math/cos lon1)
+                p00 [(+ cx (* radius r0 c0)) (+ cy (* radius y0)) (+ cz (* radius r0 s0))]
+                p01 [(+ cx (* radius r0 c1)) (+ cy (* radius y0)) (+ cz (* radius r0 s1))]
+                p10 [(+ cx (* radius r1 c0)) (+ cy (* radius y1)) (+ cz (* radius r1 s0))]
+                p11 [(+ cx (* radius r1 c1)) (+ cy (* radius y1)) (+ cz (* radius r1 s1))]]
+            (quad-3f shaded [p00 p10 p11 p01])))))
+    (rl-end)))
+
 ;; --- input -------------------------------------------------------------------
 (ffi/defcfn ^:private key-down-raw     "IsKeyDown"          [:int] :int)
 (ffi/defcfn ^:private key-pressed-raw  "IsKeyPressed"       [:int] :int)
@@ -181,6 +214,8 @@
 (ffi/defcfn get-mouse-y      "GetMouseY"         [] :int)
 (ffi/defcfn get-mouse-wheel  "GetMouseWheelMove" [] :float)
 (ffi/defcfn get-random-value "GetRandomValue"    [:int :int] :int)
+(ffi/defcfn get-char-pressed "GetCharPressed"    [] :int)   ; unicode codepoint; 0 = queue empty
+(ffi/defcfn get-key-pressed  "GetKeyPressed"     [] :int)   ; keycode; 0 = queue empty
 
 ;; --- screenshot hook plumbing (headless smoke tests) -------------------------
 (ffi/defcfn take-screenshot       "TakeScreenshot"          [:string] :void)
@@ -199,6 +234,7 @@
 (def ^:const KEY-RIGHT 262) (def ^:const KEY-LEFT  263)
 (def ^:const KEY-DOWN  264) (def ^:const KEY-UP    265)
 (def ^:const MOUSE-LEFT 0)
+(def ^:const KEY-BACKSPACE 259) (def ^:const KEY-ENTER 257)
 
 ;; --- Color -------------------------------------------------------------------
 (defn rgba
