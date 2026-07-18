@@ -65,6 +65,13 @@
            :space-invaders   {:main-opts ["-m" "net.b12n.rljlt.space-invaders"]}   ; marching aliens shooter
            :flappy-bird      {:main-opts ["-m" "net.b12n.rljlt.flappy-bird"]}      ; flap through the pipes
            :game-2048        {:main-opts ["-m" "net.b12n.rljlt.game-2048"]}        ; 2048 tile-merge puzzle
-           :minesweeper      {:main-opts ["-m" "net.b12n.rljlt.minesweeper"]}}     ; reveal/flag grid (mouse L/R)
+           :minesweeper      {:main-opts ["-m" "net.b12n.rljlt.minesweeper"]}     ; reveal/flag grid (mouse L/R)
+           :game-of-life     {:main-opts ["-m" "net.b12n.rljlt.game-of-life"]}     ; Conway's Game of Life
+           :boids            {:main-opts ["-m" "net.b12n.rljlt.boids"]}            ; flocking simulation
+           :fireworks        {:main-opts ["-m" "net.b12n.rljlt.fireworks"]}        ; particle fireworks
+           :fourier-epicycles {:main-opts ["-m" "net.b12n.rljlt.fourier-epicycles"]} ; epicycles trace a square wave
+           :spirograph       {:main-opts ["-m" "net.b12n.rljlt.spirograph"]}       ; hypotrochoid roulette curves
+           :l-system         {:main-opts ["-m" "net.b12n.rljlt.l-system"]}         ; L-system fractal plant
+           :flow-field       {:main-opts ["-m" "net.b12n.rljlt.flow-field"]}}      ; particles in a noise flow field
 
  :tasks {run "joltc -M:run"}}

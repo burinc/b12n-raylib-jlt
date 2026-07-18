@@ -62,7 +62,14 @@
             net.b12n.rljlt.space-invaders
             net.b12n.rljlt.flappy-bird
             net.b12n.rljlt.game-2048
-            net.b12n.rljlt.minesweeper))
+            net.b12n.rljlt.minesweeper
+            net.b12n.rljlt.game-of-life
+            net.b12n.rljlt.boids
+            net.b12n.rljlt.fireworks
+            net.b12n.rljlt.fourier-epicycles
+            net.b12n.rljlt.spirograph
+            net.b12n.rljlt.l-system
+            net.b12n.rljlt.flow-field))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
