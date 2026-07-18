@@ -73,6 +73,7 @@
            :spirograph       {:main-opts ["-m" "net.b12n.rljlt.spirograph"]}       ; hypotrochoid roulette curves
            :l-system         {:main-opts ["-m" "net.b12n.rljlt.l-system"]}         ; L-system fractal plant
            :flow-field       {:main-opts ["-m" "net.b12n.rljlt.flow-field"]}       ; particles in a noise flow field
-           :color-wheel      {:main-opts ["-m" "net.b12n.rljlt.color-wheel"]}}     ; HSV hue ring (rlgl fan)
+           :color-wheel      {:main-opts ["-m" "net.b12n.rljlt.color-wheel"]}      ; HSV hue ring (rlgl fan)
+           :pie-chart        {:main-opts ["-m" "net.b12n.rljlt.pie-chart"]}}       ; labelled pie slices (sector!)
 
  :tasks {run "joltc -M:run"}}
