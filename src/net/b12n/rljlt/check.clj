@@ -75,7 +75,8 @@
             net.b12n.rljlt.splines
             net.b12n.rljlt.vector-angle
             net.b12n.rljlt.easings
-            net.b12n.rljlt.penrose-tiling))
+            net.b12n.rljlt.penrose-tiling
+            net.b12n.rljlt.analog-clock))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
