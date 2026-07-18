@@ -69,7 +69,8 @@
             net.b12n.rljlt.fourier-epicycles
             net.b12n.rljlt.spirograph
             net.b12n.rljlt.l-system
-            net.b12n.rljlt.flow-field))
+            net.b12n.rljlt.flow-field
+            net.b12n.rljlt.color-wheel))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
