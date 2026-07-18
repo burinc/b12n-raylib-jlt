@@ -93,7 +93,8 @@
        ["vector-angle"      "vector-angle" "shapes" "the angle between two vectors (arc + readout)"]
        ["easings"           "easings" "shapes" "a grid of balls, each on a different easing curve"]
        ["penrose-tiling"    "penrose-tiling" "shapes" "a P3 Penrose rhombus tiling (deflation)"]
-       ["analog-clock"      "analog-clock" "shapes" "a live analog clock (libc local time)"]])
+       ["analog-clock"      "analog-clock" "shapes" "a live analog clock (libc local time)"]
+       ["digital-clock"     "digital-clock" "shapes" "a seven-segment HH:MM:SS clock (libc time)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -272,6 +273,7 @@
   easings           {:doc "▶ a grid of balls on different easing curves"        :task (run-example "easings")}
   penrose-tiling    {:doc "▶ a P3 Penrose rhombus tiling (deflation)"           :task (run-example "penrose-tiling")}
   analog-clock      {:doc "▶ a live analog clock (libc local time)"             :task (run-example "analog-clock")}
+  digital-clock     {:doc "▶ a seven-segment HH:MM:SS clock (libc time)"        :task (run-example "digital-clock")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
