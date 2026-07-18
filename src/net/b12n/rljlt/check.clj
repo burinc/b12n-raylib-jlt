@@ -48,7 +48,15 @@
             net.b12n.rljlt.pong
             net.b12n.rljlt.tesseract-view
             net.b12n.rljlt.vampire-survivors
-            net.b12n.rljlt.wireframe-shapes))
+            net.b12n.rljlt.wireframe-shapes
+            net.b12n.rljlt.rotating-cube
+            net.b12n.rljlt.spinning-cubes
+            net.b12n.rljlt.orthographic-projection
+            net.b12n.rljlt.point-cloud
+            net.b12n.rljlt.bouncing-spheres
+            net.b12n.rljlt.ball-physics
+            net.b12n.rljlt.lines-bezier
+            net.b12n.rljlt.input-box))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))

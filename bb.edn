@@ -59,7 +59,15 @@
        ["asteroids"         "asteroids" "games" "the classic vector shooter (rotate/thrust/fire)"]
        ["tetris"            "tetris" "games" "the block-stacking puzzle (move/rotate/drop)"]
        ["pong"              "pong" "games" "two-paddle classic, you (W/S) vs a CPU"]
-       ["vampire-survivors" "vampire-survivors" "games" "auto-fire survival: move, waves chase you"]])
+       ["vampire-survivors" "vampire-survivors" "games" "auto-fire survival: move, waves chase you"]
+       ["rotating-cube"     "rotating-cube" "3d" "a single cube spinning via the rlgl matrix stack"]
+       ["spinning-cubes"    "spinning-cubes" "3d" "a row of cubes each spinning with a phase offset"]
+       ["orthographic-projection" "orthographic-projection" "3d" "perspective vs orthographic (SPACE toggles)"]
+       ["point-cloud"       "point-cloud" "3d" "~1500 points as tiny rlgl cubes, rotating"]
+       ["bouncing-spheres"  "bouncing-spheres" "3d" "spheres bouncing in a 3D box (rl/sphere!)"]
+       ["ball-physics"      "ball-physics" "shapes" "2D balls under gravity, SPACE respawns"]
+       ["lines-bezier"      "lines-bezier" "shapes" "a cubic Bézier that follows the mouse"]
+       ["input-box"         "input-box" "text" "type into a text box (GetCharPressed)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -119,6 +127,14 @@
   tetris            {:doc "▶ the block-stacking puzzle (move/rotate/drop)"  :task (run-example "tetris")}
   pong              {:doc "▶ two-paddle classic, you (W/S) vs a CPU"        :task (run-example "pong")}
   vampire-survivors {:doc "▶ auto-fire survival: move, waves chase you"      :task (run-example "vampire-survivors")}
+  rotating-cube     {:doc "▶ a single cube spinning via the rlgl matrix stack" :task (run-example "rotating-cube")}
+  spinning-cubes    {:doc "▶ a row of cubes each spinning with a phase offset" :task (run-example "spinning-cubes")}
+  orthographic-projection {:doc "▶ perspective vs orthographic (SPACE toggles)" :task (run-example "orthographic-projection")}
+  point-cloud       {:doc "▶ ~1500 points as tiny rlgl cubes, rotating"        :task (run-example "point-cloud")}
+  bouncing-spheres  {:doc "▶ spheres bouncing in a 3D box (rl/sphere!)"        :task (run-example "bouncing-spheres")}
+  ball-physics      {:doc "▶ 2D balls under gravity, SPACE respawns"           :task (run-example "ball-physics")}
+  lines-bezier      {:doc "▶ a cubic Bézier that follows the mouse"            :task (run-example "lines-bezier")}
+  input-box         {:doc "▶ type into a text box (GetCharPressed)"            :task (run-example "input-box")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
