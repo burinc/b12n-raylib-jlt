@@ -328,6 +328,37 @@
   [& {:keys [x y color] :or {x 0 y 0 color BLACK}}]
   (draw-pixel x y color))
 
+(defn sector!
+  "A filled circular sector (pie slice / arc) drawn as an rlgl triangle fan — the
+  immediate-mode stand-in for DrawCircleSector, whose Vector2 center is by-value and
+  so unbindable (see rlgl-immediate-mode.md). The fan runs from the center across
+  [start-deg, end-deg] in `segments` sub-triangles, a single packed `:color`.
+  0 deg points up and the angle increases clockwise (rim = (sin, -cos)); vertices are
+  emitted rim -> center -> rim so the fan carries raylib's front-facing winding and is
+  not backface-culled. Callers must pass start-deg < end-deg.
+    :cx :cy    center
+    :radius    outer radius
+    :start-deg :end-deg   sweep in degrees (0 = up, clockwise, increasing)
+    :segments  fan resolution (default 32)
+    :color     packed Color"
+  [& {:keys [cx cy radius start-deg end-deg segments color]
+      :or {cx 0 cy 0 radius 10 start-deg 0 end-deg 90 segments 32 color BLACK}}]
+  (let [d->r (/ Math/PI 180.0)
+        span (- end-deg start-deg)
+        rim (fn [deg]
+              (let [t (* deg d->r)]
+                [(+ cx (* radius (Math/sin t)))
+                 (- cy (* radius (Math/cos t)))]))]
+    (rl-begin RL-TRIANGLES)
+    (rl-color! color)
+    (dotimes [k segments]
+      (let [[x0 y0] (rim (+ start-deg (* span (/ (double k) segments))))
+            [x1 y1] (rim (+ start-deg (* span (/ (double (inc k)) segments))))]
+        (rl-vertex-2f (double x0) (double y0))
+        (rl-vertex-2f (double cx) (double cy))
+        (rl-vertex-2f (double x1) (double y1))))
+    (rl-end)))
+
 ;; --- smoke-test loop guards --------------------------------------------------
 (defn auto-quit-deadline
   "RAYLIB_APP_AUTO_QUIT_MS=<n> ends the loop after n ms, so a window example is
