@@ -73,7 +73,14 @@
        ["space-invaders"    "space-invaders" "games" "marching aliens (arrows + SPACE to shoot)"]
        ["flappy-bird"       "flappy-bird" "games" "flap through the pipe gaps (SPACE)"]
        ["game-2048"         "game-2048" "games" "2048: 4x4 tile-merge puzzle (arrow keys)"]
-       ["minesweeper"       "minesweeper" "games" "reveal/flag grid (mouse L reveal, R flag)"]])
+       ["minesweeper"       "minesweeper" "games" "reveal/flag grid (mouse L reveal, R flag)"]
+       ["game-of-life"      "game-of-life" "generative" "Conway's Game of Life (SPACE reseeds)"]
+       ["boids"             "boids" "generative" "flocking birds (separation/alignment/cohesion)"]
+       ["fireworks"         "fireworks" "generative" "rockets + fading particle bursts"]
+       ["fourier-epicycles" "fourier-epicycles" "generative" "rotating circles trace a square wave"]
+       ["spirograph"        "spirograph" "generative" "animated hypotrochoid roulette curves"]
+       ["l-system"          "l-system" "generative" "an L-system fractal plant (grows + regrows)"]
+       ["flow-field"        "flow-field" "generative" "particles steered by a flow field (trails)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -147,6 +154,13 @@
   flappy-bird       {:doc "▶ flap through the pipe gaps (SPACE)"               :task (run-example "flappy-bird")}
   game-2048         {:doc "▶ 2048: 4x4 tile-merge puzzle (arrow keys)"         :task (run-example "game-2048")}
   minesweeper       {:doc "▶ reveal/flag grid (mouse L reveal, R flag)"        :task (run-example "minesweeper")}
+  game-of-life      {:doc "▶ Conway's Game of Life (SPACE reseeds)"            :task (run-example "game-of-life")}
+  boids             {:doc "▶ flocking birds (separation/alignment/cohesion)"  :task (run-example "boids")}
+  fireworks         {:doc "▶ rockets + fading particle bursts"                :task (run-example "fireworks")}
+  fourier-epicycles {:doc "▶ rotating circles trace a square wave"            :task (run-example "fourier-epicycles")}
+  spirograph        {:doc "▶ animated hypotrochoid roulette curves"           :task (run-example "spirograph")}
+  l-system          {:doc "▶ an L-system fractal plant (grows + regrows)"     :task (run-example "l-system")}
+  flow-field        {:doc "▶ particles steered by a flow field (trails)"      :task (run-example "flow-field")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
@@ -171,7 +185,7 @@
   info
   {:doc "Grouped cheat-sheet of all examples"
    :task (do
-           (doseq [g ["games" "core" "shapes" "text" "3d"]]
+           (doseq [g ["games" "core" "shapes" "text" "3d" "generative"]]
              (let [rows (filterv (fn [row] (= g (nth row 2))) examples)]
                (println (str "\n=== " g " (" (count rows) ") ==="))
                (doseq [row rows] (print-row row))))
