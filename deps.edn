@@ -51,6 +51,14 @@
            :pong             {:main-opts ["-m" "net.b12n.rljlt.pong"]}               ; two-paddle classic vs CPU
            :tesseract-view   {:main-opts ["-m" "net.b12n.rljlt.tesseract-view"]}     ; rotating 4D hypercube
            :vampire-survivors {:main-opts ["-m" "net.b12n.rljlt.vampire-survivors"]} ; auto-fire survival game
-           :wireframe-shapes {:main-opts ["-m" "net.b12n.rljlt.wireframe-shapes"]}}   ; 3D wireframe solids (rlgl lines)
+           :wireframe-shapes {:main-opts ["-m" "net.b12n.rljlt.wireframe-shapes"]}   ; 3D wireframe solids (rlgl lines)
+           :rotating-cube    {:main-opts ["-m" "net.b12n.rljlt.rotating-cube"]}    ; single cube spinning (rlgl matrix)
+           :spinning-cubes   {:main-opts ["-m" "net.b12n.rljlt.spinning-cubes"]}   ; row of cubes spinning in place
+           :orthographic-projection {:main-opts ["-m" "net.b12n.rljlt.orthographic-projection"]} ; perspective/ortho toggle
+           :point-cloud      {:main-opts ["-m" "net.b12n.rljlt.point-cloud"]}      ; rotating cloud of tiny cubes
+           :bouncing-spheres {:main-opts ["-m" "net.b12n.rljlt.bouncing-spheres"]} ; spheres bouncing (rl/sphere!)
+           :ball-physics     {:main-opts ["-m" "net.b12n.rljlt.ball-physics"]}     ; 2D balls under gravity
+           :lines-bezier     {:main-opts ["-m" "net.b12n.rljlt.lines-bezier"]}     ; cubic Bézier follows the mouse
+           :input-box        {:main-opts ["-m" "net.b12n.rljlt.input-box"]}}       ; type into a text box (GetCharPressed)
 
  :tasks {run "joltc -M:run"}}
