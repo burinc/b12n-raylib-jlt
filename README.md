@@ -135,6 +135,12 @@ joltc -M:check      # requires every example namespace; prints "compiled OK"
 | `spirograph` | (generative) | animated hypotrochoid roulette curves |
 | `l-system` | (generative) | an L-system fractal plant (rewrite + turtle graphics) |
 | `flow-field` | (generative) | particles steered by a sine-layered flow field |
+| `color-wheel` | shapes/shapes_rlgl_color_wheel | an HSV hue ring as an rlgl triangle fan (per-vertex color) |
+| `pie-chart` | shapes/shapes_pie_chart | labelled slices via `rl/sector!` + a legend |
+| `splines` | shapes/shapes_splines_drawing | Catmull-Rom / Bézier / B-spline through animated points (SPACE cycles) |
+| `vector-angle` | shapes/shapes_vector_angle | the signed angle between two vectors — arc + degrees (`atan2`) |
+| `easings` | shapes/shapes_easings_* | a 3×4 grid of balls, each on a different easing curve |
+| `penrose-tiling` | shapes/shapes_penrose_tile | a P3 Penrose rhombus tiling by golden-ratio deflation |
 
 ### Verification status
 
@@ -216,7 +222,7 @@ by-value struct support for `Vector3`-taking functions.
   - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md) — the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
   - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md) — the positional-binds / keyword-wrappers two-layer design
   - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
-  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 63, and the four-touchpoint recipe for adding one
+  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 69, and the four-touchpoint recipe for adding one
 
 Sibling project: [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — tree-sitter from
 Jolt, the same `jolt.ffi` mechanism applied to a by-value-*returning* C API that

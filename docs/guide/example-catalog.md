@@ -1,4 +1,4 @@
-# The example catalog — 63 raylib demos in jolt
+# The example catalog — 69 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/rljlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -43,7 +43,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `basic-screen-manager` | a LOGO / TITLE / GAMEPLAY / ENDING state flow |
 | `random-values` | `GetRandomValue`, a new value every 2s |
 
-## shapes (20)
+## shapes (26)
 
 | `bb` name | shows |
 |---|---|
@@ -67,6 +67,12 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `math-angle-rotation` | fixed spokes + a spinning line |
 | `ball-physics` | 2D balls under gravity, SPACE respawns |
 | `lines-bezier` | a cubic Bézier that follows the mouse |
+| `color-wheel` | an HSV color wheel drawn as an rlgl triangle fan (per-vertex hue) |
+| `pie-chart` | labelled pie slices via `rl/sector!` + a legend |
+| `splines` | Catmull-Rom / cubic-Bézier / uniform-B-spline through animated points (SPACE cycles) |
+| `vector-angle` | the signed angle between two vectors, filled arc + degrees readout (`atan2`) |
+| `easings` | a 3×4 grid of balls, each animating on a different easing curve |
+| `penrose-tiling` | a P3 Penrose rhombus tiling built by golden-ratio deflation |
 
 ## text (5)
 
