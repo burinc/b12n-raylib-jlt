@@ -103,6 +103,29 @@ rotate around three `cube!` calls, no matrix math in Clojure. It's also the
 **portable** substitute for the AArch64-only camera pointer trick (see the x86-64
 caveat in [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md)).
 
+## 2D: filled arcs with `sector!`
+
+The same wall stops `DrawCircleSector` / `DrawRing` / `DrawCircleV`: they take a
+`Vector2` center **by value** (a float pair in FP registers), so they're unbindable by
+the pointer trick. The fix is the same — draw the arc as an rlgl triangle fan.
+`sector!` (in `raylib.clj`) builds one:
+
+```clojure
+(rl/sector! :cx 270 :cy 235 :radius 165
+            :start-deg a0 :end-deg a1 :segments 60 :color slice-color)
+```
+
+Each sub-triangle is emitted `rim → center → rim` with the angle **increasing**
+(`rim = (sin θ, -cos θ)`, so 0° points up and grows clockwise). That order carries
+raylib's **front-facing winding** — a fan wound the other way is silently
+backface-culled (raylib enables `GL_CULL_FACE`). Two examples consume it:
+`pie-chart` (one fan per slice) and `vector-angle` (a translucent fan for the measured
+angle). `color-wheel` draws its own fan directly because it needs a *per-vertex* hue
+(a different `rl-color!` before each rim vertex), which a single-color helper can't
+express. The showpiece `penrose-tiling` fills ~900 deflation triangles of *mixed*
+winding, so it normalizes each to negative signed area (the proven front face) before
+the batch — the general form of the winding rule `sector!` bakes in.
+
 ## Why this generalizes
 
 When a C graphics API forces geometry through by-value small-float-vector arguments,
