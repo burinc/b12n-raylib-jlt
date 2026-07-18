@@ -97,7 +97,8 @@
        ["digital-clock"     "digital-clock" "shapes" "a seven-segment HH:MM:SS clock (libc time)"]
        ["ring-drawing"      "ring-drawing" "shapes" "an animated annulus via rl/ring!"]
        ["rounded-rectangle" "rounded-rectangle" "shapes" "rounded rects via sector! corners"]
-       ["rectangle-scaling" "rectangle-scaling" "shapes" "drag the corner handle to resize a rect"]])
+       ["rectangle-scaling" "rectangle-scaling" "shapes" "drag the corner handle to resize a rect"]
+       ["lines-drawing"     "lines-drawing" "shapes" "a rotating fan of thick lines (line-ex!)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -280,6 +281,7 @@
   ring-drawing      {:doc "▶ an animated annulus via rl/ring!"                   :task (run-example "ring-drawing")}
   rounded-rectangle {:doc "▶ rounded rects via sector! corners"                 :task (run-example "rounded-rectangle")}
   rectangle-scaling {:doc "▶ drag the corner handle to resize a rect"           :task (run-example "rectangle-scaling")}
+  lines-drawing     {:doc "▶ a rotating fan of thick lines (line-ex!)"           :task (run-example "lines-drawing")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
