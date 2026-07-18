@@ -110,6 +110,14 @@ joltc -M:check      # requires every example namespace; prints "compiled OK"
 | `wireframe-shapes` | models | pyramid/octahedron/torus/helix as rlgl 3D lines |
 | `rlgl-solar-system` | models/models_rlgl_solar_system | Sun/Earth/Moon via the rlgl matrix stack |
 | `box-collisions` | models/models_box_collisions | player cube vs. boxes, 3D AABB highlight |
+| `rotating-cube` | models | one cube spinning via the rlgl matrix stack |
+| `spinning-cubes` | models | a row of cubes each spinning with a phase offset |
+| `orthographic-projection` | core/core_3d_camera | perspective vs orthographic (`:projection` toggle) |
+| `point-cloud` | (showcase) | ~1500 points as tiny rlgl cubes, rotating |
+| `bouncing-spheres` | models | spheres bouncing in a 3D box (`rl/sphere!`) |
+| `ball-physics` | shapes | 2D balls under gravity + restitution |
+| `lines-bezier` | shapes/shapes_lines_bezier | a cubic Bézier sampled in Clojure, follows the mouse |
+| `input-box` | text/text_input_box | a text field via `GetCharPressed` (blinking cursor) |
 | `asteroids` | (game) | the classic vector shooter — rotate/thrust/fire, splitting asteroids |
 | `tetris` | (game) | 10×20 well, 7 tetrominoes, rotation, line-clearing, levels |
 | `pong` | (game) | two-paddle classic, you (W/S) vs a ball-tracking CPU |
@@ -195,7 +203,7 @@ by-value struct support for `Vector3`-taking functions.
   - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md) — the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
   - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md) — the positional-binds / keyword-wrappers two-layer design
   - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
-  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 42, and the four-touchpoint recipe for adding one
+  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 50, and the four-touchpoint recipe for adding one
 
 Sibling project: [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — tree-sitter from
 Jolt, the same `jolt.ffi` mechanism applied to a by-value-*returning* C API that

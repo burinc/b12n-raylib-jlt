@@ -66,6 +66,11 @@ by darkening the packed color so the cube reads as 3D without a lighting pass:
 stands on (`camera-3d`, `waving-cubes`, `box-collisions`, …). `DrawGrid` is scalar
 (`[:int :float]`) so it's bound and used directly.
 
+`sphere!` is the same idea for a ball — lat/long rings of `RL_TRIANGLES`, faces
+shaded by latitude (brighter toward +y) — and drives the `bouncing-spheres` example.
+`DrawSphere` takes a `Vector3` by value too, so it gets the same rlgl treatment as
+the cube.
+
 ## The rlgl matrix stack — nested transforms for free
 
 rlgl also exposes its transform stack, and it applies the **current** transform to
