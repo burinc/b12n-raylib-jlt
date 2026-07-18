@@ -56,7 +56,13 @@
             net.b12n.rljlt.bouncing-spheres
             net.b12n.rljlt.ball-physics
             net.b12n.rljlt.lines-bezier
-            net.b12n.rljlt.input-box))
+            net.b12n.rljlt.input-box
+            net.b12n.rljlt.snake
+            net.b12n.rljlt.breakout
+            net.b12n.rljlt.space-invaders
+            net.b12n.rljlt.flappy-bird
+            net.b12n.rljlt.game-2048
+            net.b12n.rljlt.minesweeper))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))

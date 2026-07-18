@@ -67,7 +67,13 @@
        ["bouncing-spheres"  "bouncing-spheres" "3d" "spheres bouncing in a 3D box (rl/sphere!)"]
        ["ball-physics"      "ball-physics" "shapes" "2D balls under gravity, SPACE respawns"]
        ["lines-bezier"      "lines-bezier" "shapes" "a cubic Bézier that follows the mouse"]
-       ["input-box"         "input-box" "text" "type into a text box (GetCharPressed)"]])
+       ["input-box"         "input-box" "text" "type into a text box (GetCharPressed)"]
+       ["snake"             "snake" "games" "the classic snake (arrow keys, grow, don't crash)"]
+       ["breakout"          "breakout" "games" "paddle + ball + brick grid (mouse paddle)"]
+       ["space-invaders"    "space-invaders" "games" "marching aliens (arrows + SPACE to shoot)"]
+       ["flappy-bird"       "flappy-bird" "games" "flap through the pipe gaps (SPACE)"]
+       ["game-2048"         "game-2048" "games" "2048: 4x4 tile-merge puzzle (arrow keys)"]
+       ["minesweeper"       "minesweeper" "games" "reveal/flag grid (mouse L reveal, R flag)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -135,6 +141,12 @@
   ball-physics      {:doc "▶ 2D balls under gravity, SPACE respawns"           :task (run-example "ball-physics")}
   lines-bezier      {:doc "▶ a cubic Bézier that follows the mouse"            :task (run-example "lines-bezier")}
   input-box         {:doc "▶ type into a text box (GetCharPressed)"            :task (run-example "input-box")}
+  snake             {:doc "▶ the classic snake (arrow keys, grow, don't crash)" :task (run-example "snake")}
+  breakout          {:doc "▶ paddle + ball + brick grid (mouse paddle)"        :task (run-example "breakout")}
+  space-invaders    {:doc "▶ marching aliens (arrows + SPACE to shoot)"        :task (run-example "space-invaders")}
+  flappy-bird       {:doc "▶ flap through the pipe gaps (SPACE)"               :task (run-example "flappy-bird")}
+  game-2048         {:doc "▶ 2048: 4x4 tile-merge puzzle (arrow keys)"         :task (run-example "game-2048")}
+  minesweeper       {:doc "▶ reveal/flag grid (mouse L reveal, R flag)"        :task (run-example "minesweeper")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
