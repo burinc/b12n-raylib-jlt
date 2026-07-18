@@ -218,6 +218,24 @@
 (ffi/defcfn get-char-pressed "GetCharPressed"    [] :int)   ; unicode codepoint; 0 = queue empty
 (ffi/defcfn get-key-pressed  "GetKeyPressed"     [] :int)   ; keycode; 0 = queue empty
 
+;; --- libc time (the one NON-raylib FFI) --------------------------------------
+;; time()/localtime() live in libc (always loaded); jolt.ffi resolves them exactly
+;; like raylib's symbols. localtime returns a pointer to a struct tm whose first
+;; three ints are tm_sec, tm_min, tm_hour (offsets 0/4/8 on Darwin and glibc). This
+;; is the repo's only non-raylib FFI call — proof jolt binds any C ABI symbol.
+(ffi/defcfn ^:private c-time      "time"      [:pointer] :long)
+(ffi/defcfn ^:private c-localtime "localtime" [:pointer] :pointer)
+
+(defn local-time
+  "Current wall-clock local time as [hour minute second] via libc time()/localtime()."
+  []
+  (let [buf (ffi/alloc 8)]
+    (try
+      (c-time buf)
+      (let [tm (c-localtime buf)]
+        [(ffi/read tm :int 8) (ffi/read tm :int 4) (ffi/read tm :int 0)])
+      (finally (ffi/free buf)))))
+
 ;; --- screenshot hook plumbing (headless smoke tests) -------------------------
 (ffi/defcfn take-screenshot       "TakeScreenshot"          [:string] :void)
 (ffi/defcfn ^:private flush-batch "rlDrawRenderBatchActive" [] :void)
@@ -357,6 +375,65 @@
         (rl-vertex-2f (double x0) (double y0))
         (rl-vertex-2f (double cx) (double cy))
         (rl-vertex-2f (double x1) (double y1))))
+    (rl-end)))
+
+(defn ring!
+  "A filled annulus (donut sector) as an rlgl quad strip between :inner and :outer
+  radius over [start-deg, end-deg] — the immediate-mode stand-in for DrawRing (Vector2
+  center by value). Same angle convention as sector! (0 deg up, clockwise, increasing).
+  Each segment is two front-wound triangles.
+    :cx :cy    center
+    :inner :outer   radii
+    :start-deg :end-deg   sweep in degrees (increasing)
+    :segments  resolution (default 48)
+    :color     packed Color"
+  [& {:keys [cx cy inner outer start-deg end-deg segments color]
+      :or {cx 0 cy 0 inner 20 outer 40 start-deg 0 end-deg 360 segments 48 color BLACK}}]
+  (let [d->r (/ Math/PI 180.0)
+        span (- end-deg start-deg)
+        pt (fn [deg r] (let [t (* deg d->r)]
+                         [(+ cx (* r (Math/sin t))) (- cy (* r (Math/cos t)))]))]
+    (rl-begin RL-TRIANGLES)
+    (rl-color! color)
+    (dotimes [k segments]
+      (let [d0 (+ start-deg (* span (/ (double k) segments)))
+            d1 (+ start-deg (* span (/ (double (inc k)) segments)))
+            [ix0 iy0] (pt d0 inner) [ox0 oy0] (pt d0 outer)
+            [ix1 iy1] (pt d1 inner) [ox1 oy1] (pt d1 outer)]
+        (rl-vertex-2f (double ox0) (double oy0))
+        (rl-vertex-2f (double ix0) (double iy0))
+        (rl-vertex-2f (double ix1) (double iy1))
+        (rl-vertex-2f (double ox0) (double oy0))
+        (rl-vertex-2f (double ix1) (double iy1))
+        (rl-vertex-2f (double ox1) (double oy1))))
+    (rl-end)))
+
+(defn line-ex!
+  "A thick line (rlgl quad) from (x1,y1) to (x2,y2), :thick pixels wide — the
+  immediate-mode stand-in for DrawLineEx (Vector2 endpoints by value). The quad is
+  front-wound at every line direction (perpendicular = (dy,-dx)/len).
+    :x1 :y1 :x2 :y2   endpoints
+    :thick   width in px (default 2)
+    :color   packed Color"
+  [& {:keys [x1 y1 x2 y2 thick color] :or {x1 0 y1 0 x2 0 y2 0 thick 2 color BLACK}}]
+  (let [dx (- x2 x1) dy (- y2 y1)
+        len (Math/sqrt (+ (* dx dx) (* dy dy)))
+        len (if (zero? len) 1.0 len)
+        h  (/ thick 2.0)
+        px (* (/ dy len) h)        ; perpendicular (dy,-dx) * half-thick
+        py (* (/ (- dx) len) h)
+        ax (+ x1 px) ay (+ y1 py)
+        bx (- x1 px) by (- y1 py)
+        cx (- x2 px) cy (- y2 py)
+        ex (+ x2 px) ey (+ y2 py)]
+    (rl-begin RL-TRIANGLES)
+    (rl-color! color)
+    (rl-vertex-2f (double ax) (double ay))
+    (rl-vertex-2f (double bx) (double by))
+    (rl-vertex-2f (double cx) (double cy))
+    (rl-vertex-2f (double ax) (double ay))
+    (rl-vertex-2f (double cx) (double cy))
+    (rl-vertex-2f (double ex) (double ey))
     (rl-end)))
 
 ;; --- smoke-test loop guards --------------------------------------------------
