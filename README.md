@@ -11,16 +11,36 @@ shared namespace, `net.b12n.rljlt.raylib`; each example is a small namespace on 
 
 ## Requirements
 
-The system `libraylib` shared library must be installed:
+The system `libraylib` shared library must be installed. With babashka you can
+check and install it for your platform (Linux, macOS Intel, macOS Apple Silicon):
 
 ```sh
-brew install raylib          # macOS
-# or your distro's raylib package on Linux
+bb lib:check                 # is libraylib installed for this OS/arch? (read-only)
+bb lib:install               # install it via brew / pacman / apt / dnf / zypper / apk
+bb lib:install --dry-run     # …or just print the command it would run
+```
+
+Or install it yourself:
+
+```sh
+brew install raylib          # macOS (Homebrew picks the right prefix per CPU)
+sudo pacman -S raylib        # Arch Linux
+# or your distro's raylib package (libraylib-dev, raylib-devel, …)
 ```
 
 `deps.edn` points jolt at it via a `:jolt/native` entry (Homebrew's
 `/opt/homebrew/lib/libraylib.dylib` first, then the bare name on the loader path;
-`libraylib.so` on Linux).
+`libraylib.so.5` / `libraylib.so` on Linux).
+
+**Using a source build of raylib** (e.g. from `~/dev/raylib`): build the shared
+library (`cmake --build build`), then point the dynamic loader at it instead of
+installing system-wide —
+
+```sh
+export LD_LIBRARY_PATH=$HOME/dev/raylib/build/raylib    # Linux
+export DYLD_LIBRARY_PATH=$HOME/dev/raylib/build/raylib  # macOS
+bb lib:check                                            # confirms it's now found
+```
 
 ## Running
 
@@ -35,6 +55,8 @@ bb bouncing-ball        # run one example (opens a window)
 bb run following-eyes   # …or run one by argument
 bb run-all [secs]       # demo reel / smoke test: every example, N seconds each (default 15)
 bb check                # headless compile-check of every example (no window)
+bb lib:check            # is the native libraylib installed for this OS/arch?
+bb lib:install          # install libraylib via the platform package manager
 bb tasks                # raw babashka task list
 ```
 
