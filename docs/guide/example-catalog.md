@@ -1,4 +1,4 @@
-# The example catalog — 56 raylib demos in jolt
+# The example catalog — 63 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/rljlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -99,6 +99,23 @@ The 3D set stands entirely on two building blocks from
 [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md) and
 [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md): `with-camera-3d`
 (the camera, by pointer) and `cube!` (the geometry, by rlgl vertices).
+
+## generative (7)
+
+| `bb` name | shows |
+|---|---|
+| `game-of-life` | Conway's Game of Life (SPACE reseeds) |
+| `boids` | flocking birds (separation/alignment/cohesion) |
+| `fireworks` | rockets + fading particle bursts |
+| `fourier-epicycles` | rotating circles trace a square wave |
+| `spirograph` | animated hypotrochoid roulette curves |
+| `l-system` | an L-system fractal plant (grows + regrows) |
+| `flow-field` | particles steered by a flow field (trails) |
+
+All seven are pure math + the drawing API — no new bindings. They showcase the
+suite as a generative-art canvas: cellular automata, agent flocking, particle
+systems, rotating-vector Fourier series, parametric roulette curves, string-rewrite
+fractals, and noise-steered flow fields.
 
 ## Adding an example — the four touchpoints
 
