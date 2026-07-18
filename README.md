@@ -122,6 +122,12 @@ joltc -M:check      # requires every example namespace; prints "compiled OK"
 | `tetris` | (game) | 10×20 well, 7 tetrominoes, rotation, line-clearing, levels |
 | `pong` | (game) | two-paddle classic, you (W/S) vs a ball-tracking CPU |
 | `vampire-survivors` | (game) | auto-firing survivors-like — chasing waves, XP gems, leveling |
+| `snake` | (game) | the classic snake — arrow keys, grow, don't crash |
+| `breakout` | (game) | paddle (mouse) + ball + brick grid, clear to win |
+| `space-invaders` | (game) | marching alien grid, shoot up (arrows + SPACE) |
+| `flappy-bird` | (game) | flap through scrolling pipe gaps (SPACE) |
+| `game-2048` | (game) | **2048** — 4×4 tile-merge puzzle (arrow keys) |
+| `minesweeper` | (game) | reveal/flag grid, flood-fill (mouse L/R) — new `mouse-pressed?` |
 
 ### Verification status
 
