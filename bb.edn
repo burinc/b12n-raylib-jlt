@@ -6,6 +6,8 @@
 ;;   bb run <name>      run one example by argument
 ;;   bb run-all [secs]  demo reel / smoke test: every example, N seconds each
 ;;   bb check           headless compile-check of every example (no window)
+;;   bb lib:check       is the native libraylib installed for this OS/arch?
+;;   bb lib:install     install libraylib via the platform package manager
 ;;
 ;; Each `bb <name>` task shells out to the example's joltc alias in deps.edn.
 ;; NOTE: task bodies are read by babashka's EDN reader, which does NOT support
@@ -16,6 +18,10 @@
  {;; --- shared registry + helpers (pure; safe to eval before every task) -----
   :init
   (do
+    (require '[babashka.fs :as fs]
+             '[clojure.java.shell :as sh]
+             '[clojure.string :as str])
+
     ;; [display-name  joltc-alias  group  description]
     (def examples
       [["basic-window"      "run"      "core"   "the minimal raylib window + text"]
@@ -101,7 +107,98 @@
               (System/exit 1)))))
 
     (defn print-row [row]
-      (println (format "  bb %-18s %s" (nth row 0) (nth row 3)))))
+      (println (format "  bb %-18s %s" (nth row 0) (nth row 3))))
+
+    ;; --- native-library (libraylib) detection + install ----------------------
+    ;; jolt loads the shared libraylib over its C ABI (see deps.edn :jolt/native).
+    ;; These helpers report where that library lives — or how to install it — for
+    ;; Linux, macOS/Intel (/usr/local) and macOS/Apple-Silicon (/opt/homebrew).
+    (defn os-kind []
+      (let [n (str/lower-case (or (System/getProperty "os.name") ""))]
+        (cond (str/includes? n "mac")   :macos
+              (str/includes? n "linux") :linux
+              :else                     :other)))
+
+    (defn arch-kind []
+      (let [a (str/lower-case (or (System/getProperty "os.arch") ""))]
+        (cond (or (= a "aarch64") (str/includes? a "arm")) :arm64
+              (or (= a "x86_64") (= a "amd64"))            :x86_64
+              :else                                        (keyword a))))
+
+    ;; macOS: Homebrew's prefix differs by CPU — /opt/homebrew (Apple Silicon)
+    ;; vs /usr/local (Intel). List the arch's likely prefix first.
+    (defn mac-lib-candidates []
+      (let [prefixes (if (= :x86_64 (arch-kind))
+                       ["/usr/local" "/opt/homebrew"]
+                       ["/opt/homebrew" "/usr/local"])]
+        (mapv (fn [p] (str p "/lib/libraylib.dylib")) prefixes)))
+
+    (defn linux-lib-dirs []
+      (distinct
+       (concat
+        (remove str/blank?
+                (str/split (or (System/getenv "LD_LIBRARY_PATH") "")
+                           (re-pattern ":")))
+        ["/usr/lib" "/usr/lib64" "/usr/local/lib"
+         "/usr/lib/x86_64-linux-gnu" "/usr/lib/aarch64-linux-gnu"])))
+
+    ;; libraylib entries known to the Linux dynamic-linker cache ([] elsewhere).
+    (defn ldconfig-hits []
+      (try
+        (let [bin (or (some-> (fs/which "ldconfig") str)
+                      (first (filter fs/exists? ["/sbin/ldconfig" "/usr/sbin/ldconfig"])))]
+          (if bin
+            (->> (or (:out (sh/sh (str bin) "-p")) "")
+                 str/split-lines
+                 (filter (fn [l] (str/includes? l "raylib")))
+                 (mapv str/trim))
+            []))
+        (catch Exception _ [])))
+
+    ;; Return {:found <path-or-nil> :checked [paths] :ldconfig [lines]}.
+    (defn find-raylib []
+      (case (os-kind)
+        :macos (let [cands (mac-lib-candidates)]
+                 {:found    (first (filter fs/exists? cands))
+                  :checked  cands
+                  :ldconfig []})
+        :linux (let [dirs (linux-lib-dirs)
+                     hits (mapcat (fn [d]
+                                    (when (fs/exists? d)
+                                      (map str (fs/glob d "libraylib.so*"))))
+                                  dirs)
+                     ld   (ldconfig-hits)]
+                 {:found    (or (first hits)
+                                (some (fn [l]
+                                        (let [i (str/index-of l "=> ")]
+                                          (when i (str/trim (subs l (+ i 3))))))
+                                      ld))
+                  :checked  (vec dirs)
+                  :ldconfig ld})
+        {:found nil :checked [] :ldconfig []}))
+
+    ;; Does this path name a libraylib artifact (file) or hold one (dir)?
+    (defn lib-present? [p]
+      (cond
+        (not (fs/exists? p)) false
+        (fs/directory? p)    (boolean (seq (fs/glob p "libraylib.{so,dylib}*")))
+        :else                true))
+
+    ;; Platform install command, or :manual instructions when none applies.
+    (defn installer-plan []
+      (case (os-kind)
+        :macos (if (fs/which "brew")
+                 {:cmd  ["brew" "install" "raylib"]
+                  :note "Homebrew installs into /opt/homebrew (Apple Silicon) or /usr/local (Intel) automatically."}
+                 {:manual "Install Homebrew from https://brew.sh, then run: brew install raylib"})
+        :linux (cond
+                 (fs/which "pacman")  {:cmd ["sudo" "pacman" "-S" "--needed" "raylib"]}
+                 (fs/which "apt-get") {:cmd ["sudo" "apt-get" "install" "-y" "libraylib-dev"]}
+                 (fs/which "dnf")     {:cmd ["sudo" "dnf" "install" "-y" "raylib" "raylib-devel"]}
+                 (fs/which "zypper")  {:cmd ["sudo" "zypper" "install" "-y" "raylib-devel"]}
+                 (fs/which "apk")     {:cmd ["sudo" "apk" "add" "raylib" "raylib-dev"]}
+                 :else {:manual "No supported package manager found. Build from source: https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux"})
+        {:manual "Unsupported OS. See https://github.com/raysan5/raylib for build instructions."})))
 
   ;; --- one task per example (so `bb <name>` runs it) ------------------------
   basic-window      {:doc "▶ the minimal raylib window + text"             :task (run-example "basic-window")}
@@ -203,8 +300,44 @@
                (doseq [row rows] (print-row row))))
            (println)
            (println "Run any example with `bb <name>` · list: `bb examples` · all tasks: `bb tasks`")
-           (println "Demo reel / smoke test: `bb run-all [secs]` · headless check: `bb check`"))}
+           (println "Demo reel / smoke test: `bb run-all [secs]` · headless check: `bb check`")
+           (println "Native library: `bb lib:check` (is libraylib installed?) · `bb lib:install`"))}
 
   check
   {:doc "Headless compile-check of every example (no window)"
-   :task (shell "joltc" "-M:check")}}}
+   :task (shell "joltc" "-M:check")}
+
+  ;; --- native library (libraylib) ------------------------------------------
+  lib:check
+  {:doc "Is the native libraylib installed for this OS/arch? (read-only)"
+   :task (let [{:keys [found checked ldconfig]} (find-raylib)]
+           (println (str "OS: " (name (os-kind)) "  ·  arch: " (name (arch-kind))))
+           (println "Looked in:")
+           (doseq [p checked]
+             (println (str "  " (if (lib-present? p) "✓" "·") " " p)))
+           (when (seq ldconfig)
+             (println "ldconfig cache:")
+             (doseq [l ldconfig] (println (str "    " l))))
+           (if found
+             (println (str "\n✓ libraylib found: " found))
+             (do
+               (binding [*out* *err*]
+                 (println "\n✗ libraylib NOT found.")
+                 (println "  • install the package:  bb lib:install")
+                 (println "  • or point the loader at a source build, e.g.:")
+                 (println "      Linux:  export LD_LIBRARY_PATH=$HOME/dev/raylib/build/raylib")
+                 (println "      macOS:  export DYLD_LIBRARY_PATH=$HOME/dev/raylib/build/raylib"))
+               (System/exit 1))))}
+
+  lib:install
+  {:doc "Install libraylib via the platform package manager (add --dry-run to preview)"
+   :task (let [{:keys [cmd note manual]} (installer-plan)
+               dry? (some #{"--dry-run" "-n"} *command-line-args*)]
+           (when note (println note))
+           (cond
+             manual (do (binding [*out* *err*] (println manual))
+                        (System/exit 1))
+             dry?   (println "Would run:" (str/join " " cmd))
+             :else  (do (println "Running:" (str/join " " cmd))
+                        (apply shell cmd)
+                        (println "\nDone. Verify with: bb lib:check"))))}}}
