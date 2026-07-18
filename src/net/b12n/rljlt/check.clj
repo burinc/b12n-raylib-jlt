@@ -80,7 +80,8 @@
             net.b12n.rljlt.digital-clock
             net.b12n.rljlt.ring-drawing
             net.b12n.rljlt.rounded-rectangle
-            net.b12n.rljlt.rectangle-scaling))
+            net.b12n.rljlt.rectangle-scaling
+            net.b12n.rljlt.lines-drawing))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
