@@ -94,7 +94,8 @@
        ["easings"           "easings" "shapes" "a grid of balls, each on a different easing curve"]
        ["penrose-tiling"    "penrose-tiling" "shapes" "a P3 Penrose rhombus tiling (deflation)"]
        ["analog-clock"      "analog-clock" "shapes" "a live analog clock (libc local time)"]
-       ["digital-clock"     "digital-clock" "shapes" "a seven-segment HH:MM:SS clock (libc time)"]])
+       ["digital-clock"     "digital-clock" "shapes" "a seven-segment HH:MM:SS clock (libc time)"]
+       ["ring-drawing"      "ring-drawing" "shapes" "an animated annulus via rl/ring!"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -274,6 +275,7 @@
   penrose-tiling    {:doc "▶ a P3 Penrose rhombus tiling (deflation)"           :task (run-example "penrose-tiling")}
   analog-clock      {:doc "▶ a live analog clock (libc local time)"             :task (run-example "analog-clock")}
   digital-clock     {:doc "▶ a seven-segment HH:MM:SS clock (libc time)"        :task (run-example "digital-clock")}
+  ring-drawing      {:doc "▶ an animated annulus via rl/ring!"                   :task (run-example "ring-drawing")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
