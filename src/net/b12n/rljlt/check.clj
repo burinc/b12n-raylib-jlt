@@ -79,7 +79,8 @@
             net.b12n.rljlt.analog-clock
             net.b12n.rljlt.digital-clock
             net.b12n.rljlt.ring-drawing
-            net.b12n.rljlt.rounded-rectangle))
+            net.b12n.rljlt.rounded-rectangle
+            net.b12n.rljlt.rectangle-scaling))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
