@@ -15,7 +15,7 @@ index cites them for any Jolt-FFI-distinctive pattern.
 
 ## What net.b12n.rljlt is
 
-A community suite of 63 raylib examples — the classic core/shapes/text demos, a
+A community suite of 69 raylib examples — the classic core/shapes/text demos, a
 handful of games (asteroids, tetris, pong, vampire-survivors), and a 3D set
 (orbiting cameras, waving cubes, an rlgl solar system) — each a small Clojure
 namespace on top of one shared binding layer, `net.b12n.rljlt.raylib`.
@@ -81,7 +81,7 @@ Three ABI facts drive every distinctive decision in this repo:
 
 ### Orientation
 
-- ✅ [`example-catalog.md`](example-catalog.md) — a tour of all 63 examples grouped
+- ✅ [`example-catalog.md`](example-catalog.md) — a tour of all 69 examples grouped
   games / core / shapes / text / 3d / generative, what each demonstrates, and the four-touchpoint
   recipe for adding one (source ns + `deps.edn` alias + `check.clj` require +
   `bb.edn` registry row). Read this for the map; the FFI pages for the mechanics.
