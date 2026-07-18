@@ -210,6 +210,7 @@
 (ffi/defcfn ^:private key-down-raw     "IsKeyDown"          [:int] :int)
 (ffi/defcfn ^:private key-pressed-raw  "IsKeyPressed"       [:int] :int)
 (ffi/defcfn ^:private mouse-down-raw   "IsMouseButtonDown"  [:int] :int)
+(ffi/defcfn ^:private mouse-pressed-raw "IsMouseButtonPressed" [:int] :int)
 (ffi/defcfn get-mouse-x      "GetMouseX"         [] :int)
 (ffi/defcfn get-mouse-y      "GetMouseY"         [] :int)
 (ffi/defcfn get-mouse-wheel  "GetMouseWheelMove" [] :float)
@@ -226,6 +227,7 @@
 (defn key-down?    [k] (not (zero? (bit-and (key-down-raw k) 0xff))))
 (defn key-pressed? [k] (not (zero? (bit-and (key-pressed-raw k) 0xff))))
 (defn mouse-down?  [b] (not (zero? (bit-and (mouse-down-raw b) 0xff))))
+(defn mouse-pressed? [b] (not (zero? (bit-and (mouse-pressed-raw b) 0xff))))
 
 ;; --- constants (raylib KeyboardKey / MouseButton) ----------------------------
 (def ^:const KEY-SPACE 32)  (def ^:const KEY-R     82)
@@ -234,6 +236,7 @@
 (def ^:const KEY-RIGHT 262) (def ^:const KEY-LEFT  263)
 (def ^:const KEY-DOWN  264) (def ^:const KEY-UP    265)
 (def ^:const MOUSE-LEFT 0)
+(def ^:const MOUSE-RIGHT 1)
 (def ^:const KEY-BACKSPACE 259) (def ^:const KEY-ENTER 257)
 
 ;; --- Color -------------------------------------------------------------------
