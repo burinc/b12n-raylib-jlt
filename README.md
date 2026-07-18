@@ -163,6 +163,12 @@ joltc -M:check      # requires every example namespace; prints "compiled OK"
 | `vector-angle` | shapes/shapes_vector_angle | the signed angle between two vectors — arc + degrees (`atan2`) |
 | `easings` | shapes/shapes_easings_* | a 3×4 grid of balls, each on a different easing curve |
 | `penrose-tiling` | shapes/shapes_penrose_tile | a P3 Penrose rhombus tiling by golden-ratio deflation |
+| `analog-clock` | shapes/shapes_clock_of_clocks | a live analog clock — `ring!` bezel, `line-ex!` ticks/hands, **libc** local time |
+| `digital-clock` | shapes/shapes_digital_clock | a seven-segment `HH:MM:SS` display (libc local time) |
+| `ring-drawing` | shapes/shapes_ring_drawing | an animated annulus via `rl/ring!` + a stroked outline |
+| `rounded-rectangle` | shapes/shapes_rounded_rectangle_drawing | rounded rects from `sector!` corners + rects |
+| `rectangle-scaling` | shapes/shapes_rectangle_scaling | drag the corner handle to resize a rectangle |
+| `lines-drawing` | shapes/shapes_lines_drawing | a rotating fan of thick lines via `rl/line-ex!` |
 
 ### Verification status
 
@@ -244,7 +250,7 @@ by-value struct support for `Vector3`-taking functions.
   - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md) — the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
   - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md) — the positional-binds / keyword-wrappers two-layer design
   - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
-  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 69, and the four-touchpoint recipe for adding one
+  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 75, and the four-touchpoint recipe for adding one
 
 Sibling project: [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — tree-sitter from
 Jolt, the same `jolt.ffi` mechanism applied to a by-value-*returning* C API that

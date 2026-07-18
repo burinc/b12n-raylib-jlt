@@ -126,6 +126,25 @@ express. The showpiece `penrose-tiling` fills ~900 deflation triangles of *mixed
 winding, so it normalizes each to negative signed area (the proven front face) before
 the batch — the general form of the winding rule `sector!` bakes in.
 
+## 2D: `ring!` and `line-ex!`
+
+Two more by-value casualties get the same rlgl treatment:
+
+- **`ring!`** — a filled annulus (donut sector), the stand-in for `DrawRing`. Instead
+  of a center-anchored fan it walks a **quad strip** between an inner and an outer
+  radius: each angular step emits two triangles spanning `inner → outer` across `dθ`,
+  wound front-facing. `analog-clock`'s bezel and `ring-drawing` use it.
+- **`line-ex!`** — a thick line, the stand-in for `DrawLineEx` (both `Vector2`
+  endpoints by value). It offsets the two endpoints by `±thick/2` along the unit
+  perpendicular `(dy,-dx)/len` and fills the resulting quad as two triangles. That
+  perpendicular convention keeps the quad front-wound at **every** line direction — so
+  a rotating fan of them (`lines-drawing`) or a sweeping clock hand (`analog-clock`)
+  never flips to a culled back face. `line-ex!` also draws the clock ticks and the
+  `ring-drawing` outline stroke.
+
+Both are single-color (`rl-color!` once, then the vertices) and, like `sector!`, live
+in `raylib.clj` beside the raw `rl-*` binds.
+
 ## Why this generalizes
 
 When a C graphics API forces geometry through by-value small-float-vector arguments,
