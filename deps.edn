@@ -75,6 +75,7 @@
            :flow-field       {:main-opts ["-m" "net.b12n.rljlt.flow-field"]}       ; particles in a noise flow field
            :color-wheel      {:main-opts ["-m" "net.b12n.rljlt.color-wheel"]}      ; HSV hue ring (rlgl fan)
            :pie-chart        {:main-opts ["-m" "net.b12n.rljlt.pie-chart"]}        ; labelled pie slices (sector!)
-           :splines          {:main-opts ["-m" "net.b12n.rljlt.splines"]}}         ; Catmull-Rom / Bezier / B-spline
+           :splines          {:main-opts ["-m" "net.b12n.rljlt.splines"]}          ; Catmull-Rom / Bezier / B-spline
+           :vector-angle     {:main-opts ["-m" "net.b12n.rljlt.vector-angle"]}}    ; angle between two vectors (atan2)
 
  :tasks {run "joltc -M:run"}}
