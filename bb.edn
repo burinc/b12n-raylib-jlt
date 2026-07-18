@@ -84,7 +84,8 @@
        ["color-wheel"       "color-wheel" "shapes" "an HSV color wheel (rlgl triangle fan)"]
        ["pie-chart"         "pie-chart" "shapes" "labelled pie slices via rl/sector!"]
        ["splines"           "splines" "shapes" "Catmull-Rom / Bezier / B-spline (SPACE cycles)"]
-       ["vector-angle"      "vector-angle" "shapes" "the angle between two vectors (arc + readout)"]])
+       ["vector-angle"      "vector-angle" "shapes" "the angle between two vectors (arc + readout)"]
+       ["easings"           "easings" "shapes" "a grid of balls, each on a different easing curve"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -169,6 +170,7 @@
   pie-chart         {:doc "▶ labelled pie slices via rl/sector!"               :task (run-example "pie-chart")}
   splines           {:doc "▶ Catmull-Rom / Bezier / B-spline (SPACE cycles)"    :task (run-example "splines")}
   vector-angle      {:doc "▶ the angle between two vectors (arc + readout)"     :task (run-example "vector-angle")}
+  easings           {:doc "▶ a grid of balls on different easing curves"        :task (run-example "easings")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

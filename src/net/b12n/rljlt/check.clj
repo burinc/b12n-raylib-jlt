@@ -73,7 +73,8 @@
             net.b12n.rljlt.color-wheel
             net.b12n.rljlt.pie-chart
             net.b12n.rljlt.splines
-            net.b12n.rljlt.vector-angle))
+            net.b12n.rljlt.vector-angle
+            net.b12n.rljlt.easings))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
