@@ -77,7 +77,8 @@
             net.b12n.rljlt.easings
             net.b12n.rljlt.penrose-tiling
             net.b12n.rljlt.analog-clock
-            net.b12n.rljlt.digital-clock))
+            net.b12n.rljlt.digital-clock
+            net.b12n.rljlt.ring-drawing))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
