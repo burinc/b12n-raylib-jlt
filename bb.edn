@@ -83,7 +83,8 @@
        ["flow-field"        "flow-field" "generative" "particles steered by a flow field (trails)"]
        ["color-wheel"       "color-wheel" "shapes" "an HSV color wheel (rlgl triangle fan)"]
        ["pie-chart"         "pie-chart" "shapes" "labelled pie slices via rl/sector!"]
-       ["splines"           "splines" "shapes" "Catmull-Rom / Bezier / B-spline (SPACE cycles)"]])
+       ["splines"           "splines" "shapes" "Catmull-Rom / Bezier / B-spline (SPACE cycles)"]
+       ["vector-angle"      "vector-angle" "shapes" "the angle between two vectors (arc + readout)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -167,6 +168,7 @@
   color-wheel       {:doc "▶ an HSV color wheel (rlgl triangle fan)"          :task (run-example "color-wheel")}
   pie-chart         {:doc "▶ labelled pie slices via rl/sector!"               :task (run-example "pie-chart")}
   splines           {:doc "▶ Catmull-Rom / Bezier / B-spline (SPACE cycles)"    :task (run-example "splines")}
+  vector-angle      {:doc "▶ the angle between two vectors (arc + readout)"     :task (run-example "vector-angle")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
