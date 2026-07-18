@@ -1,4 +1,4 @@
-# The example catalog — 42 raylib demos in jolt
+# The example catalog — 50 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/rljlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -37,7 +37,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `basic-screen-manager` | a LOGO / TITLE / GAMEPLAY / ENDING state flow |
 | `random-values` | `GetRandomValue`, a new value every 2s |
 
-## shapes (18)
+## shapes (20)
 
 | `bb` name | shows |
 |---|---|
@@ -59,8 +59,10 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `kaleidoscope` | strokes mirrored with 6-fold symmetry |
 | `hilbert-curve` | a rainbow Hilbert space-filling curve |
 | `math-angle-rotation` | fixed spokes + a spinning line |
+| `ball-physics` | 2D balls under gravity, SPACE respawns |
+| `lines-bezier` | a cubic Bézier that follows the mouse |
 
-## text (4)
+## text (5)
 
 | `bb` name | shows |
 |---|---|
@@ -68,8 +70,9 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `writing-anim` | a self-typing message |
 | `format-text` | `format` padded score + MM:SS timer |
 | `words-alignment` | align a word inside a box with `MeasureText` |
+| `input-box` | type into a text box (GetCharPressed) |
 
-## 3d (7)
+## 3d (12)
 
 | `bb` name | shows |
 |---|---|
@@ -80,6 +83,11 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `wireframe-shapes` | pyramid / octahedron / torus / helix as rlgl 3D lines |
 | `rlgl-solar-system` | Sun / Earth / Moon via the rlgl matrix stack |
 | `box-collisions` | a player cube vs. boxes, 3D AABB highlight |
+| `rotating-cube` | a single cube spinning via the rlgl matrix stack |
+| `spinning-cubes` | a row of cubes each spinning with a phase offset |
+| `orthographic-projection` | perspective vs orthographic (SPACE toggles) |
+| `point-cloud` | ~1500 points as tiny rlgl cubes, rotating |
+| `bouncing-spheres` | spheres bouncing in a 3D box (rl/sphere!) |
 
 The 3D set stands entirely on two building blocks from
 [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md) and
