@@ -85,7 +85,8 @@
        ["pie-chart"         "pie-chart" "shapes" "labelled pie slices via rl/sector!"]
        ["splines"           "splines" "shapes" "Catmull-Rom / Bezier / B-spline (SPACE cycles)"]
        ["vector-angle"      "vector-angle" "shapes" "the angle between two vectors (arc + readout)"]
-       ["easings"           "easings" "shapes" "a grid of balls, each on a different easing curve"]])
+       ["easings"           "easings" "shapes" "a grid of balls, each on a different easing curve"]
+       ["penrose-tiling"    "penrose-tiling" "shapes" "a P3 Penrose rhombus tiling (deflation)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -171,6 +172,7 @@
   splines           {:doc "▶ Catmull-Rom / Bezier / B-spline (SPACE cycles)"    :task (run-example "splines")}
   vector-angle      {:doc "▶ the angle between two vectors (arc + readout)"     :task (run-example "vector-angle")}
   easings           {:doc "▶ a grid of balls on different easing curves"        :task (run-example "easings")}
+  penrose-tiling    {:doc "▶ a P3 Penrose rhombus tiling (deflation)"           :task (run-example "penrose-tiling")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

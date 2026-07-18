@@ -77,6 +77,7 @@
            :pie-chart        {:main-opts ["-m" "net.b12n.rljlt.pie-chart"]}        ; labelled pie slices (sector!)
            :splines          {:main-opts ["-m" "net.b12n.rljlt.splines"]}          ; Catmull-Rom / Bezier / B-spline
            :vector-angle     {:main-opts ["-m" "net.b12n.rljlt.vector-angle"]}     ; angle between two vectors (atan2)
-           :easings          {:main-opts ["-m" "net.b12n.rljlt.easings"]}}         ; a grid of easing-curve balls
+           :easings          {:main-opts ["-m" "net.b12n.rljlt.easings"]}          ; a grid of easing-curve balls
+           :penrose-tiling   {:main-opts ["-m" "net.b12n.rljlt.penrose-tiling"]}}  ; P3 rhombus tiling (deflation)
 
  :tasks {run "joltc -M:run"}}
