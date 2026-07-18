@@ -82,7 +82,8 @@
        ["l-system"          "l-system" "generative" "an L-system fractal plant (grows + regrows)"]
        ["flow-field"        "flow-field" "generative" "particles steered by a flow field (trails)"]
        ["color-wheel"       "color-wheel" "shapes" "an HSV color wheel (rlgl triangle fan)"]
-       ["pie-chart"         "pie-chart" "shapes" "labelled pie slices via rl/sector!"]])
+       ["pie-chart"         "pie-chart" "shapes" "labelled pie slices via rl/sector!"]
+       ["splines"           "splines" "shapes" "Catmull-Rom / Bezier / B-spline (SPACE cycles)"]])
 
     (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
@@ -165,6 +166,7 @@
   flow-field        {:doc "▶ particles steered by a flow field (trails)"      :task (run-example "flow-field")}
   color-wheel       {:doc "▶ an HSV color wheel (rlgl triangle fan)"          :task (run-example "color-wheel")}
   pie-chart         {:doc "▶ labelled pie slices via rl/sector!"               :task (run-example "pie-chart")}
+  splines           {:doc "▶ Catmull-Rom / Bezier / B-spline (SPACE cycles)"    :task (run-example "splines")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
