@@ -81,6 +81,7 @@
            :penrose-tiling   {:main-opts ["-m" "net.b12n.rljlt.penrose-tiling"]}   ; P3 rhombus tiling (deflation)
            :analog-clock     {:main-opts ["-m" "net.b12n.rljlt.analog-clock"]}     ; live analog clock (libc time)
            :digital-clock    {:main-opts ["-m" "net.b12n.rljlt.digital-clock"]}    ; seven-segment HH:MM:SS
-           :ring-drawing     {:main-opts ["-m" "net.b12n.rljlt.ring-drawing"]}}    ; animated rlgl annulus
+           :ring-drawing     {:main-opts ["-m" "net.b12n.rljlt.ring-drawing"]}     ; animated rlgl annulus
+           :rounded-rectangle {:main-opts ["-m" "net.b12n.rljlt.rounded-rectangle"]}} ; sector!-corner rounded rects
 
  :tasks {run "joltc -M:run"}}
