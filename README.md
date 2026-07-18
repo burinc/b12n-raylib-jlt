@@ -209,7 +209,7 @@ by-value struct support for `Vector3`-taking functions.
   - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md) — the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
   - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md) — the positional-binds / keyword-wrappers two-layer design
   - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
-  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 50, and the four-touchpoint recipe for adding one
+  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 56, and the four-touchpoint recipe for adding one
 
 Sibling project: [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — tree-sitter from
 Jolt, the same `jolt.ffi` mechanism applied to a by-value-*returning* C API that
