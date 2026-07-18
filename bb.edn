@@ -1,0 +1,156 @@
+;; Babashka runner for the raylib-app examples.
+;;
+;;   bb info            grouped cheat-sheet
+;;   bb examples        flat list with descriptions
+;;   bb <name>          run one example (opens a window), e.g. bb bouncing-ball
+;;   bb run <name>      run one example by argument
+;;   bb run-all [secs]  demo reel / smoke test: every example, N seconds each
+;;   bb check           headless compile-check of every example (no window)
+;;
+;; Each `bb <name>` task shells out to the example's joltc alias in deps.edn.
+;; NOTE: task bodies are read by babashka's EDN reader, which does NOT support
+;; #"regex", @deref, or #(...) reader macros — use (fn [x] ...) etc.
+{:min-bb-version "1.3.0"
+
+ :tasks
+ {;; --- shared registry + helpers (pure; safe to eval before every task) -----
+  :init
+  (do
+    ;; [display-name  joltc-alias  group  description]
+    (def examples
+      [["basic-window"      "run"      "core"   "the minimal raylib window + text"]
+       ["input-keys"        "input"    "core"   "steer a ball with the arrow keys"]
+       ["input-mouse"       "mouse"    "core"   "a ball follows the mouse; click to recolor"]
+       ["input-mouse-wheel" "wheel"    "core"   "scroll a box with the mouse wheel"]
+       ["camera-2d"         "camera2d" "core"   "a 2D camera over a skyline (struct-by-value)"]
+       ["delta-time"        "delta-time" "core" "per-frame vs delta-time movement"]
+       ["scissor-test"      "scissor-test" "core" "a scissor rectangle clips a grid"]
+       ["basic-screen-manager" "basic-screen-manager" "core" "a LOGO/TITLE/GAMEPLAY/ENDING flow"]
+       ["random-values"     "random-values" "core" "a new random value every two seconds"]
+       ["bouncing-ball"     "bounce"   "shapes" "a ball bouncing around the window"]
+       ["basic-shapes"      "shapes"   "shapes" "shape primitives + an rlgl triangle"]
+       ["colors-palette"    "colors"   "shapes" "every named raylib color in a grid"]
+       ["gradient"          "gradient" "shapes" "a vertical two-color gradient"]
+       ["following-eyes"    "eyes"     "shapes" "two eyes track the mouse"]
+       ["starfield"         "stars"    "shapes" "a twinkling starfield"]
+       ["logo-raylib"       "logo"     "shapes" "the raylib logo from rectangles + text"]
+       ["mouse-trail"       "mouse-trail" "shapes" "a fading trail follows the cursor"]
+       ["recursive-tree"    "recursive-tree" "shapes" "a binary fractal tree"]
+       ["math-sine-cosine"  "math-sine-cosine" "shapes" "a live unit-circle trig visualization"]
+       ["bullet-hell"       "bullet-hell" "shapes" "a rotating bullet spiral"]
+       ["triangle-strip"    "triangle-strip" "shapes" "a rainbow strip via rlgl immediate mode"]
+       ["collision-area"    "collision-area" "shapes" "AABB collision between two boxes"]
+       ["dashed-line"       "dashed-line" "shapes" "a dashed line follows the mouse"]
+       ["double-pendulum"   "double-pendulum" "shapes" "chaotic double-pendulum motion + trail"]
+       ["kaleidoscope"      "kaleidoscope" "shapes" "strokes mirrored with 6-fold symmetry"]
+       ["hilbert-curve"     "hilbert-curve" "shapes" "a rainbow Hilbert space-filling curve"]
+       ["math-angle-rotation" "math-angle-rotation" "shapes" "fixed spokes + a spinning line"]
+       ["font-sizes"        "text"     "text"   "font sizes + MeasureText centering"]
+       ["writing-anim"      "writing-anim" "text" "a message types itself out"]
+       ["format-text"       "format-text" "text" "padded score + MM:SS timer readouts"]
+       ["words-alignment"   "words-alignment" "text" "align a word inside a box (MeasureText)"]
+       ["camera-3d"         "camera-3d" "3d" "an orbiting 3D camera (Camera3D by value)"]
+       ["waving-cubes"      "waving-cubes" "3d" "an NxN grid of cubes rippling in 3D"]
+       ["camera-3d-first-person" "camera-3d-first-person" "3d" "walk a yard of columns in first person"]
+       ["tesseract-view"    "tesseract-view" "3d" "a rotating 4D hypercube projected to 2D"]
+       ["wireframe-shapes"  "wireframe-shapes" "3d" "pyramid/octahedron/torus/helix in 3D lines"]
+       ["rlgl-solar-system" "rlgl-solar-system" "3d" "Sun/Earth/Moon via the rlgl matrix stack"]
+       ["box-collisions"    "box-collisions" "3d" "a player cube colliding with 3D boxes"]
+       ["asteroids"         "asteroids" "games" "the classic vector shooter (rotate/thrust/fire)"]
+       ["tetris"            "tetris" "games" "the block-stacking puzzle (move/rotate/drop)"]
+       ["pong"              "pong" "games" "two-paddle classic, you (W/S) vs a CPU"]
+       ["vampire-survivors" "vampire-survivors" "games" "auto-fire survival: move, waves chase you"]])
+
+    (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
+
+    (defn run-example [name]
+      (let [row (get by-name name)]
+        (if row
+          (do (println (str "▶ " name))
+              (shell "joltc" (str "-M:" (nth row 1))))
+          (do (binding [*out* *err*]
+                (println (str "Unknown example: " (pr-str name)))
+                (println "Run `bb examples` to see the list."))
+              (System/exit 1)))))
+
+    (defn print-row [row]
+      (println (format "  bb %-18s %s" (nth row 0) (nth row 3)))))
+
+  ;; --- one task per example (so `bb <name>` runs it) ------------------------
+  basic-window      {:doc "▶ the minimal raylib window + text"             :task (run-example "basic-window")}
+  input-keys        {:doc "▶ steer a ball with the arrow keys"            :task (run-example "input-keys")}
+  input-mouse       {:doc "▶ a ball follows the mouse; click to recolor"  :task (run-example "input-mouse")}
+  input-mouse-wheel {:doc "▶ scroll a box with the mouse wheel"           :task (run-example "input-mouse-wheel")}
+  camera-2d         {:doc "▶ a 2D camera over a skyline (struct-by-value)" :task (run-example "camera-2d")}
+  bouncing-ball     {:doc "▶ a ball bouncing around the window"           :task (run-example "bouncing-ball")}
+  basic-shapes      {:doc "▶ shape primitives + an rlgl triangle"         :task (run-example "basic-shapes")}
+  colors-palette    {:doc "▶ every named raylib color in a grid"          :task (run-example "colors-palette")}
+  gradient          {:doc "▶ a vertical two-color gradient"               :task (run-example "gradient")}
+  following-eyes    {:doc "▶ two eyes track the mouse"                     :task (run-example "following-eyes")}
+  starfield         {:doc "▶ a twinkling starfield"                        :task (run-example "starfield")}
+  logo-raylib       {:doc "▶ the raylib logo from rectangles + text"      :task (run-example "logo-raylib")}
+  font-sizes        {:doc "▶ font sizes + MeasureText centering"          :task (run-example "font-sizes")}
+  delta-time        {:doc "▶ per-frame vs delta-time movement"            :task (run-example "delta-time")}
+  scissor-test      {:doc "▶ a scissor rectangle clips a grid"            :task (run-example "scissor-test")}
+  mouse-trail       {:doc "▶ a fading trail follows the cursor"           :task (run-example "mouse-trail")}
+  recursive-tree    {:doc "▶ a binary fractal tree"                       :task (run-example "recursive-tree")}
+  math-sine-cosine  {:doc "▶ a live unit-circle trig visualization"       :task (run-example "math-sine-cosine")}
+  bullet-hell       {:doc "▶ a rotating bullet spiral"                    :task (run-example "bullet-hell")}
+  triangle-strip    {:doc "▶ a rainbow strip via rlgl immediate mode"     :task (run-example "triangle-strip")}
+  writing-anim      {:doc "▶ a message types itself out"                  :task (run-example "writing-anim")}
+  format-text       {:doc "▶ padded score + MM:SS timer readouts"         :task (run-example "format-text")}
+  collision-area    {:doc "▶ AABB collision between two boxes"            :task (run-example "collision-area")}
+  dashed-line       {:doc "▶ a dashed line follows the mouse"             :task (run-example "dashed-line")}
+  double-pendulum   {:doc "▶ chaotic double-pendulum motion + trail"      :task (run-example "double-pendulum")}
+  kaleidoscope      {:doc "▶ strokes mirrored with 6-fold symmetry"       :task (run-example "kaleidoscope")}
+  hilbert-curve     {:doc "▶ a rainbow Hilbert space-filling curve"       :task (run-example "hilbert-curve")}
+  math-angle-rotation {:doc "▶ fixed spokes + a spinning line"            :task (run-example "math-angle-rotation")}
+  basic-screen-manager {:doc "▶ a LOGO/TITLE/GAMEPLAY/ENDING flow"        :task (run-example "basic-screen-manager")}
+  random-values     {:doc "▶ a new random value every two seconds"        :task (run-example "random-values")}
+  words-alignment   {:doc "▶ align a word inside a box (MeasureText)"     :task (run-example "words-alignment")}
+  camera-3d         {:doc "▶ an orbiting 3D camera (Camera3D by value)"    :task (run-example "camera-3d")}
+  waving-cubes      {:doc "▶ an NxN grid of cubes rippling in 3D"          :task (run-example "waving-cubes")}
+  camera-3d-first-person {:doc "▶ walk a yard of columns in first person"  :task (run-example "camera-3d-first-person")}
+  tesseract-view    {:doc "▶ a rotating 4D hypercube projected to 2D"       :task (run-example "tesseract-view")}
+  wireframe-shapes  {:doc "▶ pyramid/octahedron/torus/helix in 3D lines"    :task (run-example "wireframe-shapes")}
+  rlgl-solar-system {:doc "▶ Sun/Earth/Moon via the rlgl matrix stack"      :task (run-example "rlgl-solar-system")}
+  box-collisions    {:doc "▶ a player cube colliding with 3D boxes"         :task (run-example "box-collisions")}
+  asteroids         {:doc "▶ the classic vector shooter (rotate/thrust/fire)" :task (run-example "asteroids")}
+  tetris            {:doc "▶ the block-stacking puzzle (move/rotate/drop)"  :task (run-example "tetris")}
+  pong              {:doc "▶ two-paddle classic, you (W/S) vs a CPU"        :task (run-example "pong")}
+  vampire-survivors {:doc "▶ auto-fire survival: move, waves chase you"      :task (run-example "vampire-survivors")}
+
+  ;; --- meta tasks -----------------------------------------------------------
+  run
+  {:doc "Run an example by name: bb run <name>"
+   :override-builtin true
+   :task (run-example (first *command-line-args*))}
+
+  run-all
+  {:doc "Demo reel / smoke test: every example N seconds each (default 15): bb run-all [secs]"
+   :task (let [secs (or (some-> (first *command-line-args*) parse-long) 15)
+               ms   (str (* secs 1000))]
+           (println (str "Running " (count examples) " examples, " secs "s each…"))
+           (doseq [row examples]
+             (println (str "▶ " (nth row 0)))
+             (shell {:extra-env {"RAYLIB_APP_AUTO_QUIT_MS" ms} :continue true}
+                    "joltc" (str "-M:" (nth row 1)))))}
+
+  examples
+  {:doc "List every runnable example with its description"
+   :task (doseq [row examples] (print-row row))}
+
+  info
+  {:doc "Grouped cheat-sheet of all examples"
+   :task (do
+           (doseq [g ["games" "core" "shapes" "text" "3d"]]
+             (let [rows (filterv (fn [row] (= g (nth row 2))) examples)]
+               (println (str "\n=== " g " (" (count rows) ") ==="))
+               (doseq [row rows] (print-row row))))
+           (println)
+           (println "Run any example with `bb <name>` · list: `bb examples` · all tasks: `bb tasks`")
+           (println "Demo reel / smoke test: `bb run-all [secs]` · headless check: `bb check`"))}
+
+  check
+  {:doc "Headless compile-check of every example (no window)"
+   :task (shell "joltc" "-M:check")}}}
