@@ -128,6 +128,13 @@ joltc -M:check      # requires every example namespace; prints "compiled OK"
 | `flappy-bird` | (game) | flap through scrolling pipe gaps (SPACE) |
 | `game-2048` | (game) | **2048** — 4×4 tile-merge puzzle (arrow keys) |
 | `minesweeper` | (game) | reveal/flag grid, flood-fill (mouse L/R) — new `mouse-pressed?` |
+| `game-of-life` | (generative) | Conway's Game of Life on a toroidal grid (SPACE reseeds) |
+| `boids` | (generative) | Reynolds flocking — separation / alignment / cohesion |
+| `fireworks` | (generative) | rockets + gravity-fading particle bursts (alpha channel) |
+| `fourier-epicycles` | (generative) | a chain of rotating circles traces a square wave |
+| `spirograph` | (generative) | animated hypotrochoid roulette curves |
+| `l-system` | (generative) | an L-system fractal plant (rewrite + turtle graphics) |
+| `flow-field` | (generative) | particles steered by a sine-layered flow field |
 
 ### Verification status
 
@@ -209,7 +216,7 @@ by-value struct support for `Vector3`-taking functions.
   - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md) — the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
   - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md) — the positional-binds / keyword-wrappers two-layer design
   - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
-  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 56, and the four-touchpoint recipe for adding one
+  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 63, and the four-touchpoint recipe for adding one
 
 Sibling project: [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — tree-sitter from
 Jolt, the same `jolt.ffi` mechanism applied to a by-value-*returning* C API that
