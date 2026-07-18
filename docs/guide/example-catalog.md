@@ -1,4 +1,4 @@
-# The example catalog — 50 raylib demos in jolt
+# The example catalog — 56 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/rljlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -14,7 +14,7 @@ bb info            # the grouped cheat-sheet below
 bb run-all [secs]  # every example, N seconds each (unattended)
 ```
 
-## games (4)
+## games (10)
 
 | `bb` name | shows |
 |---|---|
@@ -22,6 +22,12 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `tetris` | 10×20 well, 7 tetrominoes, rotation, line-clearing, levels |
 | `pong` | two-paddle classic, you (W/S) vs a ball-tracking CPU |
 | `vampire-survivors` | auto-firing survivors-like — chasing waves, XP gems, leveling |
+| `snake` | the classic snake (arrow keys, grow, don't crash) |
+| `breakout` | paddle + ball + brick grid (mouse paddle) |
+| `space-invaders` | marching aliens (arrows + SPACE to shoot) |
+| `flappy-bird` | flap through the pipe gaps (SPACE) |
+| `game-2048` | 2048: 4x4 tile-merge puzzle (arrow keys) |
+| `minesweeper` | reveal/flag grid (mouse L reveal, R flag) |
 
 ## core (9)
 
