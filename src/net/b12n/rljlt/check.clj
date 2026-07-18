@@ -71,7 +71,8 @@
             net.b12n.rljlt.l-system
             net.b12n.rljlt.flow-field
             net.b12n.rljlt.color-wheel
-            net.b12n.rljlt.pie-chart))
+            net.b12n.rljlt.pie-chart
+            net.b12n.rljlt.splines))
 
 (defn -main [& _]
   (println "net.b12n.rljlt: all example namespaces compiled OK"))
