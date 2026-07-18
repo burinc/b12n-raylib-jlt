@@ -1,4 +1,4 @@
-# The example catalog — 69 raylib demos in jolt
+# The example catalog — 75 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/rljlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -43,7 +43,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `basic-screen-manager` | a LOGO / TITLE / GAMEPLAY / ENDING state flow |
 | `random-values` | `GetRandomValue`, a new value every 2s |
 
-## shapes (26)
+## shapes (32)
 
 | `bb` name | shows |
 |---|---|
@@ -73,6 +73,12 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | `vector-angle` | the signed angle between two vectors, filled arc + degrees readout (`atan2`) |
 | `easings` | a 3×4 grid of balls, each animating on a different easing curve |
 | `penrose-tiling` | a P3 Penrose rhombus tiling built by golden-ratio deflation |
+| `analog-clock` | a live analog clock (bezel `ring!`, ticks + hands `line-ex!`, libc local time) |
+| `digital-clock` | a seven-segment `HH:MM:SS` display (libc local time) |
+| `ring-drawing` | an animated annulus via `rl/ring!` + a stroked outline |
+| `rounded-rectangle` | rounded rectangles built from `sector!` corners + rects |
+| `rectangle-scaling` | drag the bottom-right corner handle to resize a rectangle |
+| `lines-drawing` | a rotating fan of thick lines via `rl/line-ex!` (rlgl quads) |
 
 ## text (5)
 

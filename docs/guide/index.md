@@ -15,7 +15,7 @@ index cites them for any Jolt-FFI-distinctive pattern.
 
 ## What net.b12n.rljlt is
 
-A community suite of 69 raylib examples — the classic core/shapes/text demos, a
+A community suite of 75 raylib examples — the classic core/shapes/text demos, a
 handful of games (asteroids, tetris, pong, vampire-survivors), and a 3D set
 (orbiting cameras, waving cubes, an rlgl solar system) — each a small Clojure
 namespace on top of one shared binding layer, `net.b12n.rljlt.raylib`.
@@ -44,6 +44,11 @@ Three ABI facts drive every distinctive decision in this repo:
    registers, which the pointer trick does *not* cover, so shapes and 3D cubes are
    drawn with rlgl's scalar immediate mode instead.
    ([`rlgl-immediate-mode.md`](rlgl-immediate-mode.md))
+
+Nothing about `jolt.ffi` is raylib-specific: it binds any C ABI symbol. The
+`analog-clock` / `digital-clock` examples call plain **libc** `time()`/`localtime()`
+(via `rl/local-time`) for real wall-clock time — the repo's one non-raylib FFI, reading
+`struct tm`'s `tm_hour`/`tm_min`/`tm_sec` ints straight out of native memory.
 
 ## Capability pages
 
@@ -81,7 +86,7 @@ Three ABI facts drive every distinctive decision in this repo:
 
 ### Orientation
 
-- ✅ [`example-catalog.md`](example-catalog.md) — a tour of all 69 examples grouped
+- ✅ [`example-catalog.md`](example-catalog.md) — a tour of all 75 examples grouped
   games / core / shapes / text / 3d / generative, what each demonstrates, and the four-touchpoint
   recipe for adding one (source ns + `deps.edn` alias + `check.clj` require +
   `bb.edn` registry row). Read this for the map; the FFI pages for the mechanics.
