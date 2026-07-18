@@ -1,4 +1,4 @@
-;; Babashka runner for the raylib-app examples.
+;; Babashka runner for the net.b12n.rljlt raylib examples.
 ;;
 ;;   bb info            grouped cheat-sheet
 ;;   bb examples        flat list with descriptions

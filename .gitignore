@@ -1,3 +1,7 @@
 # smoke-test screenshots (RAYLIB_APP_SHOT)
 shot*.png
 raylib_shot.png
+
+# local dev artifacts (not part of the example suite)
+.claude/
+CONTINUATION_PROMPT.md
