@@ -2,11 +2,13 @@
   "raylib [shapes] example - rectangle scaling. Drag the bottom-right corner handle to
   resize a rectangle (clamped to a minimum). The live W x H is shown. Port of
   shapes_rectangle_scaling (mouse-driven; headless it shows the initial size)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private handle 18)
 
-(defn- handle-tri! [hx hy color]
+(defn- handle-tri!
+  [hx hy color]
   (rl/rl-begin rl/RL-TRIANGLES)
   (rl/rl-color! color)
   (rl/rl-vertex-2f (double (- hx handle)) (double hy))
@@ -14,7 +16,8 @@
   (rl/rl-vertex-2f (double hx) (double (- hy handle)))
   (rl/rl-end))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - rectangle scaling")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

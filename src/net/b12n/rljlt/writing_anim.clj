@@ -3,12 +3,14 @@
 
   A message types itself out one character at a time, pauses at the end, then
   restarts. A growing substring of the full text driven by the frame counter."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const msg "This message types itself out, one character at a time...")
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height 450 :title "raylib [text] example - writing animation")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

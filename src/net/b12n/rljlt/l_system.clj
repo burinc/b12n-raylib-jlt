@@ -2,17 +2,24 @@
   "raylib [generative] example — an L-system fractal plant. A string is rewritten by
   production rules, then drawn with turtle graphics (F=forward, +/-=turn, []=branch);
   the plant reveals itself segment by segment, then regrows."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def rules {\X "F+[[X]-X]-F[-FX]+X" \F "FF"})
 (def iterations 5)
 (def angle-rad (* 25.0 (/ Math/PI 180.0)))
 (def step-len 3.2)
 
-(defn- expand [s] (apply str (map (fn [ch] (get rules ch (str ch))) s)))
-(defn- lsystem-string [] (nth (iterate expand "X") iterations))
+(defn- expand
+  [s]
+  (apply str (map (fn [ch] (get rules ch (str ch))) s)))
 
-(defn- build-segments [s]
+(defn- lsystem-string
+  []
+  (nth (iterate expand "X") iterations))
+
+(defn- build-segments
+  [s]
   (let [a0 (- (/ Math/PI 2.0))]
     (loop [chars (seq s) x 400.0 y 445.0 a a0 stack [] segs []]
       (if (empty? chars)
@@ -29,7 +36,8 @@
                         (recur more px py pa (pop stack) segs))
             :else (recur more x y a stack segs)))))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [generative] example - L-system plant")
   (rl/set-target-fps 60)
   (let [segs (build-segments (lsystem-string))

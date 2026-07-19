@@ -3,13 +3,15 @@
 
   A rotating emitter at the centre sprays bullets outward in a three-armed spiral;
   each bullet flies until it leaves the window. Pure math over draw-circle."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const ARM (/ (* 2 3.141592653589793) 3))   ; 120° between the three arms
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - bullet spiral")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)
@@ -22,8 +24,9 @@
                           {:x cx :y cy :vx (* 3.5 (Math/cos a)) :vy (* 3.5 (Math/sin a))}))
               bullets (->> (into bullets spawned)
                            (map (fn [b] (assoc b :x (+ (:x b) (:vx b)) :y (+ (:y b) (:vy b)))))
-                           (filterv (fn [b] (and (<= -10 (:x b) (+ W 10))
-                                                 (<= -10 (:y b) (+ H 10))))))]
+                           (filterv (fn [b]
+                                      (and (<= -10 (:x b) (+ W 10))
+                                           (<= -10 (:y b) (+ H 10))))))]
           (rl/begin-drawing)
           (rl/clear-background (rl/rgba 15 15 30 255))
           (doseq [b bullets]

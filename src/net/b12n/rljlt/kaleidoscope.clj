@@ -4,14 +4,16 @@
   A moving stroke replicated with 6-fold rotational symmetry (plus a mirror) around
   the centre. A bounded trail of stroke points is redrawn each frame so the pattern
   reads as a symmetric whole without needing a render texture."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const FOLDS 6)
 (def ^:const TAU 6.283185307179586)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "kaleidoscope")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

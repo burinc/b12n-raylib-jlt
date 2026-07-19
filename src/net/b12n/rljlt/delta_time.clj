@@ -4,12 +4,14 @@
   Two boxes cross the screen: the top one moves a fixed amount PER FRAME (so its
   speed depends on the frame rate), the bottom one moves by GetFrameTime * speed
   (frame-rate independent). Shows why delta time matters."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [core] example - delta time")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

@@ -3,21 +3,25 @@
   spline is evaluated in pure Clojure (raylib's DrawSpline* take Vector2 arrays by
   value, unbindable) and drawn as a line! polyline. SPACE cycles Catmull-Rom /
   cubic Bezier / uniform B-spline. Port of shapes_splines_drawing (minus raygui)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 ;; scalar spline bases: (f a b c d t) over 4 successive control values, t in [0,1]
-(defn- cr [a b c d t]
+(defn- cr
+  [a b c d t]
   (let [t2 (* t t) t3 (* t2 t)]
     (* 0.5 (+ (* 2.0 b)
               (* (+ (- a) c) t)
               (* (+ (* 2.0 a) (* -5.0 b) (* 4.0 c) (- d)) t2)
               (* (+ (- a) (* 3.0 b) (* -3.0 c) d) t3)))))
 
-(defn- bez [a b c d t]
+(defn- bez
+  [a b c d t]
   (let [u (- 1.0 t)]
     (+ (* u u u a) (* 3.0 u u t b) (* 3.0 u t t c) (* t t t d))))
 
-(defn- bspl [a b c d t]
+(defn- bspl
+  [a b c d t]
   (let [t2 (* t t) t3 (* t2 t)]
     (/ (+ (* (+ (- a) (* 3.0 b) (* -3.0 c) d) t3)
           (* (+ (* 3.0 a) (* -6.0 b) (* 3.0 c)) t2)
@@ -30,14 +34,16 @@
    [:bezier  "cubic Bezier" bez]
    [:bspline "uniform B-spline" bspl]])
 
-(defn- control-points [frame]
+(defn- control-points
+  [frame]
   ;; five points across the window, each bobbing vertically with a per-point phase
   (vec (for [i (range 5)]
          (let [x (+ 90 (* i 155))
                y (+ 225 (* 70.0 (Math/sin (+ (* frame 0.03) (* i 1.3)))))]
            [x y]))))
 
-(defn- polyline [f pts]
+(defn- polyline
+  [f pts]
   ;; pad ends so the curve spans all points, then sample each 4-window between its
   ;; middle two control points
   (let [padded (vec (concat [(first pts)] pts [(last pts)]))
@@ -54,7 +60,8 @@
           (recur (inc i) (into out seg)))
         out))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - splines drawing")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

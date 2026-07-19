@@ -2,30 +2,35 @@
   "raylib [generative] example — Conway's Game of Life. A random soup evolves by the
   classic B3/S23 rules on a toroidal grid; SPACE reseeds. State is the set of live
   cells."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def cols 80)
 (def rows 45)
 (def cell 10)
 (def tick 6)
 
-(defn- seed []
+(defn- seed
+  []
   (set (for [c (range cols) r (range rows)
              :when (< (rl/get-random-value 0 99) 28)]
          [c r])))
 
-(defn- neighbors [[c r]]
+(defn- neighbors
+  [[c r]]
   (for [dc [-1 0 1] dr [-1 0 1] :when (not (and (zero? dc) (zero? dr)))]
     [(mod (+ c dc) cols) (mod (+ r dr) rows)]))
 
-(defn- next-gen [live]
+(defn- next-gen
+  [live]
   (let [candidates (into live (mapcat neighbors live))]
     (set (filter (fn [cell]
                    (let [n (count (filter live (neighbors cell)))]
                      (if (live cell) (or (= n 2) (= n 3)) (= n 3))))
                  candidates))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width (* cols cell) :height (* rows cell)
               :title "raylib [generative] example - game of life")
   (rl/set-target-fps 60)

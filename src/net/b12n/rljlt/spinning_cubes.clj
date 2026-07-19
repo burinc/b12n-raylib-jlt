@@ -2,11 +2,13 @@
   "raylib [models] example — a row of cubes each spinning in place with a
   per-index phase offset (distinct from waving-cubes, which translates a grid).
   See docs/guide/rlgl-immediate-mode.md."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def palette [rl/RED rl/ORANGE rl/GREEN rl/BLUE rl/VIOLET])
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [models] example - spinning cubes")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

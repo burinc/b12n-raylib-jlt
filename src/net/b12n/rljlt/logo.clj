@@ -4,14 +4,16 @@
   A static render of raylib's signature logo — a thick black square border with
   'raylib' tucked into the bottom-right corner — built from two rectangles and a
   text label positioned with MeasureText."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const SIZE 256)
 (def ^:const BORDER 16)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib logo")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

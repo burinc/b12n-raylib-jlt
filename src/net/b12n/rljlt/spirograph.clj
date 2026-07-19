@@ -2,23 +2,27 @@
   "raylib [generative] example — an animated hypotrochoid (spirograph). A pen offset d
   on a wheel of radius r rolling inside a ring of radius R traces roulette curves;
   resets with new random r/d after a fixed number of points."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def cx 400.0)
 (def cy 225.0)
 (def big-r 170.0)
 
-(defn- new-params []
+(defn- new-params
+  []
   {:r (double (rl/get-random-value 30 95))
    :d (double (rl/get-random-value 40 130))
    :t 0.0 :points []})
 
-(defn- pt [r d t]
+(defn- pt
+  [r d t]
   (let [k (/ (- big-r r) r)]
     [(+ cx (* (- big-r r) (Math/cos t)) (* d (Math/cos (* k t))))
      (+ cy (* (- big-r r) (Math/sin t)) (- (* d (Math/sin (* k t)))))]))
 
-(defn- rainbow [i]
+(defn- rainbow
+  [i]
   (let [h (mod (* i 3) 360)]
     (cond (< h 60)  (rl/rgba 255 (int (* 255 (/ h 60.0))) 0 255)
           (< h 120) (rl/rgba (int (* 255 (/ (- 120 h) 60.0))) 255 0 255)
@@ -27,7 +31,8 @@
           (< h 300) (rl/rgba (int (* 255 (/ (- h 240) 60.0))) 0 255 255)
           :else     (rl/rgba 255 0 (int (* 255 (/ (- 360 h) 60.0))) 255))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [generative] example - spirograph")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

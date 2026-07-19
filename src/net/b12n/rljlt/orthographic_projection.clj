@@ -3,9 +3,11 @@
   projection. Press SPACE to toggle with-camera-3d's :projection (0/1). For
   orthographic, fovy is the view height (raylib convention). See
   docs/guide/struct-by-value-pointer-trick.md."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [core] example - orthographic projection")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

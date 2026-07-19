@@ -4,9 +4,11 @@
   A full-window vertical gradient via DrawRectangleGradientV, which takes TWO
   Colors by value — a good check that more than one 4-byte by-value struct can be
   passed in a single call."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [shapes] example - rectangle gradient")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

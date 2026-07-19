@@ -5,9 +5,11 @@
   The C original uses a Vector2 + DrawCircleV; here the position is two doubles
   and the ball is drawn with the scalar DrawCircle, so no by-value Vector2 crosses
   the FFI boundary (only Color does)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [core] example - input keys")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

@@ -3,9 +3,11 @@
   built from a cross of rects + four sector! corner disks (raylib's DrawRectangleRounded
   takes a Rectangle by value, unbindable). The corner radius animates 0 -> max. Port of
   shapes_rounded_rectangle_drawing."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn- rounded-rect! [x y w h rad color]
+(defn- rounded-rect!
+  [x y w h rad color]
   ;; floor rad to an integer and use it for BOTH the rects and the sector radius, so
   ;; the int-truncated rect edges meet the sector's radial edges exactly (no seams).
   (let [rad (double (int (max 0.0 (min rad (/ (min w h) 2.0)))))
@@ -20,7 +22,8 @@
     (rl/sector! :cx (+ x (- w rad)) :cy (+ y (- h rad)) :radius rad :start-deg 90 :end-deg 180 :segments 20 :color color)
     (rl/sector! :cx (+ x rad) :cy (+ y (- h rad)) :radius rad :start-deg 180 :end-deg 270 :segments 20 :color color)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - rounded rectangle")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

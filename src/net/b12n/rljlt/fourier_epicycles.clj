@@ -1,14 +1,16 @@
 (ns net.b12n.rljlt.fourier-epicycles
   "raylib [generative] example — a chain of rotating circles (a Fourier series for a
   square wave) whose tip traces the wave. Classic 'drawing with epicycles'."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def cx 200.0)
 (def cy 225.0)
 (def n-terms 8)
 (def scale 55.0)
 
-(defn- epicycles [theta]
+(defn- epicycles
+  [theta]
   (loop [k 1 x cx y cy centers [[cx cy]] radii []]
     (if (> k (dec (* 2 n-terms)))
       {:centers centers :radii radii}
@@ -17,7 +19,8 @@
             ny (+ y (* radius (Math/sin (* k theta))))]
         (recur (+ k 2) nx ny (conj centers [nx ny]) (conj radii radius))))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [generative] example - fourier epicycles")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

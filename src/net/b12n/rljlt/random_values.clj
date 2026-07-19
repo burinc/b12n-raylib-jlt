@@ -3,11 +3,13 @@
 
   A new random value (0-99) every two seconds via GetRandomValue, with a small
   history of recent rolls."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height 450 :title "raylib [core] example - random values")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

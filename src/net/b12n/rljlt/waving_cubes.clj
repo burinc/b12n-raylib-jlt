@@ -8,14 +8,16 @@
 
   Each cube is 36 rlVertex3f FFI calls, so the grid is kept modest (N=14 → 196
   columns) to stay smooth; DrawFPS shows the real rate."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const N 14)
 (def ^:const SPACING 1.5)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [models] example - waving cubes")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

@@ -3,7 +3,8 @@
   fixed, vector B rotates. The signed angle between them is filled as an arc via
   rl/sector! and read out in degrees. Port of shapes_vector_angle (B is time-driven
   rather than mouse-driven). Screen-space clockwise-from-up angle uses atan2(vx,-vy)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private r->d (/ 180.0 Math/PI))
 
@@ -12,12 +13,14 @@
   [vx vy]
   (* r->d (Math/atan2 vx (- vy))))
 
-(defn- norm180 [d]
+(defn- norm180
+  [d]
   (cond (> d 180.0) (- d 360.0)
         (< d -180.0) (+ d 360.0)
         :else d))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - vector angle")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

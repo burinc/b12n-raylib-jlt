@@ -5,7 +5,8 @@
   tumbling under a 3D camera. Each shape is a list of 3D edges drawn with rlgl
   immediate mode in RL_LINES mode (rl-vertex-3f pairs); rotation/position come from
   the rlgl matrix stack, the same 3D path as camera-3d and rlgl-solar-system."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -40,8 +41,9 @@
 
 (def ^:private spiral-edges
   (let [n 64 turns 3
-        pt (fn [i] (let [t (* turns TAU (/ i (double n)))]
-                     [(* 1.2 (Math/cos t)) (- (* 2.6 (/ i (double n))) 1.3) (* 1.2 (Math/sin t))]))]
+        pt (fn [i]
+             (let [t (* turns TAU (/ i (double n)))]
+               [(* 1.2 (Math/cos t)) (- (* 2.6 (/ i (double n))) 1.3) (* 1.2 (Math/sin t))]))]
     (vec (map (fn [i] [(pt i) (pt (inc i))]) (range n)))))
 
 (def ^:private shapes
@@ -50,7 +52,8 @@
    {:x  2.0 :edges torus-edges   :color (rl/rgba 170 255 120 255)}
    {:x  6.0 :edges spiral-edges  :color (rl/rgba 255 220 120 255)}])
 
-(defn- draw-edges! [edges color]
+(defn- draw-edges!
+  [edges color]
   (rl/rl-begin rl/RL-LINES)
   (rl/rl-color! color)
   (doseq [[[x1 y1 z1] [x2 y2 z2]] edges]
@@ -58,7 +61,8 @@
     (rl/rl-vertex-3f x2 y2 z2))
   (rl/rl-end))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "wireframe shapes")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

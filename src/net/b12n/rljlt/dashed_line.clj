@@ -3,13 +3,15 @@
 
   A dashed line from the screen centre to the mouse, drawn as a series of short
   segments with gaps (every other segment)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const DASH 14.0)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - dashed line")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

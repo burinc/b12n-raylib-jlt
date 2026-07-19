@@ -1,7 +1,8 @@
 (ns net.b12n.rljlt.breakout
   "raylib [games] example — breakout. The paddle follows the mouse; bounce the ball
   to clear every brick. Ball/wall/paddle/brick collisions computed in Clojure."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def width 800)
 (def height 450)
@@ -16,18 +17,30 @@
 (def ball-r 8)
 (def row-colors [rl/RED rl/ORANGE rl/GOLD rl/GREEN rl/SKYBLUE rl/VIOLET])
 
-(defn- abs [n] (if (neg? n) (- n) n))
+(defn- abs
+  [n]
+  (if (neg? n) (- n) n))
 
-(defn- all-bricks [] (set (for [c (range cols) r (range brk-rows)] [c r])))
-(defn- new-ball [] {:x 400.0 :y 300.0 :vx 3.0 :vy -3.0})
-(defn- new-game [] {:bricks (all-bricks) :ball (new-ball) :lives 3 :over? false :won? false})
+(defn- all-bricks
+  []
+  (set (for [c (range cols) r (range brk-rows)] [c r])))
 
-(defn- brick-at [x y]
+(defn- new-ball
+  []
+  {:x 400.0 :y 300.0 :vx 3.0 :vy -3.0})
+
+(defn- new-game
+  []
+  {:bricks (all-bricks) :ball (new-ball) :lives 3 :over? false :won? false})
+
+(defn- brick-at
+  [x y]
   (let [c (quot (int x) brick-w)
         r (quot (- (int y) top) brick-h)]
     (when (and (>= (- (int y) top) 0) (< r brk-rows) (>= c 0) (< c cols)) [c r])))
 
-(defn- step [{:keys [ball bricks lives] :as st} paddle-x]
+(defn- step
+  [{:keys [ball bricks lives] :as st} paddle-x]
   (let [{:keys [x y vx vy]} ball
         nx (+ x vx) ny (+ y vy)
         [nx vx] (cond (< nx ball-r) [ball-r (- vx)]
@@ -52,7 +65,8 @@
               (assoc st :lives (dec lives) :ball (new-ball)))
       :else (assoc st :bricks bricks :ball {:x nx :y ny :vx vx :vy vy}))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width width :height height :title "raylib [games] example - breakout")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

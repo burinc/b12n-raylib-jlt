@@ -2,7 +2,8 @@
   "raylib [games] example — space invaders. ←/→ move, SPACE shoots; clear the
   marching alien grid before it reaches you. Formation march + AABB hits, all in
   Clojure."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def width 800)
 (def height 450)
@@ -14,15 +15,22 @@
 (def ship-y 420)
 (def ship-w 50)
 
-(defn- new-game []
+(defn- new-game
+  []
   {:ship-x 375.0 :bullets []
    :aliens (set (for [c (range acols) r (range arows)] [c r]))
    :ax 40.0 :ay 40.0 :adir 1.0 :cooldown 0 :over? false :won? false :score 0})
 
-(defn- alien-px [ax c] (+ ax (* c sp)))
-(defn- alien-py [ay r] (+ ay (* r 45)))
+(defn- alien-px
+  [ax c]
+  (+ ax (* c sp)))
 
-(defn- march [{:keys [aliens ax ay adir] :as st}]
+(defn- alien-py
+  [ay r]
+  (+ ay (* r 45)))
+
+(defn- march
+  [{:keys [aliens ax ay adir] :as st}]
   (let [cs (map first aliens)
         minc (reduce min cs) maxc (reduce max cs)
         nax (+ ax (* adir 1.2))]
@@ -31,7 +39,8 @@
       (assoc st :adir (- adir) :ay (+ ay 18))
       (assoc st :ax nax))))
 
-(defn- hit-alien [aliens bx by ax ay]
+(defn- hit-alien
+  [aliens bx by ax ay]
   (some (fn [[c r]]
           (let [px (alien-px ax c) py (alien-py ay r)]
             (when (and (>= bx px) (<= bx (+ px alien-w))
@@ -39,7 +48,8 @@
               [c r])))
         aliens))
 
-(defn- step [{:keys [ship-x bullets aliens ax ay cooldown score] :as st}]
+(defn- step
+  [{:keys [ship-x bullets aliens ax ay cooldown score] :as st}]
   (let [ship-x (cond (rl/key-down? rl/KEY-LEFT)  (max 0.0 (- ship-x 5.0))
                      (rl/key-down? rl/KEY-RIGHT) (min (- width ship-w) (+ ship-x 5.0))
                      :else ship-x)
@@ -63,7 +73,8 @@
           reached? (assoc st :over? true)
           :else st)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width width :height height :title "raylib [games] example - space invaders")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

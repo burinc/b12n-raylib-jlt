@@ -3,14 +3,16 @@
 
   A ring of fixed-angle spokes plus one spoke that spins, showing angle-based line
   drawing with sin/cos."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const TAU 6.283185307179586)
 (def ^:const SPOKES 12)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - angle rotation")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

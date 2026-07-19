@@ -6,7 +6,8 @@
   then projects 4D→3D→2D by perspective — so the inner cube appears to turn
   inside-out through the outer one. Pure math + 2D lines, no camera. Inner cube is
   red, outer cube blue, the connecting edges green."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -40,13 +41,15 @@
         k3 (/ SCALE (- D3 z3))]
     [(+ (/ W 2.0) (* x3 k3)) (+ (/ H 2.0) (* y3 k3))]))
 
-(defn- edge-color [i j]
+(defn- edge-color
+  [i j]
   (let [wi (nth (nth verts4 i) 3) wj (nth (nth verts4 j) 3)]
     (cond (and (neg? wi) (neg? wj)) (rl/rgba 255 90 90 255)     ; inner cube (w = -1)
           (and (pos? wi) (pos? wj)) (rl/rgba 90 170 255 255)    ; outer cube (w = +1)
           :else                     (rl/rgba 110 240 110 255)))) ; connecting edges
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "tesseract")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

@@ -3,7 +3,8 @@
   fan: each slice's rim vertices carry an HSV->RGB color (s=v=1), the center is white.
   Port of shapes_rlgl_color_wheel (minus the raygui value slider); the hue offset
   rotates slowly so the wheel animates."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (defn- hsv->color
   "HSV -> packed Color for s=1, v=1. h in degrees (wrapped)."
@@ -21,7 +22,8 @@
                   :else   [1.0 0.0 q])]
     (rl/rgba (int (* 255 r)) (int (* 255 g)) (int (* 255 b)) 255)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - rlgl color wheel")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

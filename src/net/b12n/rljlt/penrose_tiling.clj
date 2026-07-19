@@ -4,12 +4,14 @@
   (Preshing's rules); triangles are filled (two colors by kind) as an rlgl batch and
   their edges stroked. Each fill triangle is winding-normalized to the front face so
   none are backface-culled. In the spirit of shapes_penrose_tile."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private phi (/ (+ 1.0 (Math/sqrt 5.0)) 2.0))
 (def ^:private inv (/ 1.0 phi))
 
-(defn- lerp [[ax ay] [bx by] s]
+(defn- lerp
+  [[ax ay] [bx by] s]
   [(+ ax (* (- bx ax) s)) (+ ay (* (- by ay) s))])
 
 (defn- wheel
@@ -23,7 +25,8 @@
                a [cx cy]]
            (if (even? i) [0 a c b] [0 a b c])))))
 
-(defn- subdivide [tris]
+(defn- subdivide
+  [tris]
   (vec (mapcat (fn [[k a b c]]
                  (if (zero? k)
                    (let [p (lerp a b inv)]
@@ -33,7 +36,8 @@
                      [[1 r c a] [1 q r b] [0 r q a]])))
                tris)))
 
-(defn- deflate [seed n]
+(defn- deflate
+  [seed n]
   (loop [tris seed i 0]
     (if (< i n) (recur (subdivide tris) (inc i)) tris)))
 
@@ -49,7 +53,8 @@
 (def ^:private col1 (rl/rgba 70 130 200 255))    ; thick rhombus halves
 (def ^:private edge (rl/rgba 30 30 40 130))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - penrose tiling")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

@@ -3,7 +3,8 @@
 
   A rainbow Hilbert space-filling curve generated recursively (the classic turtle
   algorithm) into a point list, then drawn as connected line segments."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -27,7 +28,8 @@
       (hilbert [(+ x (/ xi 2.0) yi) (+ y (/ xj 2.0) yj)]
                [(/ (- yi) 2.0) (/ (- yj) 2.0)] [(/ (- xi) 2.0) (/ (- xj) 2.0)] (dec n) p))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "hilbert curve")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

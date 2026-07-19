@@ -2,7 +2,8 @@
   "raylib [generative] example — particles steered by a smooth sine-layered field,
   each leaving a short trail. The field angle is a pure function of position + time;
   trails are per-particle position history (double-buffer-safe), redrawn each frame."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def width 800)
 (def height 450)
@@ -10,15 +11,19 @@
 (def speed 1.7)
 (def trail-len 16)
 
-(defn- field-angle [x y t]
+(defn- field-angle
+  [x y t]
   (* 2.0 Math/PI (* 0.5 (+ (Math/sin (+ (* x 0.008) t)) (Math/cos (- (* y 0.008) t))))))
 
-(defn- spawn []
-  (vec (repeatedly n (fn [] (let [x (double (rl/get-random-value 0 width))
-                                  y (double (rl/get-random-value 0 height))]
-                              {:x x :y y :trail [[x y]]})))))
+(defn- spawn
+  []
+  (vec (repeatedly n (fn []
+                       (let [x (double (rl/get-random-value 0 width))
+                             y (double (rl/get-random-value 0 height))]
+                         {:x x :y y :trail [[x y]]})))))
 
-(defn- step-part [{:keys [x y trail]} t]
+(defn- step-part
+  [{:keys [x y trail]} t]
   (let [a (field-angle x y t)
         nx (+ x (* speed (Math/cos a)))
         ny (+ y (* speed (Math/sin a)))
@@ -27,10 +32,13 @@
         trail (if (or w1 w2) [[nx ny]] (vec (take trail-len (cons [nx ny] trail))))]
     {:x nx :y ny :trail trail}))
 
-(defn- trail-color [a] (rl/rgba (int (+ 128 (* 100 (Math/cos a)))) 120
-                                (int (+ 160 (* 90 (Math/sin a)))) 200))
+(defn- trail-color
+  [a]
+  (rl/rgba (int (+ 128 (* 100 (Math/cos a)))) 120
+           (int (+ 160 (* 90 (Math/sin a)))) 200))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width width :height height :title "raylib [generative] example - flow field")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

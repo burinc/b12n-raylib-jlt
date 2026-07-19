@@ -8,7 +8,8 @@
 
   One immutable state map threaded through the loop; `step` reads input and returns
   the next state."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -24,7 +25,9 @@
 (def ^:const PICKUP-R 44)
 (def ^:const KEY-ENTER 257)
 
-(defn- clamp [v lo hi] (max lo (min hi v)))
+(defn- clamp
+  [v lo hi]
+  (max lo (min hi v)))
 
 (defn- close?
   "True when a and b (each with :x :y) are within radius r."
@@ -32,11 +35,13 @@
   (let [dx (- (:x a) (:x b)) dy (- (:y a) (:y b))]
     (< (+ (* dx dx) (* dy dy)) (* r r))))
 
-(defn- nearest [x y enemies]
+(defn- nearest
+  [x y enemies]
   (when (seq enemies)
     (apply min-key (fn [e] (let [dx (- (:x e) x) dy (- (:y e) y)] (+ (* dx dx) (* dy dy)))) enemies)))
 
-(defn- spawn-enemy []
+(defn- spawn-enemy
+  []
   (let [[x y] (case (rl/get-random-value 0 3)
                 0 [-20.0 (double (rl/get-random-value 0 H))]
                 1 [(+ W 20.0) (double (rl/get-random-value 0 H))]
@@ -50,7 +55,8 @@
   (let [dx (- tx fx) dy (- ty fy) d (max 1.0 (Math/sqrt (+ (* dx dx) (* dy dy))))]
     [(* speed (/ dx d)) (* speed (/ dy d))]))
 
-(defn- initial-state []
+(defn- initial-state
+  []
   {:hero {:x (/ W 2.0) :y (/ H 2.0) :hp HERO-HP :level 1 :xp 0 :hurt-cd 0}
    :enemies [] :bullets [] :gems []
    :fire-cd 0 :spawn-cd 30 :time 0 :kills 0 :over? false})
@@ -72,7 +78,8 @@
               (recur (next es) bs' (conj out-e e') out-g k)))
           (recur (next es) bs (conj out-e e) out-g k))))))
 
-(defn- step [s]
+(defn- step
+  [s]
   (if (:over? s)
     (if (rl/key-pressed? KEY-ENTER) (initial-state) s)
     (let [h  (:hero s)
@@ -102,8 +109,9 @@
                                   (max 5 (- 22 (* 2 (:level h))))])
                                [(:bullets s) (max 0 fire-cd)])
           bullets1 (->> bullets0
-                        (map (fn [b] (assoc b :x (+ (:x b) (:vx b)) :y (+ (:y b) (:vy b))
-                                            :life (dec (:life b)))))
+                        (map (fn [b]
+                               (assoc b :x (+ (:x b) (:vx b)) :y (+ (:y b) (:vy b))
+                                      :life (dec (:life b)))))
                         (filterv (fn [b] (pos? (:life b)))))
           {:keys [enemies bullets gems kills]} (resolve-hits enemies1 bullets1 (:gems s) (:kills s))
           ;; collect gems within pickup range
@@ -129,7 +137,8 @@
   (rl/rect! :x x :y y :width w :height h :color rl/DARKGRAY)
   (rl/rect! :x x :y y :width (int (* w (clamp frac 0.0 1.0))) :height h :color color))
 
-(defn- draw-state [s]
+(defn- draw-state
+  [s]
   (rl/clear-background (rl/rgba 20 18 28 255))
   (doseq [g (:gems s)]    (rl/rect! :x (int (:x g)) :y (int (:y g)) :width 6 :height 6 :color rl/LIME))
   (doseq [e (:enemies s)] (rl/circle! :x (int (:x e)) :y (int (:y e)) :radius ENEMY-R :color rl/RED))
@@ -150,7 +159,8 @@
               :x 250 :y 235 :size 20 :color rl/RAYWHITE)
     (rl/text! "ENTER to restart" :x 300 :y 270 :size 18 :color rl/GRAY)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "vampire survivors")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

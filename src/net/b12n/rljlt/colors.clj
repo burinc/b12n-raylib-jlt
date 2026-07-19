@@ -4,7 +4,8 @@
   Not a 1:1 port of one raylib example — a 5x5 grid that draws every named color
   from net.b12n.rljlt.raylib as a labelled swatch, exercising the `rgba` Color packing across
   the whole palette."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private palette
   [["LIGHTGRAY" rl/LIGHTGRAY] ["GRAY" rl/GRAY]     ["DARKGRAY" rl/DARKGRAY]
@@ -24,7 +25,8 @@
 (def ^:private ch 71)    ; cell height (swatch + label)
 (def ^:private grid-top 50)
 
-(defn- draw-swatch [i [label color]]
+(defn- draw-swatch
+  [i [label color]]
   (let [col (mod i cols)
         row (quot i cols)
         x   (+ pad (* col (+ cw pad)))
@@ -34,7 +36,8 @@
     (rl/rect-lines! :x x :y y :width cw :height sh :color rl/LIGHTGRAY)
     (rl/text! label :x (+ x 4) :y (+ y sh 2) :size 10 :color rl/DARKGRAY)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib named colors")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

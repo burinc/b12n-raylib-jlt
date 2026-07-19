@@ -4,20 +4,23 @@
   Not a raylib example port — a small demo that scatters stars with GetRandomValue
   (once, at startup) and redraws them each frame with a per-star twinkle. Shows
   bulk scalar drawing and a computed (non-palette) Color per star."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const N 220)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "starfield")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)
         night    (rl/rgba 10 12 28 255)
-        stars    (vec (repeatedly N (fn [] [(rl/get-random-value 0 W)
-                                            (rl/get-random-value 0 H)
-                                            (rl/get-random-value 0 100)])))]
+        stars    (vec (repeatedly N (fn []
+                                      [(rl/get-random-value 0 W)
+                                       (rl/get-random-value 0 H)
+                                       (rl/get-random-value 0 100)])))]
     (loop [frame 0]
       (when (rl/keep-running? deadline)
         (rl/begin-drawing)

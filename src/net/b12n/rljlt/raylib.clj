@@ -9,7 +9,8 @@
   only by-value struct that crosses the FFI boundary is `Color` — a 4-byte
   {u8 r,g,b,a} packed into a :uint (see `rgba` and README.md). The one exception,
   Camera2D (24 bytes, passed by pointer), lives in net.b12n.rljlt.camera2d, not here."
-  (:require [jolt.ffi :as ffi]))
+  (:require
+   [jolt.ffi :as ffi]))
 
 ;; --- window / lifecycle ------------------------------------------------------
 (ffi/defcfn init-window    "InitWindow"   [:int :int :string] :void)
@@ -241,11 +242,25 @@
 (ffi/defcfn ^:private flush-batch "rlDrawRenderBatchActive" [] :void)
 
 ;; C-bool returns arrive in the low byte; mask so only 0/1 counts.
-(defn window-should-close? [] (not (zero? (bit-and (should-close-raw) 0xff))))
-(defn key-down?    [k] (not (zero? (bit-and (key-down-raw k) 0xff))))
-(defn key-pressed? [k] (not (zero? (bit-and (key-pressed-raw k) 0xff))))
-(defn mouse-down?  [b] (not (zero? (bit-and (mouse-down-raw b) 0xff))))
-(defn mouse-pressed? [b] (not (zero? (bit-and (mouse-pressed-raw b) 0xff))))
+(defn window-should-close?
+  []
+  (not (zero? (bit-and (should-close-raw) 0xff))))
+
+(defn key-down?
+  [k]
+  (not (zero? (bit-and (key-down-raw k) 0xff))))
+
+(defn key-pressed?
+  [k]
+  (not (zero? (bit-and (key-pressed-raw k) 0xff))))
+
+(defn mouse-down?
+  [b]
+  (not (zero? (bit-and (mouse-down-raw b) 0xff))))
+
+(defn mouse-pressed?
+  [b]
+  (not (zero? (bit-and (mouse-pressed-raw b) 0xff))))
 
 ;; --- constants (raylib KeyboardKey / MouseButton) ----------------------------
 (def ^:const KEY-SPACE 32)  (def ^:const KEY-R     82)
@@ -391,8 +406,9 @@
       :or {cx 0 cy 0 inner 20 outer 40 start-deg 0 end-deg 360 segments 48 color BLACK}}]
   (let [d->r (/ Math/PI 180.0)
         span (- end-deg start-deg)
-        pt (fn [deg r] (let [t (* deg d->r)]
-                         [(+ cx (* r (Math/sin t))) (- cy (* r (Math/cos t)))]))]
+        pt (fn [deg r]
+             (let [t (* deg d->r)]
+               [(+ cx (* r (Math/sin t))) (- cy (* r (Math/cos t)))]))]
     (rl-begin RL-TRIANGLES)
     (rl-color! color)
     (dotimes [k segments]

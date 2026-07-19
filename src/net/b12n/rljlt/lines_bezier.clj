@@ -3,11 +3,13 @@
   mouse. DrawLineBezier takes Vector2 by value (unbindable), so the curve is
   sampled in Clojure and drawn as line! segments. See
   docs/guide/rlgl-immediate-mode.md."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def segments 30)
 
-(defn- bezier-point [t [p0x p0y] [p1x p1y] [p2x p2y] [p3x p3y]]
+(defn- bezier-point
+  [t [p0x p0y] [p1x p1y] [p2x p2y] [p3x p3y]]
   (let [u (- 1.0 t)
         a (* u u u)
         b (* 3.0 u u t)
@@ -16,7 +18,8 @@
     [(+ (* a p0x) (* b p1x) (* c p2x) (* d p3x))
      (+ (* a p0y) (* b p1y) (* c p2y) (* d p3y))]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [shapes] example - lines bezier")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

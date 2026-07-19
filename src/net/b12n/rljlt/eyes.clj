@@ -4,7 +4,8 @@
   Ported from examples/shapes/shapes_following_eyes.c: two eyes whose pupils track
   the mouse cursor, each pupil clamped to stay inside its eye. Uses scalar
   GetMouseX / GetMouseY + DrawCircle and a little trig for the pupil offset."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -21,7 +22,8 @@
         s    (if (> d maxd) (/ maxd d) 1.0)]   ; d=0 falls through to s=1, dx=0 → no NaN
     [(+ ex (* dx s)) (+ ey (* dy s))]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - following eyes")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)
