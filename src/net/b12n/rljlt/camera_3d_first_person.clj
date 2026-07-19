@@ -7,7 +7,8 @@
   GetMouseX/GetMouseY deltas over a free cursor, so turning is bounded by the
   window edges (a proper lock would need GetMouseDelta, which returns a by-value
   Vector2)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -16,17 +17,19 @@
 (def ^:const SENS 0.004)
 (def ^:const N-COLUMNS 40)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [core] example - first person")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)
         columns  (vec (repeatedly N-COLUMNS
-                                  (fn [] {:x (double (rl/get-random-value -20 20))
-                                          :z (double (rl/get-random-value -20 20))
-                                          :h (double (rl/get-random-value 2 12))
-                                          :color (rl/rgba (rl/get-random-value 60 255)
-                                                          (rl/get-random-value 60 255)
-                                                          (rl/get-random-value 60 255) 255)})))]
+                                  (fn []
+                                    {:x (double (rl/get-random-value -20 20))
+                                     :z (double (rl/get-random-value -20 20))
+                                     :h (double (rl/get-random-value 2 12))
+                                     :color (rl/rgba (rl/get-random-value 60 255)
+                                                     (rl/get-random-value 60 255)
+                                                     (rl/get-random-value 60 255) 255)})))]
     (loop [frame 0 px 0.0 pz 0.0 yaw 0.0 pitch 0.0 last-mx nil last-my nil]
       (when (rl/keep-running? deadline)
         (let [mx (rl/get-mouse-x)

@@ -3,13 +3,15 @@
 
   Ported from examples/core/core_input_mouse_wheel.c: scroll the mouse wheel to
   move a box up and down. Exercises a float-returning binding (GetMouseWheelMove)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const BOX 80)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [core] example - mouse wheel")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

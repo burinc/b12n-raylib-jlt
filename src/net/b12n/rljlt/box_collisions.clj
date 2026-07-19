@@ -6,7 +6,8 @@
   by-value Rectangle/BoundingBox needed). Reuses the 3D path (Camera3D by value +
   rl/cube!) under a fixed 3/4 camera. The player spawns already touching one box,
   so the collision highlight is visible from frame 0."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -21,7 +22,9 @@
    {:x  1.6 :z  0.0 :s 2.0}     ; near the spawn — overlaps the player at frame 0
    {:x -6.0 :z -3.0 :s 2.2}])
 
-(defn- fabs [x] (if (neg? x) (- x) x))
+(defn- fabs
+  [x]
+  (if (neg? x) (- x) x))
 
 (defn- hit?
   "3D AABB overlap between the player (centre px,pz, size PS) and box b. Both sit on
@@ -31,7 +34,8 @@
     (and (< (fabs (- px (:x b))) (+ ph bh))
          (< (fabs (- pz (:z b))) (+ ph bh)))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [models] example - box collisions")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

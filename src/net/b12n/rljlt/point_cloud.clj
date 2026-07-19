@@ -3,11 +3,13 @@
   colored by position and slowly rotating via the matrix stack. (rlgl has no
   RL_POINTS mode, so points are drawn as small cubes.) See
   docs/guide/rlgl-immediate-mode.md."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def n-points 1500)
 
-(defn- make-points []
+(defn- make-points
+  []
   (vec (repeatedly n-points
                    (fn []
                      (let [x (/ (rl/get-random-value -50 50) 10.0)
@@ -18,7 +20,8 @@
                                         (int (+ 128 (* 25 z))) 255)]
                        [x y z col])))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [models] example - point cloud")
   (rl/set-target-fps 60)
   (let [points (make-points)

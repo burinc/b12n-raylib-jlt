@@ -4,7 +4,8 @@
   A live unit-circle visualization: a radius rotates around a circle, and its
   vertical (sine, blue) and horizontal (cosine, green) projections are drawn as it
   sweeps."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -12,7 +13,8 @@
 (def ^:const CY 240)
 (def ^:const R 160.0)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - sine & cosine")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

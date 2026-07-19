@@ -2,11 +2,13 @@
   "raylib [text] example — a text input box. Type printable characters
   (GetCharPressed), backspace deletes, a blinking cursor blinks, ENTER clears.
   Uses the get-char-pressed / get-key-pressed binds. See README.md."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def max-len 20)
 
-(defn- drain-chars [s]
+(defn- drain-chars
+  [s]
   (loop [s s]
     (let [c (rl/get-char-pressed)]
       (if (pos? c)
@@ -15,7 +17,8 @@
                  s))
         s))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [text] example - input box")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

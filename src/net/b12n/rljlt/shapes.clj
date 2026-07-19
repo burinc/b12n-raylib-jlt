@@ -5,7 +5,8 @@
   circles, an ellipse, a line, and a triangle drawn via rlgl immediate mode.
   raylib's DrawTriangle takes Vector2 args by value; rlBegin / rlVertex2f is the
   scalar path (see net.b12n.rljlt.raylib's rl-* bindings)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (defn- triangle!
   "An immediate-mode filled triangle (scalar, avoids DrawTriangle's by-value
@@ -19,7 +20,8 @@
     (rl/rl-vertex-2f (double x3) (double y3))
     (rl/rl-end)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - basic shapes")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

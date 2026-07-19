@@ -1,7 +1,8 @@
 (ns net.b12n.rljlt.ball-physics
   "raylib [shapes] example — 2D balls under gravity, bouncing off the window
   edges with restitution. SPACE respawns a fresh set. Pure scalar math + circle!."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def width 800)
 (def height 450)
@@ -9,7 +10,8 @@
 (def restitution 0.8)
 (def palette [rl/RED rl/ORANGE rl/GOLD rl/GREEN rl/SKYBLUE rl/VIOLET])
 
-(defn- spawn-balls []
+(defn- spawn-balls
+  []
   (vec (for [i (range 6)]
          {:x (rl/get-random-value 100 700)
           :y (rl/get-random-value 50 200)
@@ -18,7 +20,8 @@
           :r (rl/get-random-value 15 35)
           :color (nth palette i)})))
 
-(defn- step [{:keys [x y vx vy r] :as b}]
+(defn- step
+  [{:keys [x y vx vy r] :as b}]
   (let [vy (+ vy gravity)
         [nx vx] (cond (< (- (+ x vx) r) 0)      [r (* (- vx) restitution)]
                       (> (+ (+ x vx) r) width)  [(- width r) (* (- vx) restitution)]
@@ -28,7 +31,8 @@
                   [(+ y vy) vy])]
     (assoc b :x nx :y ny :vx vx :vy vy)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width width :height height :title "raylib [shapes] example - ball physics")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

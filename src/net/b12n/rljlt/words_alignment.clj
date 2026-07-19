@@ -3,12 +3,14 @@
 
   A word aligned left / centre / right inside a box using MeasureText to compute
   the horizontal offset. The alignment cycles over time."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [text] example - word alignment")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

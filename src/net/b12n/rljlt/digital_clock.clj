@@ -3,7 +3,8 @@
   digit's lit segments come from a lookup table, drawn as filled rects (unlit segments
   dimly visible, like a real display). Time from rl/local-time; the colons blink each
   second. Port of shapes_digital_clock (digital half)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 ;; segments: a=top g=middle d=bottom  f=top-left b=top-right  e=bot-left c=bot-right
 (def ^:private segs
@@ -12,7 +13,8 @@
    6 #{:a :f :g :e :c :d} 7 #{:a :b :c}    8 #{:a :b :c :d :e :f :g}
    9 #{:a :b :c :d :f :g}})
 
-(defn- draw-digit [d x y w hh t on off]
+(defn- draw-digit
+  [d x y w hh t on off]
   (let [lit (get segs d)
         seg (fn [k rx ry rw rh]
               (rl/rect! :x (int rx) :y (int ry) :width (int rw) :height (int rh)
@@ -25,7 +27,8 @@
     (seg :e x (+ y hh) t hh)
     (seg :c (+ x (- w t)) (+ y hh) t hh)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - digital clock")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

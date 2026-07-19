@@ -4,7 +4,8 @@
   A binary fractal tree drawn with lines: each branch spawns two shorter branches
   at ±angle until a depth limit, brown trunk fading to green tips. Pure trig over
   draw-line."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -24,7 +25,8 @@
       (branch :pos [x2 y2] :len (* len 0.72) :angle (+ angle SPREAD) :depth (dec depth))
       (branch :pos [x2 y2] :len (* len 0.72) :angle (- angle SPREAD) :depth (dec depth)))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - recursive tree")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

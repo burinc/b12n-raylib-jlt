@@ -1,7 +1,8 @@
 (ns net.b12n.rljlt.flappy-bird
   "raylib [games] example — flappy bird. SPACE to flap; fly through the pipe gaps.
   Gravity + scrolling pipes + AABB/circle collision, all in Clojure."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def width 800)
 (def height 450)
@@ -14,14 +15,18 @@
 (def scroll 3.0)
 (def spacing 300)
 
-(defn- rand-gap [] (rl/get-random-value 80 (- height 80 gap-h)))
+(defn- rand-gap
+  []
+  (rl/get-random-value 80 (- height 80 gap-h)))
 
-(defn- new-game []
+(defn- new-game
+  []
   {:y 225.0 :vy 0.0 :score 0 :over? false
    :pipes (mapv (fn [i] {:x (+ 500 (* i spacing)) :gap (rand-gap) :scored false})
                 (range 3))})
 
-(defn- step [{:keys [y vy pipes score] :as st}]
+(defn- step
+  [{:keys [y vy pipes score] :as st}]
   (let [vy (+ vy gravity)
         vy (if (rl/key-pressed? rl/KEY-SPACE) flap vy)
         ny (+ y vy)
@@ -32,8 +37,9 @@
                           (assoc p :x nx))))
                     pipes)
         passed (count (filter (fn [p] (and (not (:scored p)) (< (+ (:x p) pipe-w) bird-x))) pipes))
-        pipes (mapv (fn [p] (if (and (not (:scored p)) (< (+ (:x p) pipe-w) bird-x))
-                              (assoc p :scored true) p)) pipes)
+        pipes (mapv (fn [p]
+                      (if (and (not (:scored p)) (< (+ (:x p) pipe-w) bird-x))
+                        (assoc p :scored true) p)) pipes)
         hit-pipe? (some (fn [p]
                           (and (< (- bird-x bird-r) (+ (:x p) pipe-w))
                                (> (+ bird-x bird-r) (:x p))
@@ -45,7 +51,8 @@
       (assoc st :over? true :y ny :vy vy)
       (assoc st :y ny :vy vy :pipes pipes :score (+ score passed)))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width width :height height :title "raylib [games] example - flappy bird")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

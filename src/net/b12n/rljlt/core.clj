@@ -5,9 +5,11 @@
   clears to RAYWHITE and draws one line of text. The FFI bindings and the keyword-
   argument drawing API live in net.b12n.rljlt.raylib. See README.md for the full example list
   and the Color-by-value explanation."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [core] example - basic window")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

@@ -10,12 +10,14 @@
      because raylib's DrawCube takes a Vector3 BY VALUE — a 12-byte float struct
      passed in FP registers, which the pointer trick does NOT cover. DrawGrid is
      scalar."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [core] example - 3d camera")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

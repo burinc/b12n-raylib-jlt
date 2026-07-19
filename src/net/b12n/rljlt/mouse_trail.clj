@@ -4,11 +4,13 @@
   A fading trail of circles follows the cursor: each frame the newest mouse
   position is pushed onto a bounded history, and the whole history is drawn with
   fading alpha + shrinking radius (older = fainter and smaller)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const N 60)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - mouse trail")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

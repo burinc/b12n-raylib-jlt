@@ -4,21 +4,24 @@
   A rainbow band across the window built vertex by vertex via rlgl immediate mode
   (rlBegin RL_TRIANGLES + rlColor4ub + rlVertex2f) — the scalar path around
   raylib's by-value Vector2 shape APIs."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const SEGMENTS 16)
 (def ^:const PI 3.141592653589793)
 
-(defn- band-color [i]
+(defn- band-color
+  [i]
   (let [t (/ (double i) SEGMENTS)
         r (int (* 255 (max 0.0 (Math/sin (* PI t)))))
         g (int (* 255 (max 0.0 (Math/sin (* PI (+ t 0.33))))))
         b (int (* 255 (max 0.0 (Math/sin (* PI (+ t 0.66))))))]
     (rl/rgba r g b 255)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - triangle strip")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

@@ -3,9 +3,11 @@
 
   A zero-padded score and an MM:SS timer counting up, built with
   clojure.core/format and drawn each frame."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [text] example - formatted text")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

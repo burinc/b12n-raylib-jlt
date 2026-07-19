@@ -7,7 +7,8 @@
 
   One immutable state map threaded through the loop; `step` reads input and returns
   the next state."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -21,20 +22,28 @@
 (def ^:const WIN 7)
 (def ^:const KEY-ENTER 257)
 
-(defn- clamp [v lo hi] (max lo (min hi v)))
-(defn- fabs [x] (if (neg? x) (- x) x))
+(defn- clamp
+  [v lo hi]
+  (max lo (min hi v)))
 
-(defn- reset-ball [dir]
+(defn- fabs
+  [x]
+  (if (neg? x) (- x) x))
+
+(defn- reset-ball
+  [dir]
   {:bx (/ W 2.0) :by (/ H 2.0)
    :bvx (* dir (+ 4.0 (/ (rl/get-random-value 0 20) 10.0)))          ; 4.0 .. 6.0
    :bvy (* 3.0 (- (/ (rl/get-random-value 0 200) 100.0) 1.0))})      ; -3.0 .. 3.0
 
-(defn- initial-state []
+(defn- initial-state
+  []
   (merge {:ly (/ (- H PH) 2.0) :ry (/ (- H PH) 2.0)
           :ls 0 :rs 0 :over? false :winner nil}
          (reset-ball 1)))
 
-(defn- step [s]
+(defn- step
+  [s]
   (if (:over? s)
     (if (rl/key-pressed? KEY-ENTER) (initial-state) s)
     (let [ly    (clamp (+ (:ly s) (cond (rl/key-down? rl/KEY-W) (- PSPEED)
@@ -69,7 +78,8 @@
               :winner (cond (>= ls WIN) "PLAYER 1" (>= rs WIN) "CPU" :else nil)}
              ball))))
 
-(defn- draw-state [s]
+(defn- draw-state
+  [s]
   (rl/clear-background (rl/rgba 10 10 18 255))
   (doseq [y (range 0 H 30)]                                   ; dashed centre line
     (rl/rect! :x (- (quot W 2) 2) :y y :width 4 :height 16 :color rl/GRAY))
@@ -84,7 +94,8 @@
     (rl/text! (str (:winner s) " WINS!") :x 250 :y 180 :size 40 :color rl/GOLD)
     (rl/text! "ENTER to restart" :x 295 :y 240 :size 20 :color rl/RAYWHITE)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "pong")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

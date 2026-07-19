@@ -2,9 +2,11 @@
   "raylib [models] example — a single cube rotating in place via the rlgl matrix
   stack. Fixed 3D camera; the cube spins on X and Y with a frame-driven angle.
   See docs/guide/rlgl-immediate-mode.md."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [models] example - rotating cube")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

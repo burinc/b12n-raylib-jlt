@@ -2,23 +2,27 @@
   "raylib [games] example — the classic snake. Arrow keys steer; eat food to grow;
   hitting a wall or yourself ends it (SPACE restarts). Grid + frame-tick movement,
   all state threaded through the loop."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def cols 32)
 (def rows 18)
 (def cell 25)
 (def tick 6)   ; advance one cell every N frames
 
-(defn- rand-food [snake]
+(defn- rand-food
+  [snake]
   (loop []
     (let [f [(rl/get-random-value 0 (dec cols)) (rl/get-random-value 0 (dec rows))]]
       (if (some (fn [s] (= s f)) snake) (recur) f))))
 
-(defn- new-game []
+(defn- new-game
+  []
   (let [snake [[16 9] [15 9] [14 9]]]
     {:snake snake :dir [1 0] :food (rand-food snake) :dead? false}))
 
-(defn- turn [dir]
+(defn- turn
+  [dir]
   (let [want (cond (rl/key-pressed? rl/KEY-UP)    [0 -1]
                    (rl/key-pressed? rl/KEY-DOWN)  [0 1]
                    (rl/key-pressed? rl/KEY-LEFT)  [-1 0]
@@ -26,7 +30,8 @@
                    :else nil)]
     (if (and want (not= want [(- (first dir)) (- (second dir))])) want dir)))
 
-(defn- step [{:keys [snake dir food] :as st}]
+(defn- step
+  [{:keys [snake dir food] :as st}]
   (let [[hc hr] (first snake)
         [dc dr] dir
         head [(+ hc dc) (+ hr dr)]
@@ -38,7 +43,8 @@
           (assoc st :snake ns :food (rand-food ns)))
         (assoc st :snake (into [head] (pop (vec snake))))))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width (* cols cell) :height (* rows cell) :title "raylib [games] example - snake")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

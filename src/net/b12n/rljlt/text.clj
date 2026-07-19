@@ -4,16 +4,19 @@
   Draws lines at several font sizes and colors, and uses MeasureText to
   horizontally center two lines (the built-in bitmap font; no external font
   loading)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 
-(defn- centered! [s size y color]
+(defn- centered!
+  [s size y color]
   (rl/text! s
             :x (int (/ (- W (rl/text-width s :size size)) 2))
             :y y :size size :color color))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height 450 :title "raylib [text] example - font sizes")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

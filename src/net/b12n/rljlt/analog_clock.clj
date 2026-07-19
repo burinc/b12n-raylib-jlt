@@ -3,15 +3,18 @@
   marks (12 long), and hour/minute/second hands drawn with line-ex!. Time comes from
   rl/local-time (libc); the second hand sweeps smoothly via sub-second millis. Port of
   shapes_clock_of_clocks reduced to a single face."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private d->r (/ Math/PI 180.0))
 
-(defn- polar [cx cy r deg]
+(defn- polar
+  [cx cy r deg]
   (let [t (* deg d->r)]
     [(+ cx (* r (Math/sin t))) (- cy (* r (Math/cos t)))]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - analog clock")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

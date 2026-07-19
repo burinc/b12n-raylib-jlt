@@ -3,14 +3,16 @@
   wall restitution. Uses the rlgl-tessellated rl/sphere! helper (DrawSphere takes
   Vector3 by value, so it's built from rlgl triangles). SPACE respawns. See
   docs/guide/rlgl-immediate-mode.md."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def bound 4.0)
 (def gravity 0.01)
 (def restitution 0.9)
 (def palette [rl/RED rl/ORANGE rl/GREEN rl/SKYBLUE rl/VIOLET rl/GOLD])
 
-(defn- spawn []
+(defn- spawn
+  []
   (vec (for [i (range 6)]
          {:x (/ (rl/get-random-value -30 30) 10.0)
           :y (/ (rl/get-random-value 10 40) 10.0)
@@ -21,19 +23,22 @@
           :r (/ (rl/get-random-value 3 6) 10.0)
           :color (nth palette i)})))
 
-(defn- reflect [p v r]
+(defn- reflect
+  [p v r]
   (cond (< (- p r) (- bound)) [(+ (- bound) r) (* (- v) restitution)]
         (> (+ p r) bound)     [(- bound r) (* (- v) restitution)]
         :else [p v]))
 
-(defn- step [{:keys [x y z vx vy vz r] :as b}]
+(defn- step
+  [{:keys [x y z vx vy vz r] :as b}]
   (let [vy (- vy gravity)
         [nx vx] (reflect (+ x vx) vx r)
         [ny vy] (reflect (+ y vy) vy r)
         [nz vz] (reflect (+ z vz) vz r)]
     (assoc b :x nx :y ny :z nz :vx vx :vy vy :vz vz)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [models] example - bouncing spheres")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

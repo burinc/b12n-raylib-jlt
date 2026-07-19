@@ -9,7 +9,8 @@
   The whole game is one immutable state map threaded through the loop; `step` reads
   input and returns the next state. The board is a vector of ROWS rows, each a
   vector of COLS cells (nil = empty, else a packed Color)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -33,14 +34,24 @@
                                 [[0 1] [1 1] [2 1] [2 2]] [[1 0] [1 1] [0 2] [1 2]]]}
    :l {:color rl/ORANGE  :rots [[[2 0] [0 1] [1 1] [2 1]] [[1 0] [1 1] [1 2] [2 2]]
                                 [[0 1] [1 1] [2 1] [0 2]] [[0 0] [1 0] [1 1] [1 2]]]}})
+
 (def ^:private PIECE-TYPES [:i :o :t :s :z :j :l])
 
 ;; --- pure model --------------------------------------------------------------
-(defn- rand-type [] (nth PIECE-TYPES (rl/get-random-value 0 6)))
-(defn- spawn [type] {:type type :rot 0 :x 3 :y 0})
-(defn- interval [level] (max 6 (- 48 (* 4 level))))
+(defn- rand-type
+  []
+  (nth PIECE-TYPES (rl/get-random-value 0 6)))
 
-(defn- piece-cells [{:keys [type rot x y]}]
+(defn- spawn
+  [type]
+  {:type type :rot 0 :x 3 :y 0})
+
+(defn- interval
+  [level]
+  (max 6 (- 48 (* 4 level))))
+
+(defn- piece-cells
+  [{:keys [type rot x y]}]
   (let [rots  (:rots (PIECES type))
         state (nth rots (mod rot (count rots)))]
     (map (fn [[cx cy]] [(+ x cx) (+ y cy)]) state)))
@@ -52,7 +63,8 @@
             (and (>= c 0) (< c COLS) (>= r 0) (< r ROWS) (nil? (get-in board [r c]))))
           (piece-cells piece)))
 
-(defn- lock [board piece]
+(defn- lock
+  [board piece]
   (let [color (:color (PIECES (:type piece)))]
     (reduce (fn [b [c r]] (assoc-in b [r c] color)) board (piece-cells piece))))
 
@@ -63,12 +75,14 @@
         cleared (- ROWS (count kept))]
     [(into (vec (repeat cleared (vec (repeat COLS nil)))) kept) cleared]))
 
-(defn- hard-drop [board piece]
+(defn- hard-drop
+  [board piece]
   (loop [p piece]
     (let [pd (update p :y inc)]
       (if (valid? board pd) (recur pd) p))))
 
-(defn- initial-state []
+(defn- initial-state
+  []
   {:board (vec (repeat ROWS (vec (repeat COLS nil))))
    :piece (spawn (rand-type)) :next (rand-type)
    :score 0 :lines 0 :level 0 :tick 0 :over? false})
@@ -85,7 +99,8 @@
            :score (+ (:score s) (nth [0 40 100 300 1200] cleared))
            :over? (not (valid? board' next-p)))))
 
-(defn- step [s]
+(defn- step
+  [s]
   (if (:over? s)
     (if (rl/key-pressed? KEY-ENTER) (initial-state) s)
     (let [board (:board s)
@@ -104,11 +119,13 @@
         :else (assoc s :piece p2 :tick tick)))))
 
 ;; --- draw --------------------------------------------------------------------
-(defn- cell! [c r color]
+(defn- cell!
+  [c r color]
   (rl/rect! :x (+ WELL-X (* c CELL)) :y (+ WELL-Y (* r CELL))
             :width (dec CELL) :height (dec CELL) :color color))
 
-(defn- draw-state [s]
+(defn- draw-state
+  [s]
   (rl/clear-background (rl/rgba 18 18 28 255))
   (rl/rect-lines! :x (- WELL-X 2) :y (- WELL-Y 2)
                   :width (+ (* COLS CELL) 4) :height (+ (* ROWS CELL) 4) :color rl/GRAY)
@@ -133,7 +150,8 @@
     (rl/text! "GAME OVER" :x 130 :y 180 :size 34 :color rl/RED)
     (rl/text! "ENTER to restart" :x 120 :y 230 :size 18 :color rl/RAYWHITE)))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "tetris")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

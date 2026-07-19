@@ -4,7 +4,8 @@
   A blue box bounces horizontally; a gold box follows the mouse. When they
   overlap, the intersection rectangle is highlighted in red. AABB overlap is
   computed in Clojure, so no by-value Rectangle crosses the FFI boundary."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -18,7 +19,8 @@
     (when (and (< x1 x2) (< y1 y2))
       [x1 y1 (- x2 x1) (- y2 y1)])))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - collision area")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

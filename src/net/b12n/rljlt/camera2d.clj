@@ -16,7 +16,8 @@
   fall back to applying the transform with rlgl's scalar matrix ops (rlPushMatrix
   / rlTranslatef / rlRotatef / rlScalef, flushing the batch before rlPopMatrix),
   which is what BeginMode2D does internally."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -35,13 +36,15 @@
                            (+ 90  (mod (* i 29) 140)) 255)})
         (range 30)))
 
-(defn- draw-world [px]
+(defn- draw-world
+  [px]
   (rl/rect! :x -600 :y GROUND-Y :width 2400 :height 200 :color rl/GRAY)   ; ground
   (doseq [{:keys [x w h color]} buildings]
     (rl/rect! :x x :y (- GROUND-Y h) :width w :height h :color color))
   (rl/rect! :x (int (- px 15)) :y (- GROUND-Y 60) :width 30 :height 60 :color rl/RED))  ; player
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [core] example - 2d camera")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

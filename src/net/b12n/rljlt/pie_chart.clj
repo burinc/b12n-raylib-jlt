@@ -2,7 +2,8 @@
   "raylib [shapes] example - pie chart. Fixed category data drawn as filled slices
   via rl/sector! (an rlgl triangle fan), with a legend column. The whole chart
   rotates slowly. Port of shapes_pie_chart."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private slices
   ;; [label value color]
@@ -12,7 +13,8 @@
    ["delta"   16 rl/GOLD]
    ["epsilon" 12 rl/VIOLET]])
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - pie chart")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

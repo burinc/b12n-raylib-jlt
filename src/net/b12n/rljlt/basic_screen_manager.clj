@@ -4,7 +4,8 @@
   A minimal screen/state machine: LOGO → TITLE → GAMEPLAY → ENDING. It advances on
   ENTER, and also auto-advances on a timer so the headless smoke test flows through
   every screen. A keyword state drives the background + label."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -14,7 +15,8 @@
 (def ^:private bg    {:logo rl/RAYWHITE :title rl/DARKBLUE :gameplay rl/DARKGREEN :ending rl/MAROON})
 (def ^:private label {:logo "LOGO" :title "TITLE SCREEN" :gameplay "GAMEPLAY" :ending "ENDING"})
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [core] example - screen manager")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

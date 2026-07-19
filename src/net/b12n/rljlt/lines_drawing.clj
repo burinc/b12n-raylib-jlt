@@ -2,13 +2,15 @@
   "raylib [shapes] example - lines drawing. A rotating fan of thick lines (rl/line-ex!),
   each a different width and color with round end caps, plus a thickness-scale row.
   Port of shapes_lines_drawing (minus the texture cursor)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private palette
   [rl/RED rl/ORANGE rl/GOLD rl/LIME rl/GREEN rl/SKYBLUE
    rl/BLUE rl/VIOLET rl/PURPLE rl/PINK rl/MAROON rl/DARKBLUE])
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - lines drawing")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

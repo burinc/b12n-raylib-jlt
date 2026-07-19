@@ -7,12 +7,14 @@
   DrawSphere takes a by-value Vector3), under a fixed 3D camera. rlgl applies the
   active matrix to each rlVertex3f at submit time, which is what makes the nested
   push/rotate/translate move each cube."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [models] example - rlgl solar system")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]
@@ -27,18 +29,18 @@
                               :target-x 0.0 :target-y 0.0 :target-z 0.0
                               :fovy 45.0 :projection 0}
             (fn []
-              ;; Sun at the origin
+                               ;; Sun at the origin
               (rl/cube! :pos [0.0 0.0 0.0] :size 3.0 :color rl/GOLD)
-              ;; Earth: orbit the Sun
+                               ;; Earth: orbit the Sun
               (rl/rl-push-matrix)
               (rl/rl-rotatef earth-orbit 0.0 1.0 0.0)
               (rl/rl-translatef 9.0 0.0 0.0)
-              ;;   Earth body, spinning in place
+                               ;;   Earth body, spinning in place
               (rl/rl-push-matrix)
               (rl/rl-rotatef earth-spin 0.0 1.0 0.0)
               (rl/cube! :pos [0.0 0.0 0.0] :size 1.4 :color rl/BLUE)
               (rl/rl-pop-matrix)
-              ;;   Moon: orbit the Earth (still inside Earth's orbit transform)
+                               ;;   Moon: orbit the Earth (still inside Earth's orbit transform)
               (rl/rl-rotatef moon-orbit 0.0 1.0 0.0)
               (rl/rl-translatef 2.6 0.0 0.0)
               (rl/cube! :pos [0.0 0.0 0.0] :size 0.7 :color rl/LIGHTGRAY)

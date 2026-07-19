@@ -4,9 +4,11 @@
   Ported from examples/core/core_input_mouse.c: a circle follows the cursor and
   turns LIME while the left button is held. Uses the scalar GetMouseX / GetMouseY
   (not GetMousePosition, which returns a Vector2 by value)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [core] example - mouse input")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

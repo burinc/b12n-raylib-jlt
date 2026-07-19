@@ -3,7 +3,8 @@
 
   A chaotic double pendulum integrated with the standard equations of motion,
   with a fading trail of the lower bob. Pure math over lines + circles."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
@@ -14,7 +15,8 @@
 (def ^:const G 1.0)
 (def ^:const DT 0.06)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - double pendulum")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

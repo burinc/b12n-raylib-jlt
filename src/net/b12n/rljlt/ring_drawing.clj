@@ -2,22 +2,26 @@
   "raylib [shapes] example - ring drawing. A filled annulus via rl/ring! whose sweep
   angle and inner radius breathe over time, with a stroked outline (inner + outer arcs
   and radial end caps). Port of shapes_ring_drawing (minus raygui sliders)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:private d->r (/ Math/PI 180.0))
 
-(defn- polar [cx cy r deg]
+(defn- polar
+  [cx cy r deg]
   (let [t (* deg d->r)]
     [(+ cx (* r (Math/sin t))) (- cy (* r (Math/cos t)))]))
 
-(defn- arc-stroke [cx cy r start end color]
+(defn- arc-stroke
+  [cx cy r start end color]
   (let [n 96 span (- end start)]
     (dotimes [i n]
       (let [[x0 y0] (polar cx cy r (+ start (* span (/ (double i) n))))
             [x1 y1] (polar cx cy r (+ start (* span (/ (double (inc i)) n))))]
         (rl/line-ex! :x1 x0 :y1 y0 :x2 x1 :y2 y1 :thick 3 :color color)))))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :title "raylib [shapes] example - ring drawing")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)

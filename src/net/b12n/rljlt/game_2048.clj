@@ -2,11 +2,16 @@
   "raylib [games] example — 2048. Arrow keys slide + merge tiles on a 4x4 board;
   reach 2048. Slide/merge is one pure function reused for all four directions via
   row reversal / transpose. (Handle is game-2048; bb can't name a task '2048'.)"
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
-(defn- compress [row] (vec (remove zero? row)))
+(defn- compress
+  [row]
+  (vec (remove zero? row)))
 
-(defn- merge-row [row]                       ; row is compressed (no zeros)
+(defn- merge-row
+  [row]
+  ;; row is compressed (no zeros)
   (loop [in row out [] score 0]
     (cond
       (empty? in) [out score]
@@ -15,20 +20,34 @@
                                         (+ score (* 2 (first in))))
       :else (recur (rest in) (conj out (first in)) score))))
 
-(defn- slide-left [row]
+(defn- slide-left
+  [row]
   (let [[merged score] (merge-row (compress row))]
     [(vec (take 4 (concat merged (repeat 0)))) score]))
 
-(defn- rows [board] (mapv vec (partition 4 board)))
-(defn- from-rows [rs] (vec (apply concat rs)))
-(defn- transpose [rs] (apply mapv vector rs))
-(defn- revrows [rs] (mapv (fn [r] (vec (reverse r))) rs))
+(defn- rows
+  [board]
+  (mapv vec (partition 4 board)))
 
-(defn- slide-board [rs]
+(defn- from-rows
+  [rs]
+  (vec (apply concat rs)))
+
+(defn- transpose
+  [rs]
+  (apply mapv vector rs))
+
+(defn- revrows
+  [rs]
+  (mapv (fn [r] (vec (reverse r))) rs))
+
+(defn- slide-board
+  [rs]
   (let [results (mapv slide-left rs)]
     [(mapv first results) (reduce + (mapv second results))]))
 
-(defn- move [board dir]
+(defn- move
+  [board dir]
   (let [rs (rows board)]
     (cond
       (= dir :left)  (let [[nr g] (slide-board rs)] [(from-rows nr) g])
@@ -37,7 +56,8 @@
       (= dir :down)  (let [[nr g] (slide-board (revrows (transpose rs)))]
                        [(from-rows (transpose (revrows nr))) g]))))
 
-(defn- spawn [board]
+(defn- spawn
+  [board]
   (let [empties (filterv (fn [i] (zero? (nth board i))) (range 16))]
     (if (empty? empties)
       board
@@ -45,13 +65,17 @@
             v (if (< (rl/get-random-value 0 9) 9) 2 4)]
         (assoc board i v)))))
 
-(defn- new-board [] (spawn (spawn (vec (repeat 16 0)))))
+(defn- new-board
+  []
+  (spawn (spawn (vec (repeat 16 0)))))
 
-(defn- try-move [{:keys [board score] :as st} dir]
+(defn- try-move
+  [{:keys [board score] :as st} dir]
   (let [[nb g] (move board dir)]
     (if (= nb board) st (assoc st :board (spawn nb) :score (+ score g)))))
 
-(defn- stuck? [board]
+(defn- stuck?
+  [board]
   (every? (fn [dir] (= board (first (move board dir)))) [:left :right :up :down]))
 
 (def tile-colors
@@ -62,7 +86,8 @@
    256 (rl/rgba 237 204 97 255) 512 (rl/rgba 237 200 80 255)
    1024 (rl/rgba 237 197 63 255) 2048 (rl/rgba 237 194 46 255)})
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width 800 :height 450 :title "raylib [games] example - 2048")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

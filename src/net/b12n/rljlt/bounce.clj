@@ -4,13 +4,15 @@
   Ported from examples/shapes/shapes_bouncing_ball.c: a ball bounces around the
   window; SPACE pauses. Position/velocity are plain doubles and the ball is drawn
   with the scalar DrawCircle (no by-value Vector2)."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def ^:const W 800)
 (def ^:const H 450)
 (def ^:const R 20.0)
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width W :height H :title "raylib [shapes] example - bouncing ball")
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]

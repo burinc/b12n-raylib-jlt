@@ -2,7 +2,8 @@
   "raylib [games] example — minesweeper. Left-click reveals (0-cells flood-fill),
   right-click flags; find every safe cell without hitting a mine (SPACE restarts).
   Exercises the mouse-pressed? / MOUSE-RIGHT toolkit binds."
-  (:require [net.b12n.rljlt.raylib :as rl]))
+  (:require
+   [net.b12n.rljlt.raylib :as rl]))
 
 (def cols 16)
 (def rows 12)
@@ -10,23 +11,30 @@
 (def n-mines 30)
 (def top 40)
 
-(defn- place-mines []
+(defn- place-mines
+  []
   (loop [mines #{}]
     (if (>= (count mines) n-mines)
       mines
       (recur (conj mines [(rl/get-random-value 0 (dec cols))
                           (rl/get-random-value 0 (dec rows))])))))
 
-(defn- new-game [] {:mines (place-mines) :revealed #{} :flagged #{} :over? false :won? false})
+(defn- new-game
+  []
+  {:mines (place-mines) :revealed #{} :flagged #{} :over? false :won? false})
 
-(defn- neighbors [[c r]]
+(defn- neighbors
+  [[c r]]
   (filterv (fn [[nc nr]] (and (>= nc 0) (< nc cols) (>= nr 0) (< nr rows)))
            (for [dc [-1 0 1] dr [-1 0 1] :when (not (and (zero? dc) (zero? dr)))]
              [(+ c dc) (+ r dr)])))
 
-(defn- mine-count [mines cell] (count (filter mines (neighbors cell))))
+(defn- mine-count
+  [mines cell]
+  (count (filter mines (neighbors cell))))
 
-(defn- reveal [{:keys [mines revealed] :as st} cell]
+(defn- reveal
+  [{:keys [mines revealed] :as st} cell]
   (cond
     (revealed cell) st
     (contains? mines cell) (assoc st :over? true)
@@ -42,17 +50,21 @@
                 (recur (into stack (remove rev (neighbors c))) rev)
                 (recur stack rev)))))))))
 
-(defn- toggle-flag [{:keys [flagged] :as st} cell]
+(defn- toggle-flag
+  [{:keys [flagged] :as st} cell]
   (assoc st :flagged (if (flagged cell) (disj flagged cell) (conj flagged cell))))
 
-(defn- won? [{:keys [mines revealed]}]
+(defn- won?
+  [{:keys [mines revealed]}]
   (= (count revealed) (- (* cols rows) (count mines))))
 
-(defn- cell-at [mx my]
+(defn- cell-at
+  [mx my]
   (let [c (quot mx cell) r (quot (- my top) cell)]
     (when (and (>= (- my top) 0) (>= c 0) (< c cols) (>= r 0) (< r rows)) [c r])))
 
-(defn -main [& _]
+(defn -main
+  [& _]
   (rl/window! :width (* cols cell) :height (+ top (* rows cell))
               :title "raylib [games] example - minesweeper")
   (rl/set-target-fps 60)
