@@ -49,9 +49,21 @@ The payoff at the call site (`net.b12n.rljlt.core`):
 ;; vs. the positional (draw-text "…" 190 200 20 rl/LIGHTGRAY)
 ```
 
-The `!` suffix marks these as side-effecting draw calls. Roughly a dozen exist:
-`window!`, `text!`, `fps!`, `rect!`, `rect-lines!`, `rect-gradient!`, `circle!`,
-`circle-lines!`, `ellipse!`, `line!`, `pixel!`, plus the 3D `cube!`.
+The `!` suffix marks these as side-effecting calls. Sixteen wrappers exist, in three
+groups:
+
+- **Window + 2D primitives, straight over a scalar bind** — `window!`, `text!`,
+  `fps!`, `rect!`, `rect-lines!`, `rect-gradient!`, `circle!`, `circle-lines!`,
+  `ellipse!`, `line!`, `pixel!`.
+- **2D shapes rlgl has to draw** — `sector!`, `ring!`, `line-ex!`. Their raylib
+  originals (`DrawCircleSector`, `DrawRing`, `DrawLineEx`) take a `Vector2` by
+  value and are unbindable, so these emit triangles instead. Same keyword-arg
+  surface; see [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md).
+- **3D** — `cube!` and `sphere!`, likewise rlgl vertex streams standing in for the
+  by-value-`Vector3` `DrawCube` / `DrawSphere`.
+
+(`rl-color!` and `maybe-screenshot!` also end in `!` but are not part of this
+wrapper layer — one unpacks a `Color` for rlgl, the other is smoke-test plumbing.)
 
 ## The style convention: >3 arguments → keyword args
 
