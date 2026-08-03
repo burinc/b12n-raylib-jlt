@@ -11,6 +11,34 @@ shared namespace, `net.b12n.rljlt.raylib`; each example is a small namespace on 
 
 ## Requirements
 
+### jolt
+
+```sh
+jolt --version               # tested against jolt v0.5.13
+```
+
+Any recent jolt works. One thing to know if you edit the shared binding layer
+(`src/net/b12n/rljlt/raylib.clj`): since **jolt 0.4.0** unresolved symbols are a
+compile error rather than being resolved late, so a definition must appear before
+its first use in the file. That layer is shared by every example, so a single
+misordered symbol stops the whole suite from loading:
+
+```
+Unhandled exception: Unable to resolve symbol: rgba in this context
+  at ./src/net/b12n/rljlt/raylib.clj:139:3
+```
+
+This is why the `Color` section (`rgba` plus the named palette) sits at the top of
+the file, above `shade-color` / `cube!` / `sphere!` which use it. Compilation stops
+at the first unresolved symbol, so fix them one at a time — `joltc -M:check`
+compiles every example namespace headlessly and is the quickest confirmation that
+the suite still loads.
+
+`joltc` is a compatibility shim for `jolt` (the launcher was renamed in 0.5.0);
+every `joltc -M:<alias>` below works under either name.
+
+### libraylib
+
 The system `libraylib` shared library must be installed. With babashka you can
 check and install it for your platform (Linux, macOS Intel, macOS Apple Silicon):
 
