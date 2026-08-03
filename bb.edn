@@ -6,7 +6,7 @@
 ;;   bb run <name>      run one example by argument
 ;;   bb run-all [secs]  demo reel / smoke test: every example, N seconds each
 ;;   bb check           headless compile-check of every example (no window)
-;;   bb lint            check formatting with cljfmt (non-mutating)
+;;   bb lint            check formatting (cljfmt) + lint (clj-kondo)
 ;;   bb lint:fix        reformat src in place with cljfmt
 ;;   bb lib:check       is the native libraylib installed for this OS/arch?
 ;;   bb lib:install     install libraylib via the platform package manager
@@ -30,6 +30,19 @@
     ;; every checkout formats identically; bump deliberately, then run bb lint:fix.
     (def cljfmt-dep
       "{:deps {dev.weavejester/cljfmt {:mvn/version \"0.13.1\"}}}")
+
+    ;; clj-kondo ships a fast native binary; prefer it when installed and fall
+    ;; back to the same clojure-CLI route as cljfmt so a bare checkout still
+    ;; lints. Both were verified against .clj-kondo/hooks/jolt_ffi.clj, which is
+    ;; what teaches clj-kondo to see through ffi/defcfn.
+    (def kondo-dep
+      "{:deps {clj-kondo/clj-kondo {:mvn/version \"2025.02.20\"}}}")
+
+    (defn kondo-argv
+      []
+      (if (fs/which "clj-kondo")
+        ["clj-kondo"]
+        ["clojure" "-Sdeps" kondo-dep "-M" "-m" "clj-kondo.main"]))
 
     ;; [display-name  joltc-alias  group  description]
     (def examples
@@ -322,26 +335,35 @@
            (println)
            (println "Run any example with `bb <name>` · list: `bb examples` · all tasks: `bb tasks`")
            (println "Demo reel / smoke test: `bb run-all [secs]` · headless check: `bb check`")
-           (println "Formatting: `bb lint` (check) · `bb lint:fix` (reformat in place)")
+           (println "Format + lint: `bb lint` (cljfmt + clj-kondo) · `bb lint:fix` (reformat)")
            (println "Native library: `bb lib:check` (is libraylib installed?) · `bb lib:install`"))}
 
   check
   {:doc "Headless compile-check of every example (no window)"
    :task (shell "joltc" "-M:check")}
 
-  ;; --- formatting (cljfmt) --------------------------------------------------
+  ;; --- formatting + linting (cljfmt, clj-kondo) -----------------------------
   lint
-  {:doc "Check formatting with cljfmt (non-mutating; fix with `bb lint:fix`)"
-   :task (let [res (shell {:continue true} "clojure" "-Sdeps" cljfmt-dep
+  {:doc "Check formatting (cljfmt) and lint (clj-kondo); fix format with `bb lint:fix`"
+   :task (let [fmt (shell {:continue true} "clojure" "-Sdeps" cljfmt-dep
                           "-M" "-m" "cljfmt.main" "check" "src")
-               exit (:exit res)]
-           (if (zero? exit)
+               fmt-exit (:exit fmt)]
+           (if (zero? fmt-exit)
              (println "✓ cljfmt: all source files formatted correctly")
-             (do (binding [*out* *err*]
-                   (println "\n✗ cljfmt: formatting differs from the project style.")
-                   (println "  In the diff above, `-` is your file and `+` is cljfmt's.")
-                   (println "  Fix in place with:  bb lint:fix"))
-                 (System/exit exit))))}
+             (binding [*out* *err*]
+               (println "\n✗ cljfmt: formatting differs from the project style.")
+               (println "  In the diff above, `-` is your file and `+` is cljfmt's.")
+               (println "  Fix in place with:  bb lint:fix")))
+           ;; clj-kondo runs even when cljfmt failed, so one run reports both.
+           (let [kondo (apply shell {:continue true}
+                              (concat (kondo-argv) ["--lint" "src"]))
+                 kondo-exit (:exit kondo)]
+             (if (zero? kondo-exit)
+               (println "✓ clj-kondo: no errors or warnings")
+               (binding [*out* *err*]
+                 (println "\n✗ clj-kondo: see the findings above.")))
+             (let [worst (max fmt-exit kondo-exit)]
+               (when-not (zero? worst) (System/exit worst)))))}
 
   lint:fix
   {:doc "Reformat src in place with cljfmt"

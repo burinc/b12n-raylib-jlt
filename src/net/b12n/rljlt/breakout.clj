@@ -17,7 +17,7 @@
 (def ball-r 8)
 (def row-colors [rl/RED rl/ORANGE rl/GOLD rl/GREEN rl/SKYBLUE rl/VIOLET])
 
-(defn- abs
+(defn- fabs
   [n]
   (if (neg? n) (- n) n))
 
@@ -52,7 +52,7 @@
                         (<= (+ ny ball-r) (+ paddle-y paddle-h 8))
                         (>= nx paddle-x) (<= nx (+ paddle-x paddle-w)))
         vx (if on-paddle? (+ vx (* 0.08 (- nx (+ paddle-x (/ paddle-w 2.0))))) vx)
-        vy (if on-paddle? (- (abs vy)) vy)
+        vy (if on-paddle? (- (fabs vy)) vy)
         hit (brick-at nx ny)
         hit? (and hit (contains? bricks hit))
         bricks (if hit? (disj bricks hit) bricks)

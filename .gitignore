@@ -6,6 +6,10 @@ raylib_shot.png
 # cljfmt (a JVM tool) through the clojure CLI
 .cpcache/
 
+# clj-kondo's analysis cache. The config and the jolt.ffi/defcfn hook next to it
+# ARE tracked — they're what makes `bb lint` usable.
+.clj-kondo/.cache/
+
 # local dev artifacts (not part of the example suite)
 .claude/
 CONTINUATION_PROMPT.md
