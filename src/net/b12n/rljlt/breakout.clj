@@ -81,7 +81,7 @@
           (rl/begin-drawing)
           (rl/clear-background rl/RAYWHITE)
           (doseq [[c r] (:bricks st)]
-            (rl/rect! :x (+ 1 (* c brick-w)) :y (+ 1 (+ top (* r brick-h)))
+            (rl/rect! :x (+ 1 (* c brick-w)) :y (+ 1 top (* r brick-h))
                       :width (- brick-w 2) :height (- brick-h 2) :color (nth row-colors r)))
           (rl/rect! :x (int paddle-x) :y paddle-y :width paddle-w :height paddle-h :color rl/DARKGRAY)
           (let [{:keys [x y]} (:ball st)]
