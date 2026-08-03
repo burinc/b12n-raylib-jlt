@@ -83,12 +83,20 @@ bb bouncing-ball        # run one example (opens a window)
 bb run following-eyes   # …or run one by argument
 bb run-all [secs]       # demo reel / smoke test: every example, N seconds each (default 15)
 bb check                # headless compile-check of every example (no window)
+bb lint                 # check formatting with cljfmt (non-mutating)
+bb lint:fix             # reformat src in place with cljfmt
 bb lib:check            # is the native libraylib installed for this OS/arch?
 bb lib:install          # install libraylib via the platform package manager
 bb tasks                # raw babashka task list
 ```
 
 The `bb` names are friendly aliases; each maps to a `joltc` alias below.
+
+`bb check` and `bb lint` are the two gates worth running before a commit: `check`
+compiles every example namespace, `lint` verifies formatting. `lint` needs the
+[clojure CLI](https://clojure.org/guides/install_clojure) — cljfmt is a JVM tool, so
+`bb.edn` runs it with the dep pinned inline rather than adding a JVM alias to
+`deps.edn` (which `joltc` parses). Nothing else in the suite needs a JVM.
 
 ### With joltc directly
 
