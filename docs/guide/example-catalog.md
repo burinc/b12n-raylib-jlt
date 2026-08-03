@@ -154,6 +154,14 @@ flowchart LR
 Filenames use underscores (`basic_screen_manager.clj`); the namespace uses hyphens
 (`net.b12n.rljlt.basic-screen-manager`) — Clojure's standard file↔ns mapping.
 
+One ordering rule applies inside every file: since **jolt 0.4.0** an unresolved
+symbol is a compile error rather than a late-bound reference, so a definition must
+appear before its first use — in a fn body and in an `:or` destructuring default
+just as much as at top level. It bites hardest in the shared `raylib.clj` binding
+layer, where one misordered symbol stops *every* example from loading and only the
+first offender is reported. `joltc -M:check` is the quick confirmation; see the
+[jolt note in the README](../../README.md#requirements).
+
 ## See also
 
 - [`kwarg-drawing-api.md`](kwarg-drawing-api.md) — the API every example is written

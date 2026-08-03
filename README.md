@@ -288,7 +288,9 @@ needs a full C shim this repo avoids.
 
 ```
 b12n-rljlt/
+├── bb.edn                   ; babashka tasks + the example registry (bb info / run-all)
 ├── deps.edn                 ; libraylib :jolt/native + one alias per example
+├── docs/guide/              ; the pattern guides listed under Documentation above
 └── src/net/b12n/rljlt/
     ├── raylib.clj           ; ALL bindings + the kwarg API + Color palette + guards
     ├── check.clj            ; headless compile-check of every example
@@ -299,5 +301,9 @@ b12n-rljlt/
     └── …
 ```
 
-Adding an example: write `src/net/b12n/rljlt/<name>.clj` using the `net.b12n.rljlt.raylib` API, add a
-`:<name>` alias to `deps.edn`, and add the namespace to `net.b12n.rljlt.check`.
+Adding an example touches four places: write `src/net/b12n/rljlt/<name>.clj` against
+the `net.b12n.rljlt.raylib` API, add a `:<name>` alias to `deps.edn`, add the
+namespace to `net.b12n.rljlt.check` so the headless compile-check covers it, and add
+a registry row to `bb.edn` so it appears in `bb info` / `bb examples` / `bb run-all`.
+The [example catalog](docs/guide/example-catalog.md) walks through all four under
+"Adding an example — the four touchpoints".
