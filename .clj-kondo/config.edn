@@ -4,4 +4,29 @@
 ;; the macro, so hooks/jolt_ffi.clj rewrites each call into an equivalent `defn`
 ;; — see that file for why. Without it the suite reports ~500 false positives and
 ;; the linter is unusable as a gate.
-{:hooks {:analyze-call {jolt.ffi/defcfn hooks.jolt-ffi/defcfn}}}
+{:hooks {:analyze-call {jolt.ffi/defcfn hooks.jolt-ffi/defcfn}}
+
+ ;; :redundant-nested-call flags (+ a (+ b c)) in favour of (+ a b c). That is
+ ;; the right call for a plain accumulation, and those sites were flattened. In
+ ;; the namespaces below the nesting is load-bearing *notation* — it mirrors the
+ ;; maths the code implements, and flattening would obscure it:
+ ;;
+ ;;   asteroids / kaleidoscope   a 2D rotation, written so the x and y lines are
+ ;;                              visually parallel —
+ ;;                                x (+ cx (- (* ax ca) (* ay sa)))
+ ;;                                y (+ cy (+ (* ax sa) (* ay ca)))
+ ;;                              only the y line *can* flatten, so flattening it
+ ;;                              breaks the pairing that makes the matrix legible.
+ ;;   splines                    the four bracketed terms are the B-spline basis
+ ;;                              coefficients; the last, (+ a (* 4.0 b) c), is one
+ ;;                              coefficient and reads exactly as the formula does.
+ ;;   flow-field                 (* 0.5 (+ sin cos)) is "average the two waves back
+ ;;                              to [-1,1]" before scaling by a full turn.
+ ;;
+ ;; Scoped per-namespace rather than switched off globally, so a genuinely
+ ;; redundant nest anywhere else in the suite is still reported.
+ :config-in-ns
+ {net.b12n.rljlt.asteroids    {:linters {:redundant-nested-call {:level :off}}}
+  net.b12n.rljlt.kaleidoscope {:linters {:redundant-nested-call {:level :off}}}
+  net.b12n.rljlt.splines      {:linters {:redundant-nested-call {:level :off}}}
+  net.b12n.rljlt.flow-field   {:linters {:redundant-nested-call {:level :off}}}}}

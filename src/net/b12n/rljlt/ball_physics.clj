@@ -24,9 +24,9 @@
   [{:keys [x y vx vy r] :as b}]
   (let [vy (+ vy gravity)
         [nx vx] (cond (< (- (+ x vx) r) 0)      [r (* (- vx) restitution)]
-                      (> (+ (+ x vx) r) width)  [(- width r) (* (- vx) restitution)]
+                      (> (+ x vx r) width)      [(- width r) (* (- vx) restitution)]
                       :else [(+ x vx) vx])
-        [ny vy] (if (> (+ (+ y vy) r) height)
+        [ny vy] (if (> (+ y vy r) height)
                   [(- height r) (* (- vy) restitution)]
                   [(+ y vy) vy])]
     (assoc b :x nx :y ny :vx vx :vy vy)))
