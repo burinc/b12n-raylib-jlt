@@ -6,6 +6,8 @@
 ;;   bb run <name>      run one example by argument
 ;;   bb run-all [secs]  demo reel / smoke test: every example, N seconds each
 ;;   bb check           headless compile-check of every example (no window)
+;;   bb lint            check formatting with cljfmt (non-mutating)
+;;   bb lint:fix        reformat src in place with cljfmt
 ;;   bb lib:check       is the native libraylib installed for this OS/arch?
 ;;   bb lib:install     install libraylib via the platform package manager
 ;;
@@ -21,6 +23,13 @@
     (require '[babashka.fs :as fs]
              '[clojure.java.shell :as sh]
              '[clojure.string :as str])
+
+    ;; cljfmt is a JVM tool, so `bb lint` runs it through the clojure CLI with the
+    ;; dep given inline rather than adding a JVM alias to deps.edn — joltc parses
+    ;; that file and this project is deliberately JVM-free at runtime. Pinned so
+    ;; every checkout formats identically; bump deliberately, then run bb lint:fix.
+    (def cljfmt-dep
+      "{:deps {dev.weavejester/cljfmt {:mvn/version \"0.13.1\"}}}")
 
     ;; [display-name  joltc-alias  group  description]
     (def examples
@@ -313,11 +322,32 @@
            (println)
            (println "Run any example with `bb <name>` · list: `bb examples` · all tasks: `bb tasks`")
            (println "Demo reel / smoke test: `bb run-all [secs]` · headless check: `bb check`")
+           (println "Formatting: `bb lint` (check) · `bb lint:fix` (reformat in place)")
            (println "Native library: `bb lib:check` (is libraylib installed?) · `bb lib:install`"))}
 
   check
   {:doc "Headless compile-check of every example (no window)"
    :task (shell "joltc" "-M:check")}
+
+  ;; --- formatting (cljfmt) --------------------------------------------------
+  lint
+  {:doc "Check formatting with cljfmt (non-mutating; fix with `bb lint:fix`)"
+   :task (let [res (shell {:continue true} "clojure" "-Sdeps" cljfmt-dep
+                          "-M" "-m" "cljfmt.main" "check" "src")
+               exit (:exit res)]
+           (if (zero? exit)
+             (println "✓ cljfmt: all source files formatted correctly")
+             (do (binding [*out* *err*]
+                   (println "\n✗ cljfmt: formatting differs from the project style.")
+                   (println "  In the diff above, `-` is your file and `+` is cljfmt's.")
+                   (println "  Fix in place with:  bb lint:fix"))
+                 (System/exit exit))))}
+
+  lint:fix
+  {:doc "Reformat src in place with cljfmt"
+   :task (do (shell "clojure" "-Sdeps" cljfmt-dep
+                    "-M" "-m" "cljfmt.main" "fix" "src")
+             (println "✓ cljfmt: reformatted in place. Review with `git diff`."))}
 
   ;; --- native library (libraylib) ------------------------------------------
   lib:check

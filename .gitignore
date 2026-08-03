@@ -2,6 +2,10 @@
 shot*.png
 raylib_shot.png
 
+# clojure CLI classpath cache — created by `bb lint` / `bb lint:fix`, which run
+# cljfmt (a JVM tool) through the clojure CLI
+.cpcache/
+
 # local dev artifacts (not part of the example suite)
 .claude/
 CONTINUATION_PROMPT.md
