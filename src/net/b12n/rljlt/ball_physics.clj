@@ -21,7 +21,8 @@
           :color (nth palette i)})))
 
 (defn- step
-  [{:keys [x y vx vy r] :as b}]
+  [{:keys [x y vx vy r]
+    :as b}]
   (let [vy (+ vy gravity)
         [nx vx] (cond (< (- (+ x vx) r) 0)      [r (* (- vx) restitution)]
                       (> (+ x vx r) width)      [(- width r) (* (- vx) restitution)]

@@ -17,9 +17,16 @@
 
 (defn- new-game
   []
-  {:ship-x 375.0 :bullets []
+  {:ship-x 375.0
+   :bullets []
    :aliens (set (for [c (range acols) r (range arows)] [c r]))
-   :ax 40.0 :ay 40.0 :adir 1.0 :cooldown 0 :over? false :won? false :score 0})
+   :ax 40.0
+   :ay 40.0
+   :adir 1.0
+   :cooldown 0
+   :over? false
+   :won? false
+   :score 0})
 
 (defn- alien-px
   [ax c]
@@ -30,7 +37,8 @@
   (+ ay (* r 45)))
 
 (defn- march
-  [{:keys [aliens ax ay adir] :as st}]
+  [{:keys [aliens ax ay adir]
+    :as st}]
   (let [cs (map first aliens)
         minc (reduce min cs) maxc (reduce max cs)
         nax (+ ax (* adir 1.2))]
@@ -49,20 +57,24 @@
         aliens))
 
 (defn- step
-  [{:keys [ship-x bullets aliens ax ay cooldown score] :as st}]
+  [{:keys [ship-x bullets aliens ax ay cooldown score]
+    :as st}]
   (let [ship-x (cond (rl/key-down? rl/KEY-LEFT)  (max 0.0 (- ship-x 5.0))
                      (rl/key-down? rl/KEY-RIGHT) (min (- width ship-w) (+ ship-x 5.0))
                      :else ship-x)
         shoot? (and (rl/key-pressed? rl/KEY-SPACE) (zero? cooldown))
         bullets (cond-> (mapv (fn [b] (update b :y - 8.0)) bullets)
-                  shoot? (conj {:x (+ ship-x (/ ship-w 2.0)) :y ship-y}))
+                  shoot? (conj {:x (+ ship-x (/ ship-w 2.0))
+                                :y ship-y}))
         bullets (filterv (fn [b] (> (:y b) -10)) bullets)
         cooldown (cond shoot? 15 (pos? cooldown) (dec cooldown) :else 0)
         result (reduce (fn [acc b]
                          (if-let [a (hit-alien (:aliens acc) (:x b) (:y b) ax ay)]
                            (-> acc (update :aliens disj a) (update :score + 10))
                            (update acc :bullets conj b)))
-                       {:aliens aliens :bullets [] :score score}
+                       {:aliens aliens
+                        :bullets []
+                        :score score}
                        bullets)
         st (assoc st :ship-x ship-x :bullets (:bullets result)
                   :aliens (:aliens result) :cooldown cooldown :score (:score result))

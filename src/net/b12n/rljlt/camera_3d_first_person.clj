@@ -50,9 +50,14 @@
               tz (+ pz (* cp fwz))]
           (rl/begin-drawing)
           (rl/clear-background (rl/rgba 140 190 230 255))    ; sky
-          (rl/with-camera-3d {:pos-x px :pos-y EYE-Y :pos-z pz
-                              :target-x tx :target-y ty :target-z tz
-                              :fovy 60.0 :projection 0}
+          (rl/with-camera-3d {:pos-x px
+                              :pos-y EYE-Y
+                              :pos-z pz
+                              :target-x tx
+                              :target-y ty
+                              :target-z tz
+                              :fovy 60.0
+                              :projection 0}
             (fn []
               (rl/draw-grid 40 1.0)
               (doseq [c columns]

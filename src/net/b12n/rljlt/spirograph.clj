@@ -13,7 +13,8 @@
   []
   {:r (double (rl/get-random-value 30 95))
    :d (double (rl/get-random-value 40 130))
-   :t 0.0 :points []})
+   :t 0.0
+   :points []})
 
 (defn- pt
   [r d t]

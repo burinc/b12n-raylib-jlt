@@ -15,8 +15,10 @@
 
 (defn- new-rocket
   []
-  {:x (double (rl/get-random-value 100 700)) :y (double height)
-   :vy (- (/ (rl/get-random-value 60 85) 10.0)) :color (palette)})
+  {:x (double (rl/get-random-value 100 700))
+   :y (double height)
+   :vy (- (/ (rl/get-random-value 60 85) 10.0))
+   :color (palette)})
 
 (defn- explode
   [{:keys [x y color]}]
@@ -24,8 +26,12 @@
                    (fn []
                      (let [a (/ (rl/get-random-value 0 628) 100.0)
                            sp (/ (rl/get-random-value 5 32) 10.0)]
-                       {:x x :y y :vx (* sp (Math/cos a)) :vy (* sp (Math/sin a))
-                        :life 1.0 :color color})))))
+                       {:x x
+                        :y y
+                        :vx (* sp (Math/cos a))
+                        :vy (* sp (Math/sin a))
+                        :life 1.0
+                        :color color})))))
 
 (defn -main
   [& _]
@@ -34,7 +40,9 @@
   (let [deadline (rl/auto-quit-deadline)]
     (loop [frame 0
            rockets []
-           parts (explode {:x 400.0 :y 170.0 :color [255 220 80]})]
+           parts (explode {:x 400.0
+                           :y 170.0
+                           :color [255 220 80]})]
       (when (rl/keep-running? deadline)
         (let [rockets (if (zero? (mod frame 35)) (conj rockets (new-rocket)) rockets)
               rockets (mapv (fn [r] (-> r (update :y + (:vy r)) (update :vy + gravity))) rockets)

@@ -21,19 +21,27 @@
 
 (defn- new-game
   []
-  {:y 225.0 :vy 0.0 :score 0 :over? false
-   :pipes (mapv (fn [i] {:x (+ 500 (* i spacing)) :gap (rand-gap) :scored false})
+  {:y 225.0
+   :vy 0.0
+   :score 0
+   :over? false
+   :pipes (mapv (fn [i] {:x (+ 500 (* i spacing))
+                         :gap (rand-gap)
+                         :scored false})
                 (range 3))})
 
 (defn- step
-  [{:keys [y vy pipes score] :as st}]
+  [{:keys [y vy pipes score]
+    :as st}]
   (let [vy (+ vy gravity)
         vy (if (rl/key-pressed? rl/KEY-SPACE) flap vy)
         ny (+ y vy)
         pipes (mapv (fn [p]
                       (let [nx (- (:x p) scroll)]
                         (if (< nx (- pipe-w))
-                          {:x (+ nx (* 3 spacing)) :gap (rand-gap) :scored false}
+                          {:x (+ nx (* 3 spacing))
+                           :gap (rand-gap)
+                           :scored false}
                           (assoc p :x nx))))
                     pipes)
         passed (count (filter (fn [p] (and (not (:scored p)) (< (+ (:x p) pipe-w) bird-x))) pipes))

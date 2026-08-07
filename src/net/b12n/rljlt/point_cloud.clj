@@ -30,7 +30,9 @@
       (when (rl/keep-running? deadline)
         (rl/begin-drawing)
         (rl/clear-background rl/BLACK)
-        (rl/with-camera-3d {:pos-x 0.0 :pos-y 0.0 :pos-z 12.0}
+        (rl/with-camera-3d {:pos-x 0.0
+                            :pos-y 0.0
+                            :pos-z 12.0}
           (fn []
             (rl/rl-push-matrix)
             (rl/rl-rotatef (* frame 0.3) 0.0 1.0 0.0)

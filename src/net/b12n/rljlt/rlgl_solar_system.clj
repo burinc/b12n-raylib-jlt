@@ -25,9 +25,14 @@
               moon-orbit  (double (mod (* 2.0 frame) 360))]
           (rl/begin-drawing)
           (rl/clear-background (rl/rgba 10 10 24 255))
-          (rl/with-camera-3d {:pos-x 16.0 :pos-y 16.0 :pos-z 16.0
-                              :target-x 0.0 :target-y 0.0 :target-z 0.0
-                              :fovy 45.0 :projection 0}
+          (rl/with-camera-3d {:pos-x 16.0
+                              :pos-y 16.0
+                              :pos-z 16.0
+                              :target-x 0.0
+                              :target-y 0.0
+                              :target-z 0.0
+                              :fovy 45.0
+                              :projection 0}
             (fn []
                                ;; Sun at the origin
               (rl/cube! :pos [0.0 0.0 0.0] :size 3.0 :color rl/GOLD)

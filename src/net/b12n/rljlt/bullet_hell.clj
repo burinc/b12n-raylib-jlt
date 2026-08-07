@@ -21,7 +21,10 @@
         (let [base    (* 0.2 frame)
               spawned (for [k (range 3)]
                         (let [a (+ base (* k ARM))]
-                          {:x cx :y cy :vx (* 3.5 (Math/cos a)) :vy (* 3.5 (Math/sin a))}))
+                          {:x cx
+                           :y cy
+                           :vx (* 3.5 (Math/cos a))
+                           :vy (* 3.5 (Math/sin a))}))
               bullets (->> (into bullets spawned)
                            (map (fn [b] (assoc b :x (+ (:x b) (:vx b)) :y (+ (:y b) (:vy b)))))
                            (filterv (fn [b]

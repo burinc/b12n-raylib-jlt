@@ -24,16 +24,23 @@
 ;; Each piece: a color + its rotation states. A state is four [col row] cells in a
 ;; small local grid; pieces with fewer distinct rotations just list what they have.
 (def ^:private PIECES
-  {:i {:color rl/SKYBLUE :rots [[[0 1] [1 1] [2 1] [3 1]] [[2 0] [2 1] [2 2] [2 3]]]}
-   :o {:color rl/GOLD    :rots [[[1 0] [2 0] [1 1] [2 1]]]}
-   :t {:color rl/PURPLE  :rots [[[1 0] [0 1] [1 1] [2 1]] [[1 0] [1 1] [2 1] [1 2]]
-                                [[0 1] [1 1] [2 1] [1 2]] [[1 0] [0 1] [1 1] [1 2]]]}
-   :s {:color rl/LIME    :rots [[[1 0] [2 0] [0 1] [1 1]] [[1 0] [1 1] [2 1] [2 2]]]}
-   :z {:color rl/RED     :rots [[[0 0] [1 0] [1 1] [2 1]] [[2 0] [1 1] [2 1] [1 2]]]}
-   :j {:color rl/BLUE    :rots [[[0 0] [0 1] [1 1] [2 1]] [[1 0] [2 0] [1 1] [1 2]]
-                                [[0 1] [1 1] [2 1] [2 2]] [[1 0] [1 1] [0 2] [1 2]]]}
-   :l {:color rl/ORANGE  :rots [[[2 0] [0 1] [1 1] [2 1]] [[1 0] [1 1] [1 2] [2 2]]
-                                [[0 1] [1 1] [2 1] [0 2]] [[0 0] [1 0] [1 1] [1 2]]]}})
+  {:i {:color rl/SKYBLUE
+       :rots [[[0 1] [1 1] [2 1] [3 1]] [[2 0] [2 1] [2 2] [2 3]]]}
+   :o {:color rl/GOLD
+       :rots [[[1 0] [2 0] [1 1] [2 1]]]}
+   :t {:color rl/PURPLE
+       :rots [[[1 0] [0 1] [1 1] [2 1]] [[1 0] [1 1] [2 1] [1 2]]
+              [[0 1] [1 1] [2 1] [1 2]] [[1 0] [0 1] [1 1] [1 2]]]}
+   :s {:color rl/LIME
+       :rots [[[1 0] [2 0] [0 1] [1 1]] [[1 0] [1 1] [2 1] [2 2]]]}
+   :z {:color rl/RED
+       :rots [[[0 0] [1 0] [1 1] [2 1]] [[2 0] [1 1] [2 1] [1 2]]]}
+   :j {:color rl/BLUE
+       :rots [[[0 0] [0 1] [1 1] [2 1]] [[1 0] [2 0] [1 1] [1 2]]
+              [[0 1] [1 1] [2 1] [2 2]] [[1 0] [1 1] [0 2] [1 2]]]}
+   :l {:color rl/ORANGE
+       :rots [[[2 0] [0 1] [1 1] [2 1]] [[1 0] [1 1] [1 2] [2 2]]
+              [[0 1] [1 1] [2 1] [0 2]] [[0 0] [1 0] [1 1] [1 2]]]}})
 
 (def ^:private PIECE-TYPES [:i :o :t :s :z :j :l])
 
@@ -44,7 +51,10 @@
 
 (defn- spawn
   [type]
-  {:type type :rot 0 :x 3 :y 0})
+  {:type type
+   :rot 0
+   :x 3
+   :y 0})
 
 (defn- interval
   [level]
@@ -84,8 +94,13 @@
 (defn- initial-state
   []
   {:board (vec (repeat ROWS (vec (repeat COLS nil))))
-   :piece (spawn (rand-type)) :next (rand-type)
-   :score 0 :lines 0 :level 0 :tick 0 :over? false})
+   :piece (spawn (rand-type))
+   :next (rand-type)
+   :score 0
+   :lines 0
+   :level 0
+   :tick 0
+   :over? false})
 
 (defn- lock-and-next
   "Lock `piece`, clear lines, score, and bring up the next piece (game over if it

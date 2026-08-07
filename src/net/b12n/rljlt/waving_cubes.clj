@@ -31,9 +31,14 @@
               cam-z (* span 1.3 (Math/sin a))]
           (rl/begin-drawing)
           (rl/clear-background (rl/rgba 18 18 32 255))
-          (rl/with-camera-3d {:pos-x cam-x :pos-y (* span 0.9) :pos-z cam-z
-                              :target-x 0.0 :target-y 1.5 :target-z 0.0
-                              :fovy 45.0 :projection 0}
+          (rl/with-camera-3d {:pos-x cam-x
+                              :pos-y (* span 0.9)
+                              :pos-z cam-z
+                              :target-x 0.0
+                              :target-y 1.5
+                              :target-z 0.0
+                              :fovy 45.0
+                              :projection 0}
             (fn []
               (doseq [ix (range N)
                       iz (range N)]

@@ -24,9 +24,12 @@
 (def ^:const KEY-ENTER 257)
 
 (def ^:private SIZES
-  {3 {:r 40.0 :score 20}
-   2 {:r 22.0 :score 50}
-   1 {:r 11.0 :score 100}})
+  {3 {:r 40.0
+      :score 20}
+   2 {:r 22.0
+      :score 50}
+   1 {:r 11.0
+      :score 100}})
 
 ;; --- helpers -----------------------------------------------------------------
 (defn- wrap
@@ -52,9 +55,15 @@
                      (let [a  (* TAU (/ (double i) n))
                            rr (* r (+ 0.65 (* 0.5 (/ (rl/get-random-value 0 100) 100.0))))]
                        [(* rr (Math/cos a)) (* rr (Math/sin a))])))]
-    {:x x :y y
-     :vx (* (rand-unit) (/ 2.2 size)) :vy (* (rand-unit) (/ 2.2 size))
-     :size size :r r :angle 0.0 :spin (* 0.02 (rand-unit)) :verts verts}))
+    {:x x
+     :y y
+     :vx (* (rand-unit) (/ 2.2 size))
+     :vy (* (rand-unit) (/ 2.2 size))
+     :size size
+     :r r
+     :angle 0.0
+     :spin (* 0.02 (rand-unit))
+     :verts verts}))
 
 (defn- spawn-wave
   [n]
@@ -68,9 +77,17 @@
 
 (defn- initial-state
   []
-  {:ship {:x (/ W 2.0) :y (/ H 2.0) :angle (- (/ PI 2)) :vx 0.0 :vy 0.0}
-   :bullets [] :asteroids (spawn-wave 4)
-   :score 0 :lives 3 :over? false :invuln 60})
+  {:ship {:x (/ W 2.0)
+          :y (/ H 2.0)
+          :angle (- (/ PI 2))
+          :vx 0.0
+          :vy 0.0}
+   :bullets []
+   :asteroids (spawn-wave 4)
+   :score 0
+   :lives 3
+   :over? false
+   :invuln 60})
 
 ;; --- update ------------------------------------------------------------------
 (defn- resolve-hits
@@ -80,7 +97,9 @@
   [asteroids bullets]
   (loop [as (seq asteroids), bs (vec bullets), out [], gained 0]
     (if (empty? as)
-      {:asteroids out :bullets bs :score gained}
+      {:asteroids out
+       :bullets bs
+       :score gained}
       (let [a       (first as)
             hit-idx (first (keep-indexed (fn [i b] (when (close? a b (:r a)) i)) bs))]
         (if hit-idx
@@ -105,10 +124,17 @@
           vy    (* FRICTION (+ (:vy ship) (if thr? (* THRUST (Math/sin angle)) 0.0)))
           x     (wrap (+ (:x ship) vx) W)
           y     (wrap (+ (:y ship) vy) H)
-          ship' {:x x :y y :angle angle :vx vx :vy vy}
+          ship' {:x x
+                 :y y
+                 :angle angle
+                 :vx vx
+                 :vy vy}
           fired (if (rl/key-pressed? rl/KEY-SPACE)
-                  [{:x x :y y :vx (+ vx (* BSPEED (Math/cos angle)))
-                    :vy (+ vy (* BSPEED (Math/sin angle))) :life BLIFE}]
+                  [{:x x
+                    :y y
+                    :vx (+ vx (* BSPEED (Math/cos angle)))
+                    :vy (+ vy (* BSPEED (Math/sin angle)))
+                    :life BLIFE}]
                   [])
           bullets (->> (into (:bullets s) fired)
                        (map (fn [b]
@@ -121,7 +147,9 @@
                                    :y (wrap (+ (:y a) (:vy a)) H)
                                    :angle (+ (:angle a) (:spin a))))
                           (:asteroids s))
-          {as' :asteroids bs' :bullets gained :score} (resolve-hits asteroids bullets)
+          {as' :asteroids
+           bs' :bullets
+           gained :score} (resolve-hits asteroids bullets)
           invuln  (max 0 (dec (:invuln s)))
           crash?  (and (zero? invuln) (some (fn [a] (close? ship' a (+ SHIP-R (:r a) -4.0))) as'))
           lives   (if crash? (dec (:lives s)) (:lives s))]

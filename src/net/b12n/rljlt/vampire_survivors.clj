@@ -47,7 +47,9 @@
                 1 [(+ W 20.0) (double (rl/get-random-value 0 H))]
                 2 [(double (rl/get-random-value 0 W)) -20.0]
                 [(double (rl/get-random-value 0 W)) (+ H 20.0)])]
-    {:x x :y y :hp ENEMY-HP}))
+    {:x x
+     :y y
+     :hp ENEMY-HP}))
 
 (defn- toward
   "Velocity [vx vy] of magnitude `speed` pointing from point `from` [x y] to `to`."
@@ -57,9 +59,20 @@
 
 (defn- initial-state
   []
-  {:hero {:x (/ W 2.0) :y (/ H 2.0) :hp HERO-HP :level 1 :xp 0 :hurt-cd 0}
-   :enemies [] :bullets [] :gems []
-   :fire-cd 0 :spawn-cd 30 :time 0 :kills 0 :over? false})
+  {:hero {:x (/ W 2.0)
+          :y (/ H 2.0)
+          :hp HERO-HP
+          :level 1
+          :xp 0
+          :hurt-cd 0}
+   :enemies []
+   :bullets []
+   :gems []
+   :fire-cd 0
+   :spawn-cd 30
+   :time 0
+   :kills 0
+   :over? false})
 
 (defn- resolve-hits
   "Fold bullets into enemies: a bullet within range takes 1 HP; a dead enemy drops
@@ -67,14 +80,18 @@
   [enemies bullets gems kills]
   (loop [es (seq enemies), bs (vec bullets), out-e [], out-g (vec gems), k kills]
     (if (empty? es)
-      {:enemies out-e :bullets bs :gems out-g :kills k}
+      {:enemies out-e
+       :bullets bs
+       :gems out-g
+       :kills k}
       (let [e       (first es)
             hit-idx (first (keep-indexed (fn [i b] (when (close? e b (+ ENEMY-R BULLET-R)) i)) bs))]
         (if hit-idx
           (let [bs' (into (subvec bs 0 hit-idx) (subvec bs (inc hit-idx)))
                 e'  (update e :hp dec)]
             (if (<= (:hp e') 0)
-              (recur (next es) bs' out-e (conj out-g {:x (:x e) :y (:y e)}) (inc k))
+              (recur (next es) bs' out-e (conj out-g {:x (:x e)
+                                                      :y (:y e)}) (inc k))
               (recur (next es) bs' (conj out-e e') out-g k)))
           (recur (next es) bs (conj out-e e) out-g k))))))
 
@@ -105,7 +122,11 @@
           target  (nearest hx hy enemies1)
           [bullets0 fire-cd] (if (and (<= fire-cd 0) target)
                                (let [[vx vy] (toward [hx hy] [(:x target) (:y target)] BSPEED)]
-                                 [(conj (:bullets s) {:x hx :y hy :vx vx :vy vy :life 90})
+                                 [(conj (:bullets s) {:x hx
+                                                      :y hy
+                                                      :vx vx
+                                                      :vy vy
+                                                      :life 90})
                                   (max 5 (- 22 (* 2 (:level h))))])
                                [(:bullets s) (max 0 fire-cd)])
           bullets1 (->> bullets0
@@ -116,18 +137,30 @@
           {:keys [enemies bullets gems kills]} (resolve-hits enemies1 bullets1 (:gems s) (:kills s))
           ;; collect gems within pickup range
           [gems2 got] (reduce (fn [[keep n] g]
-                                (if (close? {:x hx :y hy} g PICKUP-R) [keep (inc n)] [(conj keep g) n]))
+                                (if (close? {:x hx
+                                             :y hy} g PICKUP-R) [keep (inc n)] [(conj keep g) n]))
                               [[] 0] gems)
           xp0 (+ (:xp h) got)
           need (* (:level h) 5)
           [level xp] (if (>= xp0 need) [(inc (:level h)) (- xp0 need)] [(:level h) xp0])
           ;; contact damage (with a short cooldown so you don't melt instantly)
           hurt-cd0 (max 0 (dec (:hurt-cd h)))
-          touch?   (some (fn [e] (close? {:x hx :y hy} e (+ HERO-R ENEMY-R))) enemies)
+          touch?   (some (fn [e] (close? {:x hx
+                                          :y hy} e (+ HERO-R ENEMY-R))) enemies)
           [hp hurt-cd] (if (and touch? (zero? hurt-cd0)) [(- (:hp h) CONTACT-DMG) 25] [(:hp h) hurt-cd0])]
-      {:hero {:x hx :y hy :hp hp :level level :xp xp :hurt-cd hurt-cd}
-       :enemies enemies :bullets bullets :gems gems2
-       :fire-cd fire-cd :spawn-cd spawn-cd :time (inc (:time s)) :kills kills
+      {:hero {:x hx
+              :y hy
+              :hp hp
+              :level level
+              :xp xp
+              :hurt-cd hurt-cd}
+       :enemies enemies
+       :bullets bullets
+       :gems gems2
+       :fire-cd fire-cd
+       :spawn-cd spawn-cd
+       :time (inc (:time s))
+       :kills kills
        :over? (<= hp 0)})))
 
 (defn- bar!

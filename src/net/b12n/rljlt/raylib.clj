@@ -101,7 +101,12 @@
   floats (offset.x, offset.y, target.x, target.y, rotation, zoom), passes a
   pointer to BeginMode2D, runs f, then EndMode2D and frees. See the ABI note above."
   [{:keys [offset-x offset-y target-x target-y rotation zoom]
-    :or {offset-x 0 offset-y 0 target-x 0 target-y 0 rotation 0 zoom 1.0}} f]
+    :or {offset-x 0
+         offset-y 0
+         target-x 0
+         target-y 0
+         rotation 0
+         zoom 1.0}} f]
   (let [p (ffi/alloc 24)]
     (try
       (ffi/write p :float 0  (double offset-x))
@@ -141,8 +146,17 @@
   a pointer. Keys: :pos-x/y/z :target-x/y/z :up-x/y/z :fovy :projection (0 =
   perspective). See the ABI note above."
   [{:keys [pos-x pos-y pos-z target-x target-y target-z up-x up-y up-z fovy projection]
-    :or {pos-x 0 pos-y 0 pos-z 0 target-x 0 target-y 0 target-z 0
-         up-x 0 up-y 1 up-z 0 fovy 45 projection 0}} f]
+    :or {pos-x 0
+         pos-y 0
+         pos-z 0
+         target-x 0
+         target-y 0
+         target-z 0
+         up-x 0
+         up-y 1
+         up-z 0
+         fovy 45
+         projection 0}} f]
   (let [p (ffi/alloc 44)]
     (try
       (ffi/write p :float 0  (double pos-x))
@@ -185,7 +199,10 @@
     :pos   [x y z] centre           (default [0 0 0])
     :size  a number for a uniform cube, or [sx sy sz]  (default 1)
     :color a packed Color           (default BLACK)"
-  [& {:keys [pos size color] :or {pos [0.0 0.0 0.0] size 1.0 color BLACK}}]
+  [& {:keys [pos size color]
+      :or {pos [0.0 0.0 0.0]
+           size 1.0
+           color BLACK}}]
   (let [[cx cy cz] pos
         [sx sy sz] (if (number? size) [size size size] size)
         hx (/ sx 2.0) hy (/ sy 2.0) hz (/ sz 2.0)
@@ -212,7 +229,11 @@
     :slices longitude sectors     (default 16)
     :color  a packed Color        (default BLACK)"
   [& {:keys [pos radius rings slices color]
-      :or {pos [0.0 0.0 0.0] radius 0.5 rings 12 slices 16 color BLACK}}]
+      :or {pos [0.0 0.0 0.0]
+           radius 0.5
+           rings 12
+           slices 16
+           color BLACK}}]
   (let [[cx cy cz] pos
         two-pi (* 2.0 Math/PI)]
     (rl-begin RL-TRIANGLES)
@@ -308,62 +329,109 @@
 
 (defn window!
   "InitWindow with keyword args. :width :height :title."
-  [& {:keys [width height title] :or {width 800 height 450 title "raylib"}}]
+  [& {:keys [width height title]
+      :or {width 800
+           height 450
+           title "raylib"}}]
   (init-window width height title))
 
 (defn text!
   "DrawText. :x :y :size :color."
-  [s & {:keys [x y size color] :or {x 0 y 0 size 20 color BLACK}}]
+  [s & {:keys [x y size color]
+        :or {x 0
+             y 0
+             size 20
+             color BLACK}}]
   (draw-text s x y size color))
 
 (defn text-width
   "MeasureText. :size."
-  [s & {:keys [size] :or {size 20}}]
+  [s & {:keys [size]
+        :or {size 20}}]
   (measure-text s size))
 
 (defn fps!
   "DrawFPS. :x :y."
-  [& {:keys [x y] :or {x 10 y 10}}]
+  [& {:keys [x y]
+      :or {x 10
+           y 10}}]
   (draw-fps x y))
 
 (defn rect!
   "DrawRectangle. :x :y :width :height :color."
-  [& {:keys [x y width height color] :or {x 0 y 0 width 10 height 10 color BLACK}}]
+  [& {:keys [x y width height color]
+      :or {x 0
+           y 0
+           width 10
+           height 10
+           color BLACK}}]
   (draw-rectangle x y width height color))
 
 (defn rect-lines!
   "DrawRectangleLines. :x :y :width :height :color."
-  [& {:keys [x y width height color] :or {x 0 y 0 width 10 height 10 color BLACK}}]
+  [& {:keys [x y width height color]
+      :or {x 0
+           y 0
+           width 10
+           height 10
+           color BLACK}}]
   (draw-rectangle-lines x y width height color))
 
 (defn rect-gradient!
   "DrawRectangleGradientV (top->bottom). :x :y :width :height :top :bottom."
-  [& {:keys [x y width height top bottom] :or {x 0 y 0 width 10 height 10 top WHITE bottom BLACK}}]
+  [& {:keys [x y width height top bottom]
+      :or {x 0
+           y 0
+           width 10
+           height 10
+           top WHITE
+           bottom BLACK}}]
   (draw-rectangle-grad-v x y width height top bottom))
 
 (defn circle!
   "DrawCircle. :x :y :radius :color."
-  [& {:keys [x y radius color] :or {x 0 y 0 radius 10 color BLACK}}]
+  [& {:keys [x y radius color]
+      :or {x 0
+           y 0
+           radius 10
+           color BLACK}}]
   (draw-circle x y (double radius) color))
 
 (defn circle-lines!
   "DrawCircleLines. :x :y :radius :color."
-  [& {:keys [x y radius color] :or {x 0 y 0 radius 10 color BLACK}}]
+  [& {:keys [x y radius color]
+      :or {x 0
+           y 0
+           radius 10
+           color BLACK}}]
   (draw-circle-lines x y (double radius) color))
 
 (defn ellipse!
   "DrawEllipse. :x :y :rx :ry :color."
-  [& {:keys [x y rx ry color] :or {x 0 y 0 rx 10 ry 6 color BLACK}}]
+  [& {:keys [x y rx ry color]
+      :or {x 0
+           y 0
+           rx 10
+           ry 6
+           color BLACK}}]
   (draw-ellipse x y (double rx) (double ry) color))
 
 (defn line!
   "DrawLine. :x1 :y1 :x2 :y2 :color."
-  [& {:keys [x1 y1 x2 y2 color] :or {x1 0 y1 0 x2 0 y2 0 color BLACK}}]
+  [& {:keys [x1 y1 x2 y2 color]
+      :or {x1 0
+           y1 0
+           x2 0
+           y2 0
+           color BLACK}}]
   (draw-line x1 y1 x2 y2 color))
 
 (defn pixel!
   "DrawPixel. :x :y :color."
-  [& {:keys [x y color] :or {x 0 y 0 color BLACK}}]
+  [& {:keys [x y color]
+      :or {x 0
+           y 0
+           color BLACK}}]
   (draw-pixel x y color))
 
 (defn sector!
@@ -380,7 +448,13 @@
     :segments  fan resolution (default 32)
     :color     packed Color"
   [& {:keys [cx cy radius start-deg end-deg segments color]
-      :or {cx 0 cy 0 radius 10 start-deg 0 end-deg 90 segments 32 color BLACK}}]
+      :or {cx 0
+           cy 0
+           radius 10
+           start-deg 0
+           end-deg 90
+           segments 32
+           color BLACK}}]
   (let [d->r (/ Math/PI 180.0)
         span (- end-deg start-deg)
         rim (fn [deg]
@@ -408,7 +482,14 @@
     :segments  resolution (default 48)
     :color     packed Color"
   [& {:keys [cx cy inner outer start-deg end-deg segments color]
-      :or {cx 0 cy 0 inner 20 outer 40 start-deg 0 end-deg 360 segments 48 color BLACK}}]
+      :or {cx 0
+           cy 0
+           inner 20
+           outer 40
+           start-deg 0
+           end-deg 360
+           segments 48
+           color BLACK}}]
   (let [d->r (/ Math/PI 180.0)
         span (- end-deg start-deg)
         pt (fn [deg r]
@@ -436,7 +517,13 @@
     :x1 :y1 :x2 :y2   endpoints
     :thick   width in px (default 2)
     :color   packed Color"
-  [& {:keys [x1 y1 x2 y2 thick color] :or {x1 0 y1 0 x2 0 y2 0 thick 2 color BLACK}}]
+  [& {:keys [x1 y1 x2 y2 thick color]
+      :or {x1 0
+           y1 0
+           x2 0
+           y2 0
+           thick 2
+           color BLACK}}]
   (let [dx (- x2 x1) dy (- y2 y1)
         len (Math/sqrt (+ (* dx dx) (* dy dy)))
         len (if (zero? len) 1.0 len)

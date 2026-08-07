@@ -17,7 +17,9 @@
         (let [ortho? (if (rl/key-pressed? rl/KEY-SPACE) (not ortho?) ortho?)]
           (rl/begin-drawing)
           (rl/clear-background rl/RAYWHITE)
-          (rl/with-camera-3d {:pos-x 5.0 :pos-y 5.0 :pos-z 5.0
+          (rl/with-camera-3d {:pos-x 5.0
+                              :pos-y 5.0
+                              :pos-z 5.0
                               :fovy (if ortho? 12.0 45.0)
                               :projection (if ortho? 1 0)}
             (fn []

@@ -5,7 +5,8 @@
   (:require
    [net.b12n.rljlt.raylib :as rl]))
 
-(def rules {\X "F+[[X]-X]-F[-FX]+X" \F "FF"})
+(def rules {\X "F+[[X]-X]-F[-FX]+X"
+            \F "FF"})
 (def iterations 5)
 (def angle-rad (* 25.0 (/ Math/PI 180.0)))
 (def step-len 3.2)
