@@ -6,12 +6,35 @@
 ;;   bb run <name>      run one example by argument
 ;;   bb run-all [secs]  demo reel / smoke test: every example, N seconds each
 ;;   bb check           headless compile-check of every example (no window)
-;;   bb lint            check formatting (cljfmt) + lint (clj-kondo)
-;;   bb lint:fix        reformat src in place with cljfmt
 ;;   bb lib:check       is the native libraylib installed for this OS/arch?
 ;;   bb lib:install     install libraylib via the platform package manager
 ;;
-;; Each `bb <name>` task shells out to the example's joltc alias in deps.edn.
+;; ── Quality — lint/format/checks ──
+;;   bb lint                          clj-kondo over src (report only)
+;;   bb lint:strict                   bb lint, but exit non-zero if any findings
+;;   bb lsp:format                    reformat all Clojure files (clojure-lsp)
+;;   bb lsp:format-check              check formatting — dry run
+;;   bb lsp:clean-ns                  clean + organize ns forms (clojure-lsp)
+;;   bb lsp:clean-ns-check            check ns forms — dry run
+;;   bb lsp:diagnostics               clojure-lsp diagnostics
+;;   bb lsp:check                     all LSP checks (format + clean-ns + diagnostics) — dry run
+;;   bb lsp:fix                       auto-fix: format + clean-ns (mutating)
+;;   bb check:positional-args         find fns with 3+ positional args (report only)
+;;   bb check:positional-args:strict  bb check:positional-args, but exit non-zero if any found
+;;
+;; ── Git hooks ──
+;;   bb hooks:install                 install FAST pre-commit hook (lint + format + clean-ns, ~2s)
+;;   bb hooks:install:full            install FULL pre-commit hook (+ bb check, slower)
+;;   bb hooks:uninstall               remove the git pre-commit hook
+;;
+;; ── Dev ──
+;;   bb nrepl [port]                  start a jolt nREPL server (default 7888)
+;;
+;; Each `bb <name>` example task shells out to the example's joltc alias in
+;; deps.edn. Formatting is owned by clojure-lsp, not cljfmt: the two disagree
+;; on some compact literal tables (e.g. digital_clock.clj's segment map), so
+;; only one formatter may run against src — clojure-lsp was chosen so
+;; `lsp:clean-ns` (no cljfmt equivalent) and `lsp:format` share one tool.
 ;; NOTE: task bodies are read by babashka's EDN reader, which does NOT support
 ;; #"regex", @deref, or #(...) reader macros — use (fn [x] ...) etc.
 {:min-bb-version "1.3.0"
@@ -24,17 +47,10 @@
              '[clojure.java.shell :as sh]
              '[clojure.string :as str])
 
-    ;; cljfmt is a JVM tool, so `bb lint` runs it through the clojure CLI with the
-    ;; dep given inline rather than adding a JVM alias to deps.edn — joltc parses
-    ;; that file and this project is deliberately JVM-free at runtime. Pinned so
-    ;; every checkout formats identically; bump deliberately, then run bb lint:fix.
-    (def cljfmt-dep
-      "{:deps {dev.weavejester/cljfmt {:mvn/version \"0.13.1\"}}}")
-
     ;; clj-kondo ships a fast native binary; prefer it when installed and fall
-    ;; back to the same clojure-CLI route as cljfmt so a bare checkout still
-    ;; lints. Both were verified against .clj-kondo/hooks/jolt_ffi.clj, which is
-    ;; what teaches clj-kondo to see through ffi/defcfn.
+    ;; back to the clojure-CLI route so a bare checkout still lints. Both were
+    ;; verified against .clj-kondo/hooks/jolt_ffi.clj, which is what teaches
+    ;; clj-kondo to see through ffi/defcfn.
     (def kondo-dep
       "{:deps {clj-kondo/clj-kondo {:mvn/version \"2025.02.20\"}}}")
 
@@ -335,41 +351,95 @@
            (println)
            (println "Run any example with `bb <name>` · list: `bb examples` · all tasks: `bb tasks`")
            (println "Demo reel / smoke test: `bb run-all [secs]` · headless check: `bb check`")
-           (println "Format + lint: `bb lint` (cljfmt + clj-kondo) · `bb lint:fix` (reformat)")
-           (println "Native library: `bb lib:check` (is libraylib installed?) · `bb lib:install`"))}
+           (println "Lint: `bb lint` (clj-kondo) · Format: `bb lsp:format` · `bb lsp:fix` (format + clean-ns)")
+           (println "Native library: `bb lib:check` (is libraylib installed?) · `bb lib:install`")
+           (println "Git hooks: `bb hooks:install` (fast) · `bb hooks:install:full` · nREPL: `bb nrepl [port]`"))}
 
   check
   {:doc "Headless compile-check of every example (no window)"
    :task (shell "joltc" "-M:check")}
 
-  ;; --- formatting + linting (cljfmt, clj-kondo) -----------------------------
+  ;; --- quality: lint (clj-kondo) --------------------------------------------
+  ;; Formatting lives under lsp:format below, not here — see the top-of-file
+  ;; note on why clojure-lsp (not cljfmt) owns formatting in this project.
   lint
-  {:doc "Check formatting (cljfmt) and lint (clj-kondo); fix format with `bb lint:fix`"
-   :task (let [fmt (shell {:continue true} "clojure" "-Sdeps" cljfmt-dep
-                          "-M" "-m" "cljfmt.main" "check" "src")
-               fmt-exit (:exit fmt)]
-           (if (zero? fmt-exit)
-             (println "✓ cljfmt: all source files formatted correctly")
-             (binding [*out* *err*]
-               (println "\n✗ cljfmt: formatting differs from the project style.")
-               (println "  In the diff above, `-` is your file and `+` is cljfmt's.")
-               (println "  Fix in place with:  bb lint:fix")))
-           ;; clj-kondo runs even when cljfmt failed, so one run reports both.
-           (let [kondo (apply shell {:continue true}
-                              (concat (kondo-argv) ["--lint" "src"]))
-                 kondo-exit (:exit kondo)]
-             (if (zero? kondo-exit)
-               (println "✓ clj-kondo: no errors or warnings")
-               (binding [*out* *err*]
-                 (println "\n✗ clj-kondo: see the findings above.")))
-             (let [worst (max fmt-exit kondo-exit)]
-               (when-not (zero? worst) (System/exit worst)))))}
+  {:doc "clj-kondo over src (report only, always exits 0); strict: bb lint:strict"
+   :task (let [{:keys [exit]} (apply shell {:continue true} (concat (kondo-argv) ["--lint" "src"]))]
+           (println (if (zero? exit) "✓ clj-kondo: no errors or warnings" "✗ clj-kondo: see findings above")))}
 
-  lint:fix
-  {:doc "Reformat src in place with cljfmt"
-   :task (do (shell "clojure" "-Sdeps" cljfmt-dep
-                    "-M" "-m" "cljfmt.main" "fix" "src")
-             (println "✓ cljfmt: reformatted in place. Review with `git diff`."))}
+  lint:strict
+  {:doc "bb lint, but exit non-zero if clj-kondo reports any findings (2=warnings, 3=errors)"
+   :task (let [{:keys [exit]} (apply shell {:continue true} (concat (kondo-argv) ["--lint" "src"]))]
+           (System/exit exit))}
+
+  ;; --- quality: clojure-lsp (format + clean-ns + diagnostics) ---------------
+  lsp:format
+  {:doc "Reformat all Clojure files (clojure-lsp)"
+   :task (let [{:keys [exit]} (shell {:continue true} "clojure-lsp" "format")]
+           (if (zero? exit)
+             (println "✓ formatted")
+             (do (println "✗ format failed") (System/exit exit))))}
+
+  lsp:format-check
+  {:doc "Check formatting — dry run"
+   :task (let [{:keys [exit]} (shell {:continue true} "clojure-lsp" "format" "--dry")]
+           (if (zero? exit)
+             (println "✓ all files formatted")
+             (do (println "✗ files need formatting — run bb lsp:format") (System/exit exit))))}
+
+  lsp:clean-ns
+  {:doc "Clean + organize ns forms (clojure-lsp)"
+   :task (let [{:keys [exit]} (shell {:continue true} "clojure-lsp" "clean-ns")]
+           (if (zero? exit)
+             (println "✓ namespaces cleaned")
+             (do (println "✗ clean-ns failed") (System/exit exit))))}
+
+  lsp:clean-ns-check
+  {:doc "Check ns forms — dry run"
+   :task (let [{:keys [exit]} (shell {:continue true} "clojure-lsp" "clean-ns" "--dry")]
+           (if (zero? exit)
+             (println "✓ all ns forms clean")
+             (do (println "✗ ns forms need cleaning — run bb lsp:clean-ns") (System/exit exit))))}
+
+  ;; clojure-lsp's :diagnostics command runs clj-kondo under the hood too, so
+  ;; this mostly mirrors `bb lint` plus any LSP-only diagnostics.
+  lsp:diagnostics
+  {:doc "clojure-lsp diagnostics"
+   :task (let [{:keys [exit]} (shell {:continue true} "clojure-lsp" "diagnostics")]
+           (if (zero? exit)
+             (println "✓ no diagnostics")
+             (println "✗ diagnostics found (see above)")))}
+
+  lsp:check
+  {:doc "All LSP checks (format + clean-ns + diagnostics) — dry run"
+   :task (do (println "-> LSP checks (dry run)")
+             (println "-> format --dry")
+             (shell {:continue true} "clojure-lsp" "format" "--dry")
+             (println "-> clean-ns --dry")
+             (shell {:continue true} "clojure-lsp" "clean-ns" "--dry")
+             (println "-> diagnostics")
+             (shell {:continue true} "clojure-lsp" "diagnostics")
+             (println "✓ LSP checks done (see above for any issues)"))}
+
+  lsp:fix
+  {:doc "Auto-fix: format + clean-ns (mutating)"
+   :task (do (println "-> LSP auto-fix")
+             (println "-> format")
+             (shell {:continue true} "clojure-lsp" "format")
+             (println "-> clean-ns")
+             (shell {:continue true} "clojure-lsp" "clean-ns")
+             (println "✓ auto-fixes applied — run bb lsp:diagnostics + bb check to confirm"))}
+
+  ;; --- quality: positional-args check ---------------------------------------
+  check:positional-args
+  {:doc "Find fns with 3+ positional args (prefer a kwargs map; report only)"
+   :task (let [{:keys [exit]} (shell {:continue true} "bb" "scripts/check_positional_args.clj")]
+           (System/exit exit))}
+
+  check:positional-args:strict
+  {:doc "bb check:positional-args, but exit non-zero if any found"
+   :task (let [{:keys [exit]} (shell {:continue true} "bb" "scripts/check_positional_args.clj" "--strict")]
+           (System/exit exit))}
 
   ;; --- native library (libraylib) ------------------------------------------
   lib:check
@@ -404,4 +474,56 @@
              dry?   (println "Would run:" (str/join " " cmd))
              :else  (do (println "Running:" (str/join " " cmd))
                         (apply shell cmd)
-                        (println "\nDone. Verify with: bb lib:check"))))}}}
+                        (println "\nDone. Verify with: bb lib:check"))))}
+
+  ;; --- git hooks --------------------------------------------------------------
+  ;; FAST hook: lint (any finding blocks, matching `bb lint:strict`) + format +
+  ;; clean-ns dry-run, ~2s. FULL adds `bb check` (headless compile of every
+  ;; example) — the project has no unit-test suite, so that's the closest
+  ;; equivalent pre-commit gate.
+  hooks:install
+  {:doc "Install FAST git pre-commit hook (lint + format + clean-ns, ~2s)"
+   :task (let [hook ".git/hooks/pre-commit"]
+           (spit hook (str "#!/bin/bash\n"
+                           "# net.b12n.rljlt pre-commit (FAST — lint + format + clean-ns dry-run).\n"
+                           "# Full (+ headless compile-check): bb hooks:install:full\n"
+                           "echo 'pre-commit 1/3: bb lint:strict (clj-kondo)'\n"
+                           "bb lint:strict || { echo 'pre-commit: lint findings — see above'; exit 1; }\n"
+                           "echo 'pre-commit 2/3: clojure-lsp format --dry'\n"
+                           "clojure-lsp format --dry || { echo 'run bb lsp:format'; exit 1; }\n"
+                           "echo 'pre-commit 3/3: clojure-lsp clean-ns --dry'\n"
+                           "clojure-lsp clean-ns --dry || { echo 'run bb lsp:clean-ns'; exit 1; }\n"
+                           "exit 0\n"))
+           (shell "chmod" "+x" hook)
+           (println "✓ fast pre-commit hook installed")
+           (println ">> skip once with: git commit --no-verify"))}
+
+  hooks:install:full
+  {:doc "Install FULL git pre-commit hook (+ headless compile-check of every example, slower)"
+   :task (let [hook ".git/hooks/pre-commit"]
+           (spit hook (str "#!/bin/bash\n"
+                           "# net.b12n.rljlt pre-commit (FULL). Fast: bb hooks:install\n"
+                           "echo 'pre-commit 1/4: bb lint:strict (clj-kondo)'\n"
+                           "bb lint:strict || { echo 'pre-commit: lint findings — see above'; exit 1; }\n"
+                           "echo 'pre-commit 2/4: clojure-lsp format --dry'\n"
+                           "clojure-lsp format --dry || { echo 'run bb lsp:format'; exit 1; }\n"
+                           "echo 'pre-commit 3/4: clojure-lsp clean-ns --dry'\n"
+                           "clojure-lsp clean-ns --dry || { echo 'run bb lsp:clean-ns'; exit 1; }\n"
+                           "echo 'pre-commit 4/4: bb check (headless compile-check of every example)'\n"
+                           "bb check\n"
+                           "exit $?\n"))
+           (shell "chmod" "+x" hook)
+           (println "✓ full pre-commit hook installed")
+           (println ">> skip once with: git commit --no-verify"))}
+
+  hooks:uninstall
+  {:doc "Remove the git pre-commit hook"
+   :task (let [hook ".git/hooks/pre-commit"]
+           (if (fs/exists? hook)
+             (do (fs/delete hook) (println "✓ pre-commit hook removed"))
+             (println ">> no pre-commit hook found")))}
+
+  ;; --- dev & repl ---------------------------------------------------------
+  nrepl
+  {:doc "Start a jolt nREPL server for interactive dev: bb nrepl [port] (default 7888)"
+   :task (shell "joltc" "nrepl-server" (or (first *command-line-args*) "7888"))}}}
