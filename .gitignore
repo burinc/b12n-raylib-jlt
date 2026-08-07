@@ -2,13 +2,20 @@
 shot*.png
 raylib_shot.png
 
-# clojure CLI classpath cache — created by `bb lint` / `bb lint:fix`, which run
-# cljfmt (a JVM tool) through the clojure CLI
+# clojure CLI classpath cache — created when `bb lint` falls back to running
+# clj-kondo through the clojure CLI (no native clj-kondo binary installed)
 .cpcache/
 
 # clj-kondo's analysis cache. The config and the jolt.ffi/defcfn hook next to it
 # ARE tracked — they're what makes `bb lint` usable.
 .clj-kondo/.cache/
+
+# clj-kondo configs clojure-lsp auto-imports from whatever's on its resolved
+# classpath — unrelated to this project's own (dependency-free) deps.edn.
+.clj-kondo/imports/
+
+# clojure-lsp's analysis cache, created by `bb lsp:*`
+.lsp/.cache/
 
 # local dev artifacts (not part of the example suite)
 .claude/
