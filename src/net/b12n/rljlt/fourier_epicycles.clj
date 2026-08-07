@@ -13,7 +13,8 @@
   [theta]
   (loop [k 1 x cx y cy centers [[cx cy]] radii []]
     (if (> k (dec (* 2 n-terms)))
-      {:centers centers :radii radii}
+      {:centers centers
+       :radii radii}
       (let [radius (* scale (/ 4.0 Math/PI) (/ 1.0 k))
             nx (+ x (* radius (Math/cos (* k theta))))
             ny (+ y (* radius (Math/sin (* k theta))))]

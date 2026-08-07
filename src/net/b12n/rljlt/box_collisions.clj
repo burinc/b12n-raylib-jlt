@@ -16,11 +16,21 @@
 
 ;; static obstacles on the ground: {:x :z :s}
 (def ^:private boxes
-  [{:x  4.0 :z  0.0 :s 2.0}
-   {:x -4.0 :z  3.0 :s 2.6}
-   {:x  0.0 :z -5.0 :s 3.0}
-   {:x  1.6 :z  0.0 :s 2.0}     ; near the spawn — overlaps the player at frame 0
-   {:x -6.0 :z -3.0 :s 2.2}])
+  [{:x  4.0
+    :z  0.0
+    :s 2.0}
+   {:x -4.0
+    :z  3.0
+    :s 2.6}
+   {:x  0.0
+    :z -5.0
+    :s 3.0}
+   {:x  1.6
+    :z  0.0
+    :s 2.0}     ; near the spawn — overlaps the player at frame 0
+   {:x -6.0
+    :z -3.0
+    :s 2.2}])
 
 (defn- fabs
   [x]
@@ -48,9 +58,14 @@
               colliding? (boolean (some (fn [b] (hit? px pz b)) boxes))]
           (rl/begin-drawing)
           (rl/clear-background (rl/rgba 230 235 245 255))
-          (rl/with-camera-3d {:pos-x 11.0 :pos-y 12.0 :pos-z 11.0
-                              :target-x 0.0 :target-y 0.5 :target-z 0.0
-                              :fovy 45.0 :projection 0}
+          (rl/with-camera-3d {:pos-x 11.0
+                              :pos-y 12.0
+                              :pos-z 11.0
+                              :target-x 0.0
+                              :target-y 0.5
+                              :target-z 0.0
+                              :fovy 45.0
+                              :projection 0}
             (fn []
               (rl/draw-grid 20 1.0)
               (doseq [b boxes]

@@ -21,7 +21,11 @@
 
 (defn- new-game
   []
-  {:mines (place-mines) :revealed #{} :flagged #{} :over? false :won? false})
+  {:mines (place-mines)
+   :revealed #{}
+   :flagged #{}
+   :over? false
+   :won? false})
 
 (defn- neighbors
   [[c r]]
@@ -34,7 +38,8 @@
   (count (filter mines (neighbors cell))))
 
 (defn- reveal
-  [{:keys [mines revealed] :as st} cell]
+  [{:keys [mines revealed]
+    :as st} cell]
   (cond
     (revealed cell) st
     (contains? mines cell) (assoc st :over? true)
@@ -51,7 +56,8 @@
                 (recur stack rev)))))))))
 
 (defn- toggle-flag
-  [{:keys [flagged] :as st} cell]
+  [{:keys [flagged]
+    :as st} cell]
   (assoc st :flagged (if (flagged cell) (disj flagged cell) (conj flagged cell))))
 
 (defn- won?

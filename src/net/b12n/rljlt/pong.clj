@@ -32,14 +32,19 @@
 
 (defn- reset-ball
   [dir]
-  {:bx (/ W 2.0) :by (/ H 2.0)
+  {:bx (/ W 2.0)
+   :by (/ H 2.0)
    :bvx (* dir (+ 4.0 (/ (rl/get-random-value 0 20) 10.0)))          ; 4.0 .. 6.0
    :bvy (* 3.0 (- (/ (rl/get-random-value 0 200) 100.0) 1.0))})      ; -3.0 .. 3.0
 
 (defn- initial-state
   []
-  (merge {:ly (/ (- H PH) 2.0) :ry (/ (- H PH) 2.0)
-          :ls 0 :rs 0 :over? false :winner nil}
+  (merge {:ly (/ (- H PH) 2.0)
+          :ry (/ (- H PH) 2.0)
+          :ls 0
+          :rs 0
+          :over? false
+          :winner nil}
          (reset-ball 1)))
 
 (defn- step
@@ -72,8 +77,14 @@
           ls    (+ (:ls s) (if (= scored :left) 1 0))
           rs    (+ (:rs s) (if (= scored :right) 1 0))
           ball  (if scored (reset-ball (if (= scored :left) 1 -1))
-                    {:bx bx :by by :bvx bvx :bvy bvy})]
-      (merge {:ly ly :ry ry :ls ls :rs rs
+                    {:bx bx
+                     :by by
+                     :bvx bvx
+                     :bvy bvy})]
+      (merge {:ly ly
+              :ry ry
+              :ls ls
+              :rs rs
               :over?  (or (>= ls WIN) (>= rs WIN))
               :winner (cond (>= ls WIN) "PLAYER 1" (>= rs WIN) "CPU" :else nil)}
              ball))))

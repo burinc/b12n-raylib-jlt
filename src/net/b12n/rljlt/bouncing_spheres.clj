@@ -30,7 +30,8 @@
         :else [p v]))
 
 (defn- step
-  [{:keys [x y z vx vy vz r] :as b}]
+  [{:keys [x y z vx vy vz r]
+    :as b}]
   (let [vy (- vy gravity)
         [nx vx] (reflect (+ x vx) vx r)
         [ny vy] (reflect (+ y vy) vy r)
@@ -48,7 +49,9 @@
         (let [spheres (if (rl/key-pressed? rl/KEY-SPACE) (spawn) (mapv step spheres))]
           (rl/begin-drawing)
           (rl/clear-background rl/RAYWHITE)
-          (rl/with-camera-3d {:pos-x 10.0 :pos-y 8.0 :pos-z 10.0}
+          (rl/with-camera-3d {:pos-x 10.0
+                              :pos-y 8.0
+                              :pos-z 10.0}
             (fn []
               (rl/draw-grid 10 1.0)
               (doseq [{:keys [x y z r color]} spheres]

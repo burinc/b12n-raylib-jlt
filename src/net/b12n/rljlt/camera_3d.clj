@@ -28,9 +28,14 @@
               cam-z (* 12.0 (Math/sin a))]
           (rl/begin-drawing)
           (rl/clear-background rl/RAYWHITE)
-          (rl/with-camera-3d {:pos-x cam-x :pos-y 8.0 :pos-z cam-z
-                              :target-x 0.0 :target-y 1.0 :target-z 0.0
-                              :fovy 45.0 :projection 0}
+          (rl/with-camera-3d {:pos-x cam-x
+                              :pos-y 8.0
+                              :pos-z cam-z
+                              :target-x 0.0
+                              :target-y 1.0
+                              :target-z 0.0
+                              :fovy 45.0
+                              :projection 0}
             (fn []
               (rl/draw-grid 20 1.0)
               (rl/cube! :pos [0.0 1.0 0.0] :size 2.0 :color rl/RED)))

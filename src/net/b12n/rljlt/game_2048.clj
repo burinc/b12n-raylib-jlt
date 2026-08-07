@@ -70,7 +70,8 @@
   (spawn (spawn (vec (repeat 16 0)))))
 
 (defn- try-move
-  [{:keys [board score] :as st} dir]
+  [{:keys [board score]
+    :as st} dir]
   (let [[nb g] (move board dir)]
     (if (= nb board) st (assoc st :board (spawn nb) :score (+ score g)))))
 
@@ -79,12 +80,18 @@
   (every? (fn [dir] (= board (first (move board dir)))) [:left :right :up :down]))
 
 (def tile-colors
-  {0 (rl/rgba 205 193 180 255)  2 (rl/rgba 238 228 218 255)
-   4 (rl/rgba 237 224 200 255)  8 (rl/rgba 242 177 121 255)
-   16 (rl/rgba 245 149 99 255)  32 (rl/rgba 246 124 95 255)
-   64 (rl/rgba 246 94 59 255)   128 (rl/rgba 237 207 114 255)
-   256 (rl/rgba 237 204 97 255) 512 (rl/rgba 237 200 80 255)
-   1024 (rl/rgba 237 197 63 255) 2048 (rl/rgba 237 194 46 255)})
+  {0 (rl/rgba 205 193 180 255)
+   2 (rl/rgba 238 228 218 255)
+   4 (rl/rgba 237 224 200 255)
+   8 (rl/rgba 242 177 121 255)
+   16 (rl/rgba 245 149 99 255)
+   32 (rl/rgba 246 124 95 255)
+   64 (rl/rgba 246 94 59 255)
+   128 (rl/rgba 237 207 114 255)
+   256 (rl/rgba 237 204 97 255)
+   512 (rl/rgba 237 200 80 255)
+   1024 (rl/rgba 237 197 63 255)
+   2048 (rl/rgba 237 194 46 255)})
 
 (defn -main
   [& _]
@@ -92,11 +99,13 @@
   (rl/set-target-fps 60)
   (let [deadline (rl/auto-quit-deadline)]
     (loop [frame 0
-           st {:board (new-board) :score 0}]
+           st {:board (new-board)
+               :score 0}]
       (when (rl/keep-running? deadline)
         (let [over? (stuck? (:board st))
               st (cond
-                   over? (if (rl/key-pressed? rl/KEY-SPACE) {:board (new-board) :score 0} st)
+                   over? (if (rl/key-pressed? rl/KEY-SPACE) {:board (new-board)
+                                                             :score 0} st)
                    (rl/key-pressed? rl/KEY-LEFT)  (try-move st :left)
                    (rl/key-pressed? rl/KEY-RIGHT) (try-move st :right)
                    (rl/key-pressed? rl/KEY-UP)    (try-move st :up)

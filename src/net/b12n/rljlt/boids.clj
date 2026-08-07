@@ -44,7 +44,10 @@
         vx (+ (:vx b) (* 0.0008 (- ax (:x b))) (* 0.05 (- avx (:vx b))) (* 0.0010 sx))
         vy (+ (:vy b) (* 0.0008 (- ay (:y b))) (* 0.05 (- avy (:vy b))) (* 0.0010 sy))
         [vx vy] (limit vx vy max-speed)]
-    {:x (mod (+ (:x b) vx) width) :y (mod (+ (:y b) vy) height) :vx vx :vy vy}))
+    {:x (mod (+ (:x b) vx) width)
+     :y (mod (+ (:y b) vy) height)
+     :vx vx
+     :vy vy}))
 
 (defn- draw-boid
   [{:keys [x y vx vy]}]

@@ -20,7 +20,9 @@
   (vec (repeatedly n (fn []
                        (let [x (double (rl/get-random-value 0 width))
                              y (double (rl/get-random-value 0 height))]
-                         {:x x :y y :trail [[x y]]})))))
+                         {:x x
+                          :y y
+                          :trail [[x y]]})))))
 
 (defn- step-part
   [{:keys [x y trail]} t]
@@ -30,7 +32,9 @@
         [nx w1] (cond (< nx 0) [(+ nx width) true] (>= nx width) [(- nx width) true] :else [nx false])
         [ny w2] (cond (< ny 0) [(+ ny height) true] (>= ny height) [(- ny height) true] :else [ny false])
         trail (if (or w1 w2) [[nx ny]] (vec (take trail-len (cons [nx ny] trail))))]
-    {:x nx :y ny :trail trail}))
+    {:x nx
+     :y ny
+     :trail trail}))
 
 (defn- trail-color
   [a]

@@ -12,8 +12,14 @@
 (def ^:const KEY-ENTER 257)
 
 (def ^:private screens [:logo :title :gameplay :ending])
-(def ^:private bg    {:logo rl/RAYWHITE :title rl/DARKBLUE :gameplay rl/DARKGREEN :ending rl/MAROON})
-(def ^:private label {:logo "LOGO" :title "TITLE SCREEN" :gameplay "GAMEPLAY" :ending "ENDING"})
+(def ^:private bg    {:logo rl/RAYWHITE
+                      :title rl/DARKBLUE
+                      :gameplay rl/DARKGREEN
+                      :ending rl/MAROON})
+(def ^:private label {:logo "LOGO"
+                      :title "TITLE SCREEN"
+                      :gameplay "GAMEPLAY"
+                      :ending "ENDING"})
 
 (defn -main
   [& _]

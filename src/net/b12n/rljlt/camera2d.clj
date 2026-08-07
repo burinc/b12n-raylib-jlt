@@ -63,9 +63,12 @@
           (rl/begin-drawing)
           (rl/clear-background rl/RAYWHITE)
           ;; world space — the camera follows the player horizontally
-          (rl/with-camera-2d {:offset-x (/ W 2.0) :offset-y (/ H 2.0)
-                              :target-x px :target-y 200.0
-                              :rotation rot :zoom zoom}
+          (rl/with-camera-2d {:offset-x (/ W 2.0)
+                              :offset-y (/ H 2.0)
+                              :target-x px
+                              :target-y 200.0
+                              :rotation rot
+                              :zoom zoom}
             (fn [] (draw-world px)))
           ;; screen space — HUD + a center reference line
           (rl/line! :x1 (int (/ W 2)) :y1 0 :x2 (int (/ W 2)) :y2 H :color rl/LIGHTGRAY)

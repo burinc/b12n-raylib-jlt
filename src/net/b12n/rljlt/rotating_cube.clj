@@ -15,7 +15,9 @@
         (let [angle (* frame 1.0)]
           (rl/begin-drawing)
           (rl/clear-background rl/RAYWHITE)
-          (rl/with-camera-3d {:pos-x 4.0 :pos-y 4.0 :pos-z 4.0}
+          (rl/with-camera-3d {:pos-x 4.0
+                              :pos-y 4.0
+                              :pos-z 4.0}
             (fn []
               (rl/draw-grid 10 1.0)
               (rl/rl-push-matrix)

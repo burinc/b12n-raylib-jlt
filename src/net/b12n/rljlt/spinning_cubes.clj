@@ -16,7 +16,9 @@
       (when (rl/keep-running? deadline)
         (rl/begin-drawing)
         (rl/clear-background rl/RAYWHITE)
-        (rl/with-camera-3d {:pos-x 0.0 :pos-y 6.0 :pos-z 10.0}
+        (rl/with-camera-3d {:pos-x 0.0
+                            :pos-y 6.0
+                            :pos-z 10.0}
           (fn []
             (rl/draw-grid 12 1.0)
             (dotimes [i 5]

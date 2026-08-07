@@ -47,10 +47,18 @@
     (vec (map (fn [i] [(pt i) (pt (inc i))]) (range n)))))
 
 (def ^:private shapes
-  [{:x -6.0 :edges pyramid-edges :color (rl/rgba 255 120 120 255)}
-   {:x -2.0 :edges octa-edges    :color (rl/rgba 120 200 255 255)}
-   {:x  2.0 :edges torus-edges   :color (rl/rgba 170 255 120 255)}
-   {:x  6.0 :edges spiral-edges  :color (rl/rgba 255 220 120 255)}])
+  [{:x -6.0
+    :edges pyramid-edges
+    :color (rl/rgba 255 120 120 255)}
+   {:x -2.0
+    :edges octa-edges
+    :color (rl/rgba 120 200 255 255)}
+   {:x  2.0
+    :edges torus-edges
+    :color (rl/rgba 170 255 120 255)}
+   {:x  6.0
+    :edges spiral-edges
+    :color (rl/rgba 255 220 120 255)}])
 
 (defn- draw-edges!
   [edges color]
@@ -71,9 +79,14 @@
         (let [spin (* 0.9 frame)]                              ; degrees
           (rl/begin-drawing)
           (rl/clear-background (rl/rgba 12 12 20 255))
-          (rl/with-camera-3d {:pos-x 0.0 :pos-y 3.2 :pos-z 12.0
-                              :target-x 0.0 :target-y 0.0 :target-z 0.0
-                              :fovy 45.0 :projection 0}
+          (rl/with-camera-3d {:pos-x 0.0
+                              :pos-y 3.2
+                              :pos-z 12.0
+                              :target-x 0.0
+                              :target-y 0.0
+                              :target-z 0.0
+                              :fovy 45.0
+                              :projection 0}
             (fn []
               (doseq [sh shapes]
                 (rl/rl-push-matrix)

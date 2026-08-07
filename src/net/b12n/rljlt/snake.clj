@@ -19,7 +19,10 @@
 (defn- new-game
   []
   (let [snake [[16 9] [15 9] [14 9]]]
-    {:snake snake :dir [1 0] :food (rand-food snake) :dead? false}))
+    {:snake snake
+     :dir [1 0]
+     :food (rand-food snake)
+     :dead? false}))
 
 (defn- turn
   [dir]
@@ -31,7 +34,8 @@
     (if (and want (not= want [(- (first dir)) (- (second dir))])) want dir)))
 
 (defn- step
-  [{:keys [snake dir food] :as st}]
+  [{:keys [snake dir food]
+    :as st}]
   (let [[hc hr] (first snake)
         [dc dr] dir
         head [(+ hc dc) (+ hr dr)]
