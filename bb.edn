@@ -38,6 +38,7 @@
 ;; NOTE: task bodies are read by babashka's EDN reader, which does NOT support
 ;; #"regex", @deref, or #(...) reader macros — use (fn [x] ...) etc.
 {:min-bb-version "1.3.0"
+ :paths ["scripts"]
 
  :tasks
  {;; --- shared registry + helpers (pure; safe to eval before every task) -----
@@ -60,85 +61,9 @@
         ["clj-kondo"]
         ["clojure" "-Sdeps" kondo-dep "-M" "-m" "clj-kondo.main"]))
 
-    ;; [display-name  joltc-alias  group  description]
-    (def examples
-      [["basic-window"      "run"      "core"   "the minimal raylib window + text"]
-       ["input-keys"        "input"    "core"   "steer a ball with the arrow keys"]
-       ["input-mouse"       "mouse"    "core"   "a ball follows the mouse; click to recolor"]
-       ["input-mouse-wheel" "wheel"    "core"   "scroll a box with the mouse wheel"]
-       ["camera-2d"         "camera2d" "core"   "a 2D camera over a skyline (struct-by-value)"]
-       ["delta-time"        "delta-time" "core" "per-frame vs delta-time movement"]
-       ["scissor-test"      "scissor-test" "core" "a scissor rectangle clips a grid"]
-       ["basic-screen-manager" "basic-screen-manager" "core" "a LOGO/TITLE/GAMEPLAY/ENDING flow"]
-       ["random-values"     "random-values" "core" "a new random value every two seconds"]
-       ["bouncing-ball"     "bounce"   "shapes" "a ball bouncing around the window"]
-       ["basic-shapes"      "shapes"   "shapes" "shape primitives + an rlgl triangle"]
-       ["colors-palette"    "colors"   "shapes" "every named raylib color in a grid"]
-       ["gradient"          "gradient" "shapes" "a vertical two-color gradient"]
-       ["following-eyes"    "eyes"     "shapes" "two eyes track the mouse"]
-       ["starfield"         "stars"    "shapes" "a twinkling starfield"]
-       ["logo-raylib"       "logo"     "shapes" "the raylib logo from rectangles + text"]
-       ["mouse-trail"       "mouse-trail" "shapes" "a fading trail follows the cursor"]
-       ["recursive-tree"    "recursive-tree" "shapes" "a binary fractal tree"]
-       ["math-sine-cosine"  "math-sine-cosine" "shapes" "a live unit-circle trig visualization"]
-       ["bullet-hell"       "bullet-hell" "shapes" "a rotating bullet spiral"]
-       ["triangle-strip"    "triangle-strip" "shapes" "a rainbow strip via rlgl immediate mode"]
-       ["collision-area"    "collision-area" "shapes" "AABB collision between two boxes"]
-       ["dashed-line"       "dashed-line" "shapes" "a dashed line follows the mouse"]
-       ["double-pendulum"   "double-pendulum" "shapes" "chaotic double-pendulum motion + trail"]
-       ["kaleidoscope"      "kaleidoscope" "shapes" "strokes mirrored with 6-fold symmetry"]
-       ["hilbert-curve"     "hilbert-curve" "shapes" "a rainbow Hilbert space-filling curve"]
-       ["math-angle-rotation" "math-angle-rotation" "shapes" "fixed spokes + a spinning line"]
-       ["font-sizes"        "text"     "text"   "font sizes + MeasureText centering"]
-       ["writing-anim"      "writing-anim" "text" "a message types itself out"]
-       ["format-text"       "format-text" "text" "padded score + MM:SS timer readouts"]
-       ["words-alignment"   "words-alignment" "text" "align a word inside a box (MeasureText)"]
-       ["camera-3d"         "camera-3d" "3d" "an orbiting 3D camera (Camera3D by value)"]
-       ["waving-cubes"      "waving-cubes" "3d" "an NxN grid of cubes rippling in 3D"]
-       ["camera-3d-first-person" "camera-3d-first-person" "3d" "walk a yard of columns in first person"]
-       ["tesseract-view"    "tesseract-view" "3d" "a rotating 4D hypercube projected to 2D"]
-       ["wireframe-shapes"  "wireframe-shapes" "3d" "pyramid/octahedron/torus/helix in 3D lines"]
-       ["rlgl-solar-system" "rlgl-solar-system" "3d" "Sun/Earth/Moon via the rlgl matrix stack"]
-       ["box-collisions"    "box-collisions" "3d" "a player cube colliding with 3D boxes"]
-       ["asteroids"         "asteroids" "games" "the classic vector shooter (rotate/thrust/fire)"]
-       ["tetris"            "tetris" "games" "the block-stacking puzzle (move/rotate/drop)"]
-       ["pong"              "pong" "games" "two-paddle classic, you (W/S) vs a CPU"]
-       ["vampire-survivors" "vampire-survivors" "games" "auto-fire survival: move, waves chase you"]
-       ["rotating-cube"     "rotating-cube" "3d" "a single cube spinning via the rlgl matrix stack"]
-       ["spinning-cubes"    "spinning-cubes" "3d" "a row of cubes each spinning with a phase offset"]
-       ["orthographic-projection" "orthographic-projection" "3d" "perspective vs orthographic (SPACE toggles)"]
-       ["point-cloud"       "point-cloud" "3d" "~1500 points as tiny rlgl cubes, rotating"]
-       ["bouncing-spheres"  "bouncing-spheres" "3d" "spheres bouncing in a 3D box (rl/sphere!)"]
-       ["ball-physics"      "ball-physics" "shapes" "2D balls under gravity, SPACE respawns"]
-       ["lines-bezier"      "lines-bezier" "shapes" "a cubic Bézier that follows the mouse"]
-       ["input-box"         "input-box" "text" "type into a text box (GetCharPressed)"]
-       ["snake"             "snake" "games" "the classic snake (arrow keys, grow, don't crash)"]
-       ["breakout"          "breakout" "games" "paddle + ball + brick grid (mouse paddle)"]
-       ["space-invaders"    "space-invaders" "games" "marching aliens (arrows + SPACE to shoot)"]
-       ["flappy-bird"       "flappy-bird" "games" "flap through the pipe gaps (SPACE)"]
-       ["game-2048"         "game-2048" "games" "2048: 4x4 tile-merge puzzle (arrow keys)"]
-       ["minesweeper"       "minesweeper" "games" "reveal/flag grid (mouse L reveal, R flag)"]
-       ["game-of-life"      "game-of-life" "generative" "Conway's Game of Life (SPACE reseeds)"]
-       ["boids"             "boids" "generative" "flocking birds (separation/alignment/cohesion)"]
-       ["fireworks"         "fireworks" "generative" "rockets + fading particle bursts"]
-       ["fourier-epicycles" "fourier-epicycles" "generative" "rotating circles trace a square wave"]
-       ["spirograph"        "spirograph" "generative" "animated hypotrochoid roulette curves"]
-       ["l-system"          "l-system" "generative" "an L-system fractal plant (grows + regrows)"]
-       ["flow-field"        "flow-field" "generative" "particles steered by a flow field (trails)"]
-       ["color-wheel"       "color-wheel" "shapes" "an HSV color wheel (rlgl triangle fan)"]
-       ["pie-chart"         "pie-chart" "shapes" "labelled pie slices via rl/sector!"]
-       ["splines"           "splines" "shapes" "Catmull-Rom / Bezier / B-spline (SPACE cycles)"]
-       ["vector-angle"      "vector-angle" "shapes" "the angle between two vectors (arc + readout)"]
-       ["easings"           "easings" "shapes" "a grid of balls, each on a different easing curve"]
-       ["penrose-tiling"    "penrose-tiling" "shapes" "a P3 Penrose rhombus tiling (deflation)"]
-       ["analog-clock"      "analog-clock" "shapes" "a live analog clock (libc local time)"]
-       ["digital-clock"     "digital-clock" "shapes" "a seven-segment HH:MM:SS clock (libc time)"]
-       ["ring-drawing"      "ring-drawing" "shapes" "an animated annulus via rl/ring!"]
-       ["rounded-rectangle" "rounded-rectangle" "shapes" "rounded rects via sector! corners"]
-       ["rectangle-scaling" "rectangle-scaling" "shapes" "drag the corner handle to resize a rect"]
-       ["lines-drawing"     "lines-drawing" "shapes" "a rotating fan of thick lines (line-ex!)"]])
-
-    (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
+    (require '[examples-registry :as reg])
+    (def examples reg/examples)
+    (def by-name reg/by-name)
 
     (defn run-example [name]
       (let [row (get by-name name)]
@@ -150,8 +75,7 @@
                 (println "Run `bb examples` to see the list."))
               (System/exit 1)))))
 
-    (defn print-row [row]
-      (println (format "  bb %-18s %s" (nth row 0) (nth row 3))))
+    (def print-row reg/print-row)
 
     ;; --- native-library (libraylib) detection + install ----------------------
     ;; jolt loads the shared libraylib over its C ABI (see deps.edn :jolt/native).
