@@ -9,6 +9,34 @@ runtime and called through the FFI.
 All the FFI bindings and an ergonomic keyword-argument drawing API live in one
 shared namespace, `net.b12n.rljlt.raylib`; each example is a small namespace on top of it.
 
+## Examples
+
+<table>
+<tr><th>Preview</th><th>Example</th><th>What it demonstrates</th></tr>
+<tr>
+<td><img src="docs/demos/tetris.gif" width="240"></td>
+<td><code>bb tetris</code></td>
+<td>the block-stacking puzzle (move/rotate/drop)</td>
+</tr>
+<tr>
+<td><img src="docs/demos/game-of-life.gif" width="240"></td>
+<td><code>bb game-of-life</code></td>
+<td>Conway's Game of Life (SPACE reseeds)</td>
+</tr>
+<tr>
+<td><img src="docs/demos/waving-cubes.gif" width="240"></td>
+<td><code>bb waving-cubes</code></td>
+<td>an NxN grid of cubes rippling in 3D</td>
+</tr>
+<tr>
+<td><img src="docs/demos/kaleidoscope.gif" width="240"></td>
+<td><code>bb kaleidoscope</code></td>
+<td>strokes mirrored with 6-fold symmetry</td>
+</tr>
+</table>
+
+**[Browse the full gallery →](docs/demos/README.md)** — every example, recorded via `bb record`.
+
 ## Requirements
 
 ### jolt
