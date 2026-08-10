@@ -11,7 +11,7 @@
   "pong"                    {:input [[1.0 :key "w"] [2.0 :key "s"] [3.0 :key "w"] [4.0 :key "s"]]}
   "vampire-survivors"       {:input [[1.0 :key "right"] [2.0 :key "down"] [3.0 :key "left"] [4.0 :key "up"]]}
   "snake"                   {:duration 2
-                             :input [[1.0 :key "right"] [2.0 :key "down"] [3.0 :key "left"] [4.0 :key "up"]]}
+                             :input [[0.3 :key "right"] [0.8 :key "down"]]}
   "breakout"                {:input [[1.0 :click 100 400] [2.0 :click 300 400] [3.0 :click 200 400]]}
   "space-invaders"          {:input [[1.0 :key "left"] [1.5 :key "space"] [2.5 :key "right"] [3.0 :key "space"]]}
   "flappy-bird"             {:input [[0.5 :key "space"] [1.5 :key "space"] [2.5 :key "space"] [3.5 :key "space"] [4.5 :key "space"]]}
