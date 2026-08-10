@@ -145,7 +145,8 @@
           (do (println "  ✗ window never appeared")
               {:id id
                :status :no-window
-               :stderr (some-> @(:err proc) (str/join) (subs 0 (min 400 400)))})
+               :stderr (when-let [s (some-> @(:err proc) str/join)]
+                         (subs s 0 (min 400 (count s))))})
           (do
             (focus! pid)
             (Thread/sleep 250)
