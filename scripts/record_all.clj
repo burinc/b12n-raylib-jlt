@@ -23,9 +23,9 @@
   {:manifest {:coerce :string
               :default "scripts/demo_manifest.edn"}
    :out-dir  {:coerce :string
-              :default "doc/demos"}
+              :default "docs/demos"}
    :ledger   {:coerce :string
-              :default "doc/demos/ledger.edn"}
+              :default "docs/demos/ledger.edn"}
    :only     {:coerce :string
               :default nil
               :desc "Comma-separated example ids"}
@@ -37,7 +37,7 @@
               :default 2
               :desc "Concurrent encoder threads"}
    :readme   {:coerce :string
-              :default "doc/demos/README.md"}})
+              :default "docs/demos/README.md"}})
 
 ;; ---------------------------------------------------------------- helpers
 
