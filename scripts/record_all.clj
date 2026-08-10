@@ -216,20 +216,24 @@
 
 (defn write-readme!
   "Grouped catalog (games/core/shapes/text/3d/generative, mirroring `bb
-   info`'s ordering), one heading + GIF per successfully recorded example."
-  [path results out-dir]
+   info`'s ordering), one heading + GIF per example present in `ledger` —
+   the full cumulative set of everything ever successfully recorded, not
+   just this run's newly-recorded subset. A run where everything was
+   already up to date has an empty `results`; keying off `ledger` instead
+   means the README doesn't get wiped down to nothing on such a run."
+  [path ledger out-dir]
   (fs/create-dirs (fs/parent path))
-  (let [done     (filter #(= :done (:status %)) results)
+  (let [done-ids (keys ledger)
         group-of (fn [id] (nth (get reg/by-name id) 2))]
     (spit path
           (str "# Examples\n\n"
                (str/join "\n"
                          (for [group ["games" "core" "shapes" "text" "3d" "generative"]
-                               :let [rows (filter #(= group (group-of (:id %))) done)]
-                               :when (seq rows)]
+                               :let [ids (filter #(= group (group-of %)) done-ids)]
+                               :when (seq ids)]
                            (str (format "## %s\n\n" group)
                                 (str/join "\n"
-                                          (for [{:keys [id]} rows]
+                                          (for [id ids]
                                             (format "### %s\n\n![%s](%s)\n" id id
                                                     (str (fs/file-name (fs/file out-dir (str id ".gif"))))))))))
                "\n")))
@@ -275,7 +279,7 @@
                             ledger-data results)]
         (fs/create-dirs (fs/parent ledger))
         (spit ledger (pr-str updated))
-        (write-readme! readme results out-dir)
+        (write-readme! readme updated out-dir)
         (let [failed (remove #(= :done (:status %)) results)]
           (when (seq failed)
             (println "\nFailed:")
