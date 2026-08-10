@@ -261,6 +261,11 @@
              (shell {:extra-env {"RAYLIB_APP_AUTO_QUIT_MS" ms} :continue true}
                     "joltc" (str "-M:" (nth row 1)))))}
 
+  record
+  {:doc "Batch-record a demo GIF for every example: bb record [--only a,b] [--force] [--dry-run]"
+   :task (let [{:keys [exit]} (apply shell {:continue true} "bb" "scripts/record_all.clj" *command-line-args*)]
+           (System/exit exit))}
+
   examples
   {:doc "List every runnable example with its description"
    :task (doseq [row examples] (print-row row))}

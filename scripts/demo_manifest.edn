@@ -1,0 +1,25 @@
+{:defaults
+ {:duration 6
+  :fps 10
+  :width 480
+  :warmup 10
+  :capture "cgevent screenshot {{file}} --pid {{pid}}"}
+
+ :overrides
+ {"asteroids"               {:input [[1.0 :key "up"] [1.5 :key "space"] [2.5 :key "left"] [3.5 :key "space"] [4.5 :key "right"]]}
+  "tetris"                  {:input [[1.0 :key "left"] [1.5 :key "left"] [2.0 :key "down"] [2.5 :key "up"] [3.5 :key "right"] [4.5 :key "down"]]}
+  "pong"                    {:input [[1.0 :key "w"] [2.0 :key "s"] [3.0 :key "w"] [4.0 :key "s"]]}
+  "vampire-survivors"       {:input [[1.0 :key "right"] [2.0 :key "down"] [3.0 :key "left"] [4.0 :key "up"]]}
+  "snake"                   {:duration 2
+                             :input [[1.0 :key "right"] [2.0 :key "down"] [3.0 :key "left"] [4.0 :key "up"]]}
+  "breakout"                {:input [[1.0 :click 100 400] [2.0 :click 300 400] [3.0 :click 200 400]]}
+  "space-invaders"          {:input [[1.0 :key "left"] [1.5 :key "space"] [2.5 :key "right"] [3.0 :key "space"]]}
+  "flappy-bird"             {:input [[0.5 :key "space"] [1.5 :key "space"] [2.5 :key "space"] [3.5 :key "space"] [4.5 :key "space"]]}
+  "game-2048"               {:input [[1.0 :key "left"] [2.0 :key "up"] [3.0 :key "right"] [4.0 :key "down"]]}
+  "minesweeper"             {:input [[1.0 :click 100 100] [2.0 :click 150 150] [3.0 :click 200 100]]}
+  "basic-screen-manager"    {:duration 8
+                             :input [[1.5 :key "enter"] [3.5 :key "enter"] [5.5 :key "enter"]]}
+  "orthographic-projection" {:duration 8
+                             :input [[3.0 :key "space"]]}
+  "splines"                 {:duration 8
+                             :input [[2.0 :key "space"] [4.0 :key "space"] [6.0 :key "space"]]}}}
