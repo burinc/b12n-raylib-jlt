@@ -128,10 +128,9 @@
 (defn record-one!
   [{:keys [id src run capture duration fps width warmup input manual out-dir]
     :as ex}]
-  (let [gif    (str (fs/file out-dir (str id ".gif")))
-        frames (str (fs/create-temp-dir {:prefix (str "frames-" id "-")}))
-        cmd    (rec/render run {:src src
-                                :id id})]
+  (let [gif (str (fs/file out-dir (str id ".gif")))
+        cmd (rec/render run {:src src
+                             :id id})]
     (fs/create-dirs out-dir)
     (println (format "\n▶ %s  (%s)" id src))
     (let [proc (p/process {:out :string
@@ -145,31 +144,39 @@
           (do (println "  ✗ window never appeared")
               {:id id
                :status :no-window
-               :stderr (when-let [s (some-> @(:err proc) str/join)]
+               ;; :err is a future that only resolves at process EOF; bound
+               ;; the deref so a still-alive-but-slow process can't hang the run.
+               :stderr (when-let [s (some-> (deref (:err proc) 2000 nil) str/join)]
                          (subs s 0 (min 400 (count s))))})
-          (do
+          ;; Window confirmed — only now do we need a frames dir, so create it
+          ;; here (not unconditionally at top) to avoid leaking it on :no-window.
+          (let [frames (str (fs/create-temp-dir {:prefix (str "frames-" id "-")}))]
             (focus! pid)
             (Thread/sleep 250)
-            (when (seq input) (play-input! pid input))
-            (when manual
-              (println (format "  ⌨  INTERACT NOW — recording %.0fs" (double duration))))
-            (let [captured (rec/capture-frames {:pid pid
-                                                :capture capture
-                                                :duration duration
-                                                :fps fps
-                                                :frames-dir frames})]
-              (if (< (count captured) 2)
-                {:id id
-                 :status :too-few-frames}
-                {:id id
-                 :status :captured
-                 :gif gif
-                 :frames frames
-                 :captured captured
-                 :fps fps
-                 :width width
-                 :duration duration
-                 :sha (sha256 src)}))))
+            (let [input-fut (when (seq input) (play-input! pid input))]
+              (when manual
+                (println (format "  ⌨  INTERACT NOW — recording %.0fs" (double duration))))
+              (let [captured (rec/capture-frames {:pid pid
+                                                  :capture capture
+                                                  :duration duration
+                                                  :fps fps
+                                                  :frames-dir frames})]
+                ;; Capture is done — no more input needed; bounds the
+                ;; background thread's lifetime instead of leaking it.
+                (when input-fut (future-cancel input-fut))
+                (if (< (count captured) 2)
+                  (do (fs/delete-tree frames)
+                      {:id id
+                       :status :too-few-frames})
+                  {:id id
+                   :status :captured
+                   :gif gif
+                   :frames frames
+                   :captured captured
+                   :fps fps
+                   :width width
+                   :duration duration
+                   :sha (sha256 src)})))))
         (finally
           (p/destroy-tree proc)
           (deref proc 3000 nil))))))
@@ -189,6 +196,7 @@
       (assoc r :status :done :bytes (fs/size gif))
       (catch Exception e
         (println "  ✗ encode failed:" (ex-message e))
+        (fs/delete-tree frames)
         (assoc r :status :encode-failed)))))
 
 ;; ---------------------------------------------------------------- manifest
@@ -259,13 +267,19 @@
           pending (atom [])]
       ;; Capture is strictly serial — only one window can be frontmost, and
       ;; encoding in the background keeps the capture loop from stalling.
+      ;; Both branches route through the pool as a Callable/FutureTask —
+      ;; `reify java.util.concurrent.Future` directly isn't supported under
+      ;; babashka's sci, unlike Callable.
       (doseq [ex todo]
-        (let [r (record-one! ex)]
-          (if (= :captured (:status r))
-            (swap! pending conj (.submit ex-pool (reify java.util.concurrent.Callable (call [_] (encode! r)))))
-            (swap! pending conj (reify java.util.concurrent.Future
-                                  (get [_] r) (isDone [_] true)
-                                  (cancel [_ _] false) (isCancelled [_] false))))))
+        (let [r (try (record-one! ex)
+                     (catch Exception e
+                       (println "  ✗ error:" (ex-message e))
+                       {:id (:id ex)
+                        :status :error}))]
+          (swap! pending conj
+                 (.submit ex-pool
+                          (reify java.util.concurrent.Callable
+                            (call [_] (if (= :captured (:status r)) (encode! r) r)))))))
       (.shutdown ex-pool)
       (.awaitTermination ex-pool 30 TimeUnit/MINUTES)
       (let [results (mapv #(.get %) @pending)
