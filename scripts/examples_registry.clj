@@ -102,8 +102,8 @@
 (defn src-path
   "The example's source file path, derived from deps.edn's :main-opts for
    this joltc alias (NOT from the alias string — most aliases equal the
-   launched namespace's last segment, but \"run\" -> net.b12n.rljlt.core is
-   a verified exception). E.g. \"bounce\" -> \"src/net/b12n/rljlt/bounce.clj\"."
+   launched namespace's last segment, but \"run\" -> net.b12n.raylib-jlt.core is
+   a verified exception). E.g. \"bounce\" -> \"src/net/b12n/raylib_jlt/bounce.clj\"."
   [alias]
   (let [main-opts (:main-opts (get deps-aliases (keyword alias)))
         ns-str    (str (second main-opts))]

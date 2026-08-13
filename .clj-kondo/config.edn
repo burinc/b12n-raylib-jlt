@@ -1,4 +1,4 @@
-;; clj-kondo configuration for net.b12n.rljlt.
+;; clj-kondo configuration for net.b12n.raylib-jlt.
 ;;
 ;; jolt.ffi/defcfn defines a var per bound C symbol. clj-kondo cannot see through
 ;; the macro, so hooks/jolt_ffi.clj rewrites each call into an equivalent `defn`
@@ -26,7 +26,7 @@
  ;; Scoped per-namespace rather than switched off globally, so a genuinely
  ;; redundant nest anywhere else in the suite is still reported.
  :config-in-ns
- {net.b12n.rljlt.asteroids    {:linters {:redundant-nested-call {:level :off}}}
-  net.b12n.rljlt.kaleidoscope {:linters {:redundant-nested-call {:level :off}}}
-  net.b12n.rljlt.splines      {:linters {:redundant-nested-call {:level :off}}}
-  net.b12n.rljlt.flow-field   {:linters {:redundant-nested-call {:level :off}}}}}
+ {net.b12n.raylib-jlt.asteroids    {:linters {:redundant-nested-call {:level :off}}}
+  net.b12n.raylib-jlt.kaleidoscope {:linters {:redundant-nested-call {:level :off}}}
+  net.b12n.raylib-jlt.splines      {:linters {:redundant-nested-call {:level :off}}}
+  net.b12n.raylib-jlt.flow-field   {:linters {:redundant-nested-call {:level :off}}}}}

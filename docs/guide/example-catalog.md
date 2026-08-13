@@ -1,7 +1,7 @@
 # The example catalog — 75 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
-`src/net/b12n/rljlt/`, runnable by a friendly `bb <name>` task or the underlying
+`src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
 `joltc -M:<alias>`. `bb info` prints this grouping live; this page adds the "how it's
 wired" recipe at the end.
 
@@ -133,13 +133,13 @@ fractals, and noise-steered flow fields.
 
 The suite is deliberately mechanical to grow. One new example touches four places:
 
-1. **Source** — `src/net/b12n/rljlt/<name>.clj`, a namespace with a `-main` that
+1. **Source** — `src/net/b12n/raylib_jlt/<name>.clj`, a namespace with a `-main` that
    runs the canonical loop (see [`headless-smoke-testing.md`](headless-smoke-testing.md))
-   against the `net.b12n.rljlt.raylib` API.
-2. **`deps.edn` alias** — `:<name> {:main-opts ["-m" "net.b12n.rljlt.<name>"]}` so
+   against the `net.b12n.raylib-jlt.raylib` API.
+2. **`deps.edn` alias** — `:<name> {:main-opts ["-m" "net.b12n.raylib-jlt.<name>"]}` so
    `joltc -M:<name>` works.
-3. **`check.clj` require** — add `net.b12n.rljlt.<name>` to the `:require` list in
-   `net.b12n.rljlt.check`, so the headless compile-check covers it.
+3. **`check.clj` require** — add `net.b12n.raylib-jlt.<name>` to the `:require` list in
+   `net.b12n.raylib-jlt.check`, so the headless compile-check covers it.
 4. **`bb.edn` registry row** — add `["<display-name>" "<alias>" "<group>" "<desc>"]`
    to the `examples` vector and a matching `bb <name>` task, so it shows in
    `bb info` / `bb examples` / `bb run-all`.
@@ -152,7 +152,7 @@ flowchart LR
 ```
 
 Filenames use underscores (`basic_screen_manager.clj`); the namespace uses hyphens
-(`net.b12n.rljlt.basic-screen-manager`) — Clojure's standard file↔ns mapping.
+(`net.b12n.raylib-jlt.basic-screen-manager`) — Clojure's standard file↔ns mapping.
 
 One ordering rule applies inside every file: since **jolt 0.4.0** an unresolved
 symbol is a compile error rather than a late-bound reference, so a definition must

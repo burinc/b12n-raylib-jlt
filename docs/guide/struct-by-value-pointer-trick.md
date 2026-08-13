@@ -32,7 +32,7 @@ difference.
 
 ## The Jolt side
 
-`src/net/b12n/rljlt/raylib.clj` binds `BeginMode2D` as a pointer taker and builds
+`src/net/b12n/raylib_jlt/raylib.clj` binds `BeginMode2D` as a pointer taker and builds
 the struct with `ffi/alloc` + six little-endian `ffi/write :float`s:
 
 ```clojure

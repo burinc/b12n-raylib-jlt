@@ -1,6 +1,6 @@
 {:paths ["src"]
 
- ;; raylib is called directly over its C ABI via jolt.ffi (see src/net/b12n/rljlt/core.clj).
+ ;; raylib is called directly over its C ABI via jolt.ffi (see src/net/b12n/raylib_jlt/core.clj).
  ;; The shared library is the system libraylib — install with `brew install raylib`
  ;; on macOS, or your distro's raylib package on Linux. Chez's dlopen default search
  ;; path doesn't include Homebrew's lib dir, so the absolute path is listed first
@@ -9,81 +9,81 @@
                 :darwin ["/opt/homebrew/lib/libraylib.dylib" "libraylib.dylib"]
                 :linux  ["libraylib.so.5" "libraylib.so"]}]
 
- :aliases {:check  {:main-opts ["-m" "net.b12n.rljlt.check"]}   ; headless: compile every example
-           :run    {:main-opts ["-m" "net.b12n.rljlt.core"]}    ; basic window (default)
-           :input  {:main-opts ["-m" "net.b12n.rljlt.input"]}   ; move a circle with arrow keys
-           :bounce {:main-opts ["-m" "net.b12n.rljlt.bounce"]}   ; bouncing ball, SPACE pauses
-           :colors {:main-opts ["-m" "net.b12n.rljlt.colors"]}    ; named-color palette grid
-           :mouse  {:main-opts ["-m" "net.b12n.rljlt.mouse"]}     ; circle follows the cursor
-           :wheel  {:main-opts ["-m" "net.b12n.rljlt.wheel"]}     ; move a box with the mouse wheel
-           :shapes {:main-opts ["-m" "net.b12n.rljlt.shapes"]}    ; scalar shape primitives + rlgl triangle
-           :gradient {:main-opts ["-m" "net.b12n.rljlt.gradient"]} ; vertical color gradient
-           :text   {:main-opts ["-m" "net.b12n.rljlt.text"]}      ; font sizes + MeasureText centering
-           :logo   {:main-opts ["-m" "net.b12n.rljlt.logo"]}      ; the raylib logo
-           :stars  {:main-opts ["-m" "net.b12n.rljlt.stars"]}      ; twinkling starfield
-           :eyes   {:main-opts ["-m" "net.b12n.rljlt.eyes"]}       ; eyes that follow the mouse
-           :camera2d {:main-opts ["-m" "net.b12n.rljlt.camera2d"]}  ; 2D camera (struct-by-value)
-           :mouse-trail      {:main-opts ["-m" "net.b12n.rljlt.mouse-trail"]}      ; fading cursor trail
-           :recursive-tree   {:main-opts ["-m" "net.b12n.rljlt.recursive-tree"]}   ; binary fractal tree
-           :math-sine-cosine {:main-opts ["-m" "net.b12n.rljlt.math-sine-cosine"]} ; unit-circle trig
-           :bullet-hell      {:main-opts ["-m" "net.b12n.rljlt.bullet-hell"]}      ; rotating bullet spiral
-           :triangle-strip   {:main-opts ["-m" "net.b12n.rljlt.triangle-strip"]}   ; rlgl rainbow strip
-           :delta-time       {:main-opts ["-m" "net.b12n.rljlt.delta-time"]}       ; per-frame vs delta-time
-           :scissor-test     {:main-opts ["-m" "net.b12n.rljlt.scissor-test"]}     ; scissor-clipped grid
-           :writing-anim     {:main-opts ["-m" "net.b12n.rljlt.writing-anim"]}     ; self-typing message
-           :format-text      {:main-opts ["-m" "net.b12n.rljlt.format-text"]}      ; padded score + timer
-           :collision-area   {:main-opts ["-m" "net.b12n.rljlt.collision-area"]}   ; AABB collision highlight
-           :dashed-line      {:main-opts ["-m" "net.b12n.rljlt.dashed-line"]}      ; dashed line to the mouse
-           :double-pendulum  {:main-opts ["-m" "net.b12n.rljlt.double-pendulum"]}  ; chaotic pendulum + trail
-           :kaleidoscope     {:main-opts ["-m" "net.b12n.rljlt.kaleidoscope"]}     ; 6-fold mirrored strokes
-           :hilbert-curve    {:main-opts ["-m" "net.b12n.rljlt.hilbert-curve"]}    ; rainbow Hilbert curve
-           :math-angle-rotation {:main-opts ["-m" "net.b12n.rljlt.math-angle-rotation"]} ; spokes + spinning line
-           :basic-screen-manager {:main-opts ["-m" "net.b12n.rljlt.basic-screen-manager"]} ; LOGO/TITLE/GAMEPLAY/ENDING
-           :random-values    {:main-opts ["-m" "net.b12n.rljlt.random-values"]}    ; a random value every 2s
-           :words-alignment  {:main-opts ["-m" "net.b12n.rljlt.words-alignment"]}  ; align a word in a box
-           :camera-3d        {:main-opts ["-m" "net.b12n.rljlt.camera-3d"]}        ; orbiting 3D camera (Camera3D by value)
-           :waving-cubes     {:main-opts ["-m" "net.b12n.rljlt.waving-cubes"]}     ; a grid of cubes rippling in 3D
-           :camera-3d-first-person {:main-opts ["-m" "net.b12n.rljlt.camera-3d-first-person"]} ; FP walk with WASD + mouse
-           :rlgl-solar-system {:main-opts ["-m" "net.b12n.rljlt.rlgl-solar-system"]} ; Sun/Earth/Moon via rlgl matrix stack
-           :box-collisions   {:main-opts ["-m" "net.b12n.rljlt.box-collisions"]}     ; 3D AABB collision highlight
-           :asteroids        {:main-opts ["-m" "net.b12n.rljlt.asteroids"]}          ; the classic vector game
-           :tetris           {:main-opts ["-m" "net.b12n.rljlt.tetris"]}             ; the block-stacking puzzle
-           :pong             {:main-opts ["-m" "net.b12n.rljlt.pong"]}               ; two-paddle classic vs CPU
-           :tesseract-view   {:main-opts ["-m" "net.b12n.rljlt.tesseract-view"]}     ; rotating 4D hypercube
-           :vampire-survivors {:main-opts ["-m" "net.b12n.rljlt.vampire-survivors"]} ; auto-fire survival game
-           :wireframe-shapes {:main-opts ["-m" "net.b12n.rljlt.wireframe-shapes"]}   ; 3D wireframe solids (rlgl lines)
-           :rotating-cube    {:main-opts ["-m" "net.b12n.rljlt.rotating-cube"]}    ; single cube spinning (rlgl matrix)
-           :spinning-cubes   {:main-opts ["-m" "net.b12n.rljlt.spinning-cubes"]}   ; row of cubes spinning in place
-           :orthographic-projection {:main-opts ["-m" "net.b12n.rljlt.orthographic-projection"]} ; perspective/ortho toggle
-           :point-cloud      {:main-opts ["-m" "net.b12n.rljlt.point-cloud"]}      ; rotating cloud of tiny cubes
-           :bouncing-spheres {:main-opts ["-m" "net.b12n.rljlt.bouncing-spheres"]} ; spheres bouncing (rl/sphere!)
-           :ball-physics     {:main-opts ["-m" "net.b12n.rljlt.ball-physics"]}     ; 2D balls under gravity
-           :lines-bezier     {:main-opts ["-m" "net.b12n.rljlt.lines-bezier"]}     ; cubic Bézier follows the mouse
-           :input-box        {:main-opts ["-m" "net.b12n.rljlt.input-box"]}       ; type into a text box (GetCharPressed)
-           :snake            {:main-opts ["-m" "net.b12n.rljlt.snake"]}            ; the classic snake
-           :breakout         {:main-opts ["-m" "net.b12n.rljlt.breakout"]}         ; paddle + ball + bricks
-           :space-invaders   {:main-opts ["-m" "net.b12n.rljlt.space-invaders"]}   ; marching aliens shooter
-           :flappy-bird      {:main-opts ["-m" "net.b12n.rljlt.flappy-bird"]}      ; flap through the pipes
-           :game-2048        {:main-opts ["-m" "net.b12n.rljlt.game-2048"]}        ; 2048 tile-merge puzzle
-           :minesweeper      {:main-opts ["-m" "net.b12n.rljlt.minesweeper"]}     ; reveal/flag grid (mouse L/R)
-           :game-of-life     {:main-opts ["-m" "net.b12n.rljlt.game-of-life"]}     ; Conway's Game of Life
-           :boids            {:main-opts ["-m" "net.b12n.rljlt.boids"]}            ; flocking simulation
-           :fireworks        {:main-opts ["-m" "net.b12n.rljlt.fireworks"]}        ; particle fireworks
-           :fourier-epicycles {:main-opts ["-m" "net.b12n.rljlt.fourier-epicycles"]} ; epicycles trace a square wave
-           :spirograph       {:main-opts ["-m" "net.b12n.rljlt.spirograph"]}       ; hypotrochoid roulette curves
-           :l-system         {:main-opts ["-m" "net.b12n.rljlt.l-system"]}         ; L-system fractal plant
-           :flow-field       {:main-opts ["-m" "net.b12n.rljlt.flow-field"]}       ; particles in a noise flow field
-           :color-wheel      {:main-opts ["-m" "net.b12n.rljlt.color-wheel"]}      ; HSV hue ring (rlgl fan)
-           :pie-chart        {:main-opts ["-m" "net.b12n.rljlt.pie-chart"]}        ; labelled pie slices (sector!)
-           :splines          {:main-opts ["-m" "net.b12n.rljlt.splines"]}          ; Catmull-Rom / Bezier / B-spline
-           :vector-angle     {:main-opts ["-m" "net.b12n.rljlt.vector-angle"]}     ; angle between two vectors (atan2)
-           :easings          {:main-opts ["-m" "net.b12n.rljlt.easings"]}          ; a grid of easing-curve balls
-           :penrose-tiling   {:main-opts ["-m" "net.b12n.rljlt.penrose-tiling"]}   ; P3 rhombus tiling (deflation)
-           :analog-clock     {:main-opts ["-m" "net.b12n.rljlt.analog-clock"]}     ; live analog clock (libc time)
-           :digital-clock    {:main-opts ["-m" "net.b12n.rljlt.digital-clock"]}    ; seven-segment HH:MM:SS
-           :ring-drawing     {:main-opts ["-m" "net.b12n.rljlt.ring-drawing"]}     ; animated rlgl annulus
-           :rounded-rectangle {:main-opts ["-m" "net.b12n.rljlt.rounded-rectangle"]} ; sector!-corner rounded rects
-           :rectangle-scaling {:main-opts ["-m" "net.b12n.rljlt.rectangle-scaling"]} ; drag-resize a rect
-           :lines-drawing    {:main-opts ["-m" "net.b12n.rljlt.lines-drawing"]}}   ; a fan of thick lines (line-ex!)
+ :aliases {:check  {:main-opts ["-m" "net.b12n.raylib-jlt.check"]}   ; headless: compile every example
+           :run    {:main-opts ["-m" "net.b12n.raylib-jlt.core"]}    ; basic window (default)
+           :input  {:main-opts ["-m" "net.b12n.raylib-jlt.input"]}   ; move a circle with arrow keys
+           :bounce {:main-opts ["-m" "net.b12n.raylib-jlt.bounce"]}   ; bouncing ball, SPACE pauses
+           :colors {:main-opts ["-m" "net.b12n.raylib-jlt.colors"]}    ; named-color palette grid
+           :mouse  {:main-opts ["-m" "net.b12n.raylib-jlt.mouse"]}     ; circle follows the cursor
+           :wheel  {:main-opts ["-m" "net.b12n.raylib-jlt.wheel"]}     ; move a box with the mouse wheel
+           :shapes {:main-opts ["-m" "net.b12n.raylib-jlt.shapes"]}    ; scalar shape primitives + rlgl triangle
+           :gradient {:main-opts ["-m" "net.b12n.raylib-jlt.gradient"]} ; vertical color gradient
+           :text   {:main-opts ["-m" "net.b12n.raylib-jlt.text"]}      ; font sizes + MeasureText centering
+           :logo   {:main-opts ["-m" "net.b12n.raylib-jlt.logo"]}      ; the raylib logo
+           :stars  {:main-opts ["-m" "net.b12n.raylib-jlt.stars"]}      ; twinkling starfield
+           :eyes   {:main-opts ["-m" "net.b12n.raylib-jlt.eyes"]}       ; eyes that follow the mouse
+           :camera2d {:main-opts ["-m" "net.b12n.raylib-jlt.camera2d"]}  ; 2D camera (struct-by-value)
+           :mouse-trail      {:main-opts ["-m" "net.b12n.raylib-jlt.mouse-trail"]}      ; fading cursor trail
+           :recursive-tree   {:main-opts ["-m" "net.b12n.raylib-jlt.recursive-tree"]}   ; binary fractal tree
+           :math-sine-cosine {:main-opts ["-m" "net.b12n.raylib-jlt.math-sine-cosine"]} ; unit-circle trig
+           :bullet-hell      {:main-opts ["-m" "net.b12n.raylib-jlt.bullet-hell"]}      ; rotating bullet spiral
+           :triangle-strip   {:main-opts ["-m" "net.b12n.raylib-jlt.triangle-strip"]}   ; rlgl rainbow strip
+           :delta-time       {:main-opts ["-m" "net.b12n.raylib-jlt.delta-time"]}       ; per-frame vs delta-time
+           :scissor-test     {:main-opts ["-m" "net.b12n.raylib-jlt.scissor-test"]}     ; scissor-clipped grid
+           :writing-anim     {:main-opts ["-m" "net.b12n.raylib-jlt.writing-anim"]}     ; self-typing message
+           :format-text      {:main-opts ["-m" "net.b12n.raylib-jlt.format-text"]}      ; padded score + timer
+           :collision-area   {:main-opts ["-m" "net.b12n.raylib-jlt.collision-area"]}   ; AABB collision highlight
+           :dashed-line      {:main-opts ["-m" "net.b12n.raylib-jlt.dashed-line"]}      ; dashed line to the mouse
+           :double-pendulum  {:main-opts ["-m" "net.b12n.raylib-jlt.double-pendulum"]}  ; chaotic pendulum + trail
+           :kaleidoscope     {:main-opts ["-m" "net.b12n.raylib-jlt.kaleidoscope"]}     ; 6-fold mirrored strokes
+           :hilbert-curve    {:main-opts ["-m" "net.b12n.raylib-jlt.hilbert-curve"]}    ; rainbow Hilbert curve
+           :math-angle-rotation {:main-opts ["-m" "net.b12n.raylib-jlt.math-angle-rotation"]} ; spokes + spinning line
+           :basic-screen-manager {:main-opts ["-m" "net.b12n.raylib-jlt.basic-screen-manager"]} ; LOGO/TITLE/GAMEPLAY/ENDING
+           :random-values    {:main-opts ["-m" "net.b12n.raylib-jlt.random-values"]}    ; a random value every 2s
+           :words-alignment  {:main-opts ["-m" "net.b12n.raylib-jlt.words-alignment"]}  ; align a word in a box
+           :camera-3d        {:main-opts ["-m" "net.b12n.raylib-jlt.camera-3d"]}        ; orbiting 3D camera (Camera3D by value)
+           :waving-cubes     {:main-opts ["-m" "net.b12n.raylib-jlt.waving-cubes"]}     ; a grid of cubes rippling in 3D
+           :camera-3d-first-person {:main-opts ["-m" "net.b12n.raylib-jlt.camera-3d-first-person"]} ; FP walk with WASD + mouse
+           :rlgl-solar-system {:main-opts ["-m" "net.b12n.raylib-jlt.rlgl-solar-system"]} ; Sun/Earth/Moon via rlgl matrix stack
+           :box-collisions   {:main-opts ["-m" "net.b12n.raylib-jlt.box-collisions"]}     ; 3D AABB collision highlight
+           :asteroids        {:main-opts ["-m" "net.b12n.raylib-jlt.asteroids"]}          ; the classic vector game
+           :tetris           {:main-opts ["-m" "net.b12n.raylib-jlt.tetris"]}             ; the block-stacking puzzle
+           :pong             {:main-opts ["-m" "net.b12n.raylib-jlt.pong"]}               ; two-paddle classic vs CPU
+           :tesseract-view   {:main-opts ["-m" "net.b12n.raylib-jlt.tesseract-view"]}     ; rotating 4D hypercube
+           :vampire-survivors {:main-opts ["-m" "net.b12n.raylib-jlt.vampire-survivors"]} ; auto-fire survival game
+           :wireframe-shapes {:main-opts ["-m" "net.b12n.raylib-jlt.wireframe-shapes"]}   ; 3D wireframe solids (rlgl lines)
+           :rotating-cube    {:main-opts ["-m" "net.b12n.raylib-jlt.rotating-cube"]}    ; single cube spinning (rlgl matrix)
+           :spinning-cubes   {:main-opts ["-m" "net.b12n.raylib-jlt.spinning-cubes"]}   ; row of cubes spinning in place
+           :orthographic-projection {:main-opts ["-m" "net.b12n.raylib-jlt.orthographic-projection"]} ; perspective/ortho toggle
+           :point-cloud      {:main-opts ["-m" "net.b12n.raylib-jlt.point-cloud"]}      ; rotating cloud of tiny cubes
+           :bouncing-spheres {:main-opts ["-m" "net.b12n.raylib-jlt.bouncing-spheres"]} ; spheres bouncing (rl/sphere!)
+           :ball-physics     {:main-opts ["-m" "net.b12n.raylib-jlt.ball-physics"]}     ; 2D balls under gravity
+           :lines-bezier     {:main-opts ["-m" "net.b12n.raylib-jlt.lines-bezier"]}     ; cubic Bézier follows the mouse
+           :input-box        {:main-opts ["-m" "net.b12n.raylib-jlt.input-box"]}       ; type into a text box (GetCharPressed)
+           :snake            {:main-opts ["-m" "net.b12n.raylib-jlt.snake"]}            ; the classic snake
+           :breakout         {:main-opts ["-m" "net.b12n.raylib-jlt.breakout"]}         ; paddle + ball + bricks
+           :space-invaders   {:main-opts ["-m" "net.b12n.raylib-jlt.space-invaders"]}   ; marching aliens shooter
+           :flappy-bird      {:main-opts ["-m" "net.b12n.raylib-jlt.flappy-bird"]}      ; flap through the pipes
+           :game-2048        {:main-opts ["-m" "net.b12n.raylib-jlt.game-2048"]}        ; 2048 tile-merge puzzle
+           :minesweeper      {:main-opts ["-m" "net.b12n.raylib-jlt.minesweeper"]}     ; reveal/flag grid (mouse L/R)
+           :game-of-life     {:main-opts ["-m" "net.b12n.raylib-jlt.game-of-life"]}     ; Conway's Game of Life
+           :boids            {:main-opts ["-m" "net.b12n.raylib-jlt.boids"]}            ; flocking simulation
+           :fireworks        {:main-opts ["-m" "net.b12n.raylib-jlt.fireworks"]}        ; particle fireworks
+           :fourier-epicycles {:main-opts ["-m" "net.b12n.raylib-jlt.fourier-epicycles"]} ; epicycles trace a square wave
+           :spirograph       {:main-opts ["-m" "net.b12n.raylib-jlt.spirograph"]}       ; hypotrochoid roulette curves
+           :l-system         {:main-opts ["-m" "net.b12n.raylib-jlt.l-system"]}         ; L-system fractal plant
+           :flow-field       {:main-opts ["-m" "net.b12n.raylib-jlt.flow-field"]}       ; particles in a noise flow field
+           :color-wheel      {:main-opts ["-m" "net.b12n.raylib-jlt.color-wheel"]}      ; HSV hue ring (rlgl fan)
+           :pie-chart        {:main-opts ["-m" "net.b12n.raylib-jlt.pie-chart"]}        ; labelled pie slices (sector!)
+           :splines          {:main-opts ["-m" "net.b12n.raylib-jlt.splines"]}          ; Catmull-Rom / Bezier / B-spline
+           :vector-angle     {:main-opts ["-m" "net.b12n.raylib-jlt.vector-angle"]}     ; angle between two vectors (atan2)
+           :easings          {:main-opts ["-m" "net.b12n.raylib-jlt.easings"]}          ; a grid of easing-curve balls
+           :penrose-tiling   {:main-opts ["-m" "net.b12n.raylib-jlt.penrose-tiling"]}   ; P3 rhombus tiling (deflation)
+           :analog-clock     {:main-opts ["-m" "net.b12n.raylib-jlt.analog-clock"]}     ; live analog clock (libc time)
+           :digital-clock    {:main-opts ["-m" "net.b12n.raylib-jlt.digital-clock"]}    ; seven-segment HH:MM:SS
+           :ring-drawing     {:main-opts ["-m" "net.b12n.raylib-jlt.ring-drawing"]}     ; animated rlgl annulus
+           :rounded-rectangle {:main-opts ["-m" "net.b12n.raylib-jlt.rounded-rectangle"]} ; sector!-corner rounded rects
+           :rectangle-scaling {:main-opts ["-m" "net.b12n.raylib-jlt.rectangle-scaling"]} ; drag-resize a rect
+           :lines-drawing    {:main-opts ["-m" "net.b12n.raylib-jlt.lines-drawing"]}}   ; a fan of thick lines (line-ex!)
 
  :tasks {run "joltc -M:run"}}

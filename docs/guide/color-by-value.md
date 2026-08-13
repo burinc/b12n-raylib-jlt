@@ -32,7 +32,7 @@ Contrast [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md):
 
 `Color` is little-endian in memory: `r` at the lowest byte, then `g`, `b`, `a`. So
 the `uint32` is `r | g<<8 | b<<16 | a<<24`. That is exactly `rgba`
-(`src/net/b12n/rljlt/raylib.clj`):
+(`src/net/b12n/raylib_jlt/raylib.clj`):
 
 ```clojure
 (defn rgba
@@ -78,7 +78,7 @@ just two `:uint` parameters:
   [:int :int :int :int :uint :uint] :void)   ; x y w h topColor bottomColor
 ```
 
-The `gradient` example (`net.b12n.rljlt.gradient`) uses it directly. Two by-value
+The `gradient` example (`net.b12n.raylib-jlt.gradient`) uses it directly. Two by-value
 structs in one signature would be a real problem if they didn't each collapse to a
 register — this is a second dividend of the register-fit fact.
 

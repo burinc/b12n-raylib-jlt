@@ -1,6 +1,6 @@
-# net.b12n.rljlt — Guide
+# b12n-raylib-jlt — Guide
 
-User-facing documentation for `net.b12n.rljlt`: a suite of **[raylib](https://github.com/raysan5/raylib)
+User-facing documentation for `b12n-raylib-jlt`: a suite of **[raylib](https://github.com/raysan5/raylib)
 examples written in [jolt](https://github.com/jolt-lang)** (native Clojure on Chez
 Scheme, no JVM) over `jolt.ffi`. Each page below covers one FFI pattern or drawing
 convention, with citations to source files and cross-references to sibling projects
@@ -8,17 +8,17 @@ in the [b12n umbrella wiki](https://github.com/burinc/b12n-wikis).
 
 ## Why this exists
 
-When `net.b12n.rljlt` is mirrored into
+When `b12n-raylib-jlt` is mirrored into
 [`b12n-wikis`](https://github.com/burinc/b12n-wikis), each page below becomes an
-entry under `b12n-wikis/b12n-rljlt/`, and the wiki's `PATTERNS.md` cross-project
+entry under `b12n-wikis/b12n-raylib-jlt/`, and the wiki's `PATTERNS.md` cross-project
 index cites them for any Jolt-FFI-distinctive pattern.
 
-## What net.b12n.rljlt is
+## What b12n-raylib-jlt is
 
 A community suite of 75 raylib examples — the classic core/shapes/text demos, a
 handful of games (asteroids, tetris, pong, vampire-survivors), and a 3D set
 (orbiting cameras, waving cubes, an rlgl solar system) — each a small Clojure
-namespace on top of one shared binding layer, `net.b12n.rljlt.raylib`.
+namespace on top of one shared binding layer, `net.b12n.raylib-jlt.raylib`.
 
 It is the **graphics sibling** of
 [`b12n-tsj`](https://github.com/burinc/b12n-tsj) (tree-sitter from Jolt). Both bind
@@ -57,7 +57,7 @@ Nothing about `jolt.ffi` is raylib-specific: it binds any C ABI symbol. The
 - ✅ [`color-by-value.md`](color-by-value.md) — why raylib's `Color` crosses the
   FFI boundary as a packed `:uint` and not a struct, the little-endian `rgba`
   packing, and the two-by-value-Colors-in-one-call case (`DrawRectangleGradientV`).
-  Source: `src/net/b12n/rljlt/raylib.clj` (`rgba`, `clear-background`, the palette).
+  Source: `src/net/b12n/raylib_jlt/raylib.clj` (`rgba`, `clear-background`, the palette).
 - ✅ [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md) — how a
   24-byte `Camera2D` / 44-byte `Camera3D` is passed by value on AArch64 by
   allocating the struct in native memory and binding `BeginMode2D`/`BeginMode3D` as

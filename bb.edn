@@ -1,4 +1,4 @@
-;; Babashka runner for the net.b12n.rljlt raylib examples.
+;; Babashka runner for the net.b12n.raylib-jlt raylib examples.
 ;;
 ;;   bb info            grouped cheat-sheet
 ;;   bb examples        flat list with descriptions
@@ -414,7 +414,7 @@
   {:doc "Install FAST git pre-commit hook (lint + format + clean-ns, ~2s)"
    :task (let [hook ".git/hooks/pre-commit"]
            (spit hook (str "#!/bin/bash\n"
-                           "# net.b12n.rljlt pre-commit (FAST — lint + format + clean-ns dry-run).\n"
+                           "# net.b12n.raylib-jlt pre-commit (FAST — lint + format + clean-ns dry-run).\n"
                            "# Full (+ headless compile-check): bb hooks:install:full\n"
                            "echo 'pre-commit 1/3: bb lint:strict (clj-kondo)'\n"
                            "bb lint:strict || { echo 'pre-commit: lint findings — see above'; exit 1; }\n"
@@ -431,7 +431,7 @@
   {:doc "Install FULL git pre-commit hook (+ headless compile-check of every example, slower)"
    :task (let [hook ".git/hooks/pre-commit"]
            (spit hook (str "#!/bin/bash\n"
-                           "# net.b12n.rljlt pre-commit (FULL). Fast: bb hooks:install\n"
+                           "# net.b12n.raylib-jlt pre-commit (FULL). Fast: bb hooks:install\n"
                            "echo 'pre-commit 1/4: bb lint:strict (clj-kondo)'\n"
                            "bb lint:strict || { echo 'pre-commit: lint findings — see above'; exit 1; }\n"
                            "echo 'pre-commit 2/4: clojure-lsp format --dry'\n"

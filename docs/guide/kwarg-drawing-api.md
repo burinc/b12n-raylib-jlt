@@ -12,7 +12,7 @@ The FFI boundary stays a faithful, positional mirror of the C signature — that
 contract with the library and the thing to check against `raylib.h`:
 
 ```clojure
-;; src/net/b12n/rljlt/raylib.clj — the FFI boundary (positional, mirrors C)
+;; src/net/b12n/raylib_jlt/raylib.clj — the FFI boundary (positional, mirrors C)
 (ffi/defcfn draw-text      "DrawText"      [:string :int :int :int :uint] :void)
 (ffi/defcfn draw-rectangle "DrawRectangle" [:int :int :int :int :uint] :void)
 (ffi/defcfn draw-circle    "DrawCircle"    [:int :int :float :uint] :void)
@@ -41,7 +41,7 @@ The wrappers also absorb small coercions the raw bind is strict about — e.g.
 `circle!` calls `(double radius)` so a caller can pass an int radius without a type
 error at the `:float` boundary.
 
-The payoff at the call site (`net.b12n.rljlt.core`):
+The payoff at the call site (`net.b12n.raylib-jlt.core`):
 
 ```clojure
 (rl/text! "Congrats! You created your first window!"
