@@ -5,7 +5,8 @@
 ;; [display-name  joltc-alias  group  description]
 ;; Single source of truth: bb.edn's :init requires this instead of inlining
 ;; the vector, and scripts/record_all.clj (the demo-GIF recorder) reads it
-;; too. See docs/superpowers/specs/2026-08-10-demo-gif-recording-design.md.
+;; too. (That recorder's design spec is not included in this repo — see the
+;; centralized planning store referenced under Documentation in README.md.)
 (def examples
   [["basic-window"      "run"      "core"   "the minimal raylib window + text"]
    ["input-keys"        "input"    "core"   "steer a ball with the arrow keys"]
