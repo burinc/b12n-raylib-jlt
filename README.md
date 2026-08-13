@@ -364,6 +364,10 @@ by-value struct support for `Vector3`-taking functions.
   - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
   - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 75, and the four-touchpoint recipe for adding one
 
+- Design specs / implementation plans: not included in this repo — they live at
+  `~/dev/b12n-sp-docs/b12n-raylib-jlt/{specs,plans}/` (the centralized superpowers
+  planning store) for anyone with access to that store.
+
 Sibling project: [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — tree-sitter from
 Jolt, the same `jolt.ffi` mechanism applied to a by-value-*returning* C API that
 needs a full C shim this repo avoids.
