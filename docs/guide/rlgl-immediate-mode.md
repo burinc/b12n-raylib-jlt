@@ -23,7 +23,7 @@ raylib ships `rlgl`, a thin immediate-mode layer over the GPU batch. Its vertex 
 takes **individual floats**, never a vector struct:
 
 ```clojure
-;; src/net/b12n/rljlt/raylib.clj
+;; src/net/b12n/raylib_jlt/raylib.clj
 (ffi/defcfn rl-begin     "rlBegin"     [:int] :void)        ; RL-LINES / RL-TRIANGLES
 (ffi/defcfn rl-end       "rlEnd"       [] :void)
 (ffi/defcfn rl-vertex-2f "rlVertex2f"  [:float :float] :void)
@@ -35,7 +35,7 @@ takes **individual floats**, never a vector struct:
 
 Every argument is a scalar the FFI passes cleanly. So instead of `DrawTriangle(v1,
 v2, v3, color)` you emit `rlBegin(RL_TRIANGLES)`, one `rlColor4ub`, three
-`rlVertex2f`, `rlEnd`. The `shapes` example (`net.b12n.rljlt.shapes`) draws its
+`rlVertex2f`, `rlEnd`. The `shapes` example (`net.b12n.raylib-jlt.shapes`) draws its
 triangle exactly this way; `rl-color!` (see [`color-by-value.md`](color-by-value.md))
 unpacks the shared packed `Color` into the four `u8` args.
 
@@ -97,7 +97,7 @@ flowchart TD
   p2 --> p1["rlPopMatrix"]
 ```
 
-The `rlgl-solar-system` example (`net.b12n.rljlt.rlgl-solar-system`) uses exactly
+The `rlgl-solar-system` example (`net.b12n.raylib-jlt.rlgl-solar-system`) uses exactly
 this to make Earth orbit the Sun and the Moon orbit Earth — nested push/translate/
 rotate around three `cube!` calls, no matrix math in Clojure. It's also the
 **portable** substitute for the AArch64-only camera pointer trick (see the x86-64

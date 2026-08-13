@@ -8,7 +8,7 @@ the example itself.
 
 ## The two knobs
 
-Both are read in `net.b12n.rljlt.raylib` and consumed by the shared loop guards, so
+Both are read in `net.b12n.raylib-jlt.raylib` and consumed by the shared loop guards, so
 every example inherits them for free.
 
 - **`RAYLIB_APP_AUTO_QUIT_MS=<n>`** — close the window after `n` milliseconds. The
@@ -22,7 +22,7 @@ every example inherits them for free.
 `nil`); `keep-running?` ANDs it with raylib's own close signal:
 
 ```clojure
-;; src/net/b12n/rljlt/raylib.clj
+;; src/net/b12n/raylib_jlt/raylib.clj
 (defn auto-quit-deadline []
   (when-let [v (System/getenv "RAYLIB_APP_AUTO_QUIT_MS")]
     (try (let [ms (Integer/parseInt v)]
@@ -39,7 +39,7 @@ window is open" — normal interactive behavior. Set it, and the loop ends on it
 
 ## The canonical loop
 
-Every example is the same shape (`net.b12n.rljlt.core`, the basic window):
+Every example is the same shape (`net.b12n.raylib-jlt.core`, the basic window):
 
 ```clojure
 (defn -main [& _]
@@ -73,7 +73,7 @@ active render batch first:
   (when (and shot-path (= frame at))
     (flush-batch)                 ; rlDrawRenderBatchActive — submit deferred geometry
     (take-screenshot shot-path)
-    (binding [*out* *err*] (println "[net.b12n.rljlt] SHOT" shot-path))))
+    (binding [*out* *err*] (println "[net.b12n.raylib-jlt] SHOT" shot-path))))
 ```
 
 Note: raylib writes the file's **basename into the current working directory** — it
@@ -107,7 +107,7 @@ And the display-free check that belongs in CI — it compiles every example name
 without opening a window at all:
 
 ```sh
-joltc -M:check   # "net.b12n.rljlt: all example namespaces compiled OK"
+joltc -M:check   # "net.b12n.raylib-jlt: all example namespaces compiled OK"
 bb check         # same, via babashka
 ```
 

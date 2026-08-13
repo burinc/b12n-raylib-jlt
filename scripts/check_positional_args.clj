@@ -7,7 +7,7 @@
 ;;        --strict: exit non-zero if any functions are found
 ;;
 ;; Adapted from glitter's scripts/check_positional_args.clj — same script,
-;; source-dirs pointed at this project's flat src/net/b12n/rljlt layout.
+;; source-dirs pointed at this project's flat src/net/b12n/raylib_jlt layout.
 
 (ns check-positional-args
   (:require [babashka.fs :as fs]
