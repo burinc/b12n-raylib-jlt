@@ -7,6 +7,7 @@
  :ledger  "docs/demos/ledger.edn"
  :readme  "docs/demos/README.md"
  :title   "Examples"
+ :preamble "Animated GIF previews, recorded with [screen-grab](https://github.com/burinc/b12n-screen-grab) via cgevent. Regenerate with `bb record`."
 
  ;; Mirrors the old record_all.clj write-readme! group list, which used
  ;; the bare group name as the heading.
