@@ -263,8 +263,21 @@
 
   record
   {:doc "Batch-record a demo GIF for every example: bb record [--only a,b] [--force] [--dry-run]"
-   :task (let [{:keys [exit]} (apply shell {:continue true} "bb" "scripts/record_all.clj" *command-line-args*)]
+   :task (let [{:keys [exit]} (apply shell {:continue true}
+                                     "screen-grab" "record"
+                                     "--manifest" "scripts/demo_manifest.edn"
+                                     *command-line-args*)]
            (System/exit exit))}
+
+  demos:examples
+  {:doc "Print the demo item list as EDN for screen-grab"
+   :task
+   (prn (vec (for [row examples]
+               {:id (nth row 0)
+                :group (nth row 2)
+                :desc (nth row 3)
+                :src (reg/src-path (nth row 1))
+                :run (str "joltc -M:" (nth row 1))})))}
 
   examples
   {:doc "List every runnable example with its description"

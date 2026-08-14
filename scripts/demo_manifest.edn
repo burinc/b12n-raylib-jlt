@@ -1,9 +1,32 @@
-{:defaults
- {:duration 6
-  :fps 10
-  :width 480
-  :warmup 10
-  :capture "cgevent screenshot {{file}} --pid {{pid}}"}
+{:driver  :spawn
+ :capture :cgevent-gif
+
+ :examples-cmd "bb demos:examples"
+
+ :out-dir "docs/demos"
+ :ledger  "docs/demos/ledger.edn"
+ :readme  "docs/demos/README.md"
+ :title   "Examples"
+
+ ;; Mirrors the old record_all.clj write-readme! group list, which used
+ ;; the bare group name as the heading.
+ :groups [{:key "games"
+           :title "games"}
+          {:key "core"
+           :title "core"}
+          {:key "shapes"
+           :title "shapes"}
+          {:key "text"
+           :title "text"}
+          {:key "3d"
+           :title "3d"}
+          {:key "generative"
+           :title "generative"}]
+
+ :defaults {:duration 6
+            :fps 10
+            :width 480
+            :warmup 10}
 
  :overrides
  {"asteroids"               {:input [[1.0 :key "up"] [1.5 :key "space"] [2.5 :key "left"] [3.5 :key "space"] [4.5 :key "right"]]}
