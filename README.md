@@ -36,6 +36,13 @@ shared namespace, `net.b12n.raylib-jlt.raylib`; each example is a small namespac
 </table>
 
 **[Browse the full gallery →](docs/demos/README.md)** — every example, recorded via `bb record`.
+`bb record --only <example-name>` matches an exact id or an id prefix
+(e.g. `--only camera-2d` also selects `camera-2d-platformer`); combine a
+short prefix with `--force` carefully.
+
+`bb record` requires the `screen-grab` CLI on your PATH. Install it from
+[b12n-screen-grab](https://github.com/burinc/b12n-screen-grab):
+`cd ~/dev/b12n-screen-grab && bb install:home`
 
 ## Requirements
 

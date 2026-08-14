@@ -21,3 +21,6 @@ raylib_shot.png
 .claude/
 CONTINUATION_PROMPT.md
 .DS_Store
+
+# screen-grab teardown markers (out-dir scratch; recover-pending! executes these)
+docs/demos/.screen-grab-pending.edn*
