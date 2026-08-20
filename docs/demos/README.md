@@ -1,6 +1,6 @@
 # Examples
 
-Animated GIF previews, recorded with [screen-grab](https://github.com/burinc/b12n-screen-grab) via cgevent. Regenerate with `bb record`.
+Animated GIF previews of every example. Regenerate with `bb record` (requires the internal capture tool; the GIFs here are committed, so you do not need it to browse them).
 
 ## games
 

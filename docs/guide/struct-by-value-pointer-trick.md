@@ -111,8 +111,8 @@ for the matrix stack. The source flags this inline:
 This trick fakes a by-value struct **argument**. It does nothing for a function that
 **returns** a struct by value — on AArch64 that uses the `x8` sret register, which
 Chez doesn't expose. raylib's hot path never needs a by-value struct return, so this
-repo never hits it. Its Jolt sibling
-[`b12n-tsj`](https://github.com/burinc/b12n-tsj) is not so lucky: tree-sitter's
+repo never hits it. Its Jolt sibling `b12n-tsj` (not yet public) is not so lucky:
+tree-sitter's
 `ts_tree_root_node` **returns** a 32-byte `TSNode` by value and `ts_node_type`
 **takes** one, so it can't fake either direction with a pointer binding and must ship
 a C shim. That contrast is the reason both projects exist side by side.
@@ -131,5 +131,5 @@ ops (or a real shim) there.
   register and needs none of this.
 - [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md) — the portable matrix-stack
   alternative, and the fallback for by-value *float* structs (`Vector2`/`Vector3`).
-- [`b12n-tsj/struct-by-value-shim.md`](https://github.com/burinc/b12n-tsj/blob/main/docs/guide/struct-by-value-shim.md)
-  — when the pointer trick isn't enough (by-value returns) and you must write a shim.
+- `b12n-tsj` (not yet public) — the sibling case where the pointer trick isn't
+  enough (by-value returns) and you must write a C shim.

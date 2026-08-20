@@ -1,0 +1,4 @@
+# Normalize the three spellings of the same author (one identity, one email)
+# so `git shortlog -sne` and GitHub's contributor list show a single entry.
+Burin Choomnuan <burin@duck.com>
+Burin Choomnuan <burin@duck.com> <burin@duck.com>
