@@ -9,6 +9,9 @@ runtime and called through the FFI.
 All the FFI bindings and an ergonomic keyword-argument drawing API live in one
 shared namespace, `net.b12n.raylib-jlt.raylib`; each example is a small namespace on top of it.
 
+**Documentation site: <https://raylib-jlt.b12n.app>** — the guide, the full example
+catalog, and every demo GIF at full size.
+
 ## Examples
 
 <table>
@@ -122,6 +125,14 @@ bb check                # headless compile-check of every example (no window)
 bb lib:check            # is the native libraylib installed for this OS/arch?
 bb lib:install          # install libraylib via the platform package manager
 bb tasks                # raw babashka task list
+```
+
+Two more exist for maintaining the published docs — both explain themselves and stop
+cleanly if their external tooling isn't available:
+
+```sh
+bb record       # re-record the demo GIFs (needs an internal capture tool)
+bb docs-sync    # rebuild + publish the documentation site; --no-push to stay local
 ```
 
 The `bb` names are friendly aliases; each maps to a `joltc` alias below.
@@ -363,6 +374,10 @@ by-value struct support for `Vector3`-taking functions.
 
 ## Documentation
 
+Everything below is also published at **<https://raylib-jlt.b12n.app>**, which is the
+nicer way to read it — the guide pages are cross-linked and the demo gallery renders
+inline.
+
 - [`docs/guide/`](docs/guide/index.md) — patterns & pitfalls, each with source
   citations:
   - [`color-by-value.md`](docs/guide/color-by-value.md) — why `Color` crosses the FFI as a packed `:uint`
@@ -377,6 +392,13 @@ by-value struct support for `Vector3`-taking functions.
   `bb record` from `scripts/demo_manifest.edn` (don't hand-edit it), while
   [`docs/guide/demos.md`](docs/guide/demos.md) is the full-size companion to the
   example catalog's thumbnails.
+
+- `bb docs-sync` republishes all of it after a `docs/guide/` or README change:
+  rebuilds the site, commits the generated output, mirrors the guide pages, and
+  deploys to the CDN behind <https://raylib-jlt.b12n.app>. `bb docs-sync --no-push`
+  does the rebuild and commits locally without publishing anything. It's a
+  maintainer task — it needs sibling repos and cloud credentials — and it explains
+  itself and skips rather than failing if either is absent.
 
 The suite has a sibling project, `b12n-tsj`, which binds tree-sitter from Jolt with
 the same `jolt.ffi` mechanism. It is not public yet, but the contrast shapes the FFI

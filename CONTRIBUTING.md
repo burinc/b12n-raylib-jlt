@@ -6,6 +6,9 @@ calling the real `libraylib` over its C ABI through `jolt.ffi`.
 
 New examples are very welcome — the suite is deliberately mechanical to grow.
 
+The documentation is published at <https://raylib-jlt.b12n.app>. It's generated from
+this repo's `docs/guide/` — edit the Markdown here, never the site.
+
 ## Setting up
 
 You need two things:
@@ -100,6 +103,9 @@ maintainer-only — it will tell you so rather than failing obscurely. If your n
 example would benefit from a specific input sequence in its demo, add an
 `:overrides` entry for it in the manifest and mention it in your PR; a maintainer
 will record it.
+
+Publishing the site is likewise a maintainer task (`bb docs-sync`), so a docs change
+in your PR goes live when a maintainer next syncs — you don't need to do anything.
 
 ## Licensing
 
