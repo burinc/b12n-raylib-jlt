@@ -50,7 +50,7 @@ the task tells you so if the tool is absent.
 ### jolt
 
 ```sh
-jolt --version               # tested against jolt v0.5.13
+jolt --version               # tested against jolt v0.7.16
 ```
 
 Any recent jolt works. One thing to know if you edit the shared binding layer

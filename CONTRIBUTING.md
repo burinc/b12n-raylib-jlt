@@ -11,7 +11,7 @@ New examples are very welcome — the suite is deliberately mechanical to grow.
 You need two things:
 
 ```sh
-jolt --version    # any recent jolt; tested against v0.5.13
+jolt --version    # any recent jolt; tested against v0.7.16
 bb lib:check      # is the native libraylib installed for this OS/arch?
 ```
 
