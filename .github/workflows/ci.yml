@@ -118,8 +118,25 @@ jobs:
       # The gate that matters most: compiles all 75 example namespaces
       # headlessly. It is the only check that catches a new example missing
       # its `check.clj` require — the easiest of the four touchpoints to skip.
+      #
+      # Failure output is echoed normally AND re-emitted as a ::error::
+      # annotation plus a job summary. Annotations and summaries are readable
+      # without downloading the log archive, which some networks block; a bare
+      # `run: bb check` leaves a reader with nothing but "exit code 1".
       - name: Compile every example (headless)
-        run: bb check
+        run: |
+          set +e
+          out="$(bb check 2>&1)"; rc=$?
+          printf '%s\n' "$out"
+          if [ "$rc" -ne 0 ]; then
+            {
+              printf '### `bb check` failed (exit %s)\n\n```\n%s\n```\n' \
+                "$rc" "$(printf '%s\n' "$out" | tail -60)"
+            } >> "$GITHUB_STEP_SUMMARY"
+            printf '%s\n' "$out" | tail -c 2000 \
+              | python3 -c 'import sys; print("::error title=bb check failed::" + sys.stdin.read().replace("%","%25").replace("\r","%0D").replace("\n","%0A"))'
+          fi
+          exit "$rc"
 
       - name: clj-kondo
         run: bb lint:strict
@@ -131,3 +148,32 @@ jobs:
 
       - name: Namespace forms
         run: bb lsp:clean-ns-check
+
+      # Runs only when something above failed. `bb lib:check` proves the .so
+      # FILE exists; it never dlopens it — so a library that is present but
+      # unloadable (a missing runtime GL/X11 dependency on a headless runner)
+      # passes that check and fails at compile time. This reports the linkage
+      # facts that distinguish the two, as an annotation so it is readable
+      # without the log archive.
+      - name: Diagnostics (on failure)
+        if: failure()
+        run: |
+          set +e
+          lib="$(ldconfig -p | grep -m1 libraylib | awk '{print $NF}')"
+          {
+            echo "resolved libraylib: ${lib:-<not in ldconfig cache>}"
+            echo
+            echo "ldd:"
+            if [ -n "$lib" ]; then ldd "$lib" 2>&1; else echo "  (skipped — no library to inspect)"; fi
+            echo
+            echo "unresolved above (if any) are the missing runtime deps."
+            echo
+            echo "jolt:  $(jolt --version 2>&1 | head -1)"
+            echo "bb:    $(bb --version 2>&1 | head -1)"
+          } > /tmp/diag.txt
+          cat /tmp/diag.txt
+          {
+            printf '### Diagnostics\n\n```\n'; cat /tmp/diag.txt; printf '```\n'
+          } >> "$GITHUB_STEP_SUMMARY"
+          tail -c 2000 /tmp/diag.txt \
+            | python3 -c 'import sys; print("::error title=libraylib diagnostics::" + sys.stdin.read().replace("%","%25").replace("\r","%0D").replace("\n","%0A"))'
