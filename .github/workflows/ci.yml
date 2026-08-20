@@ -35,15 +35,47 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
 
-      # The project's own `bb lib:install` resolves to this exact package on
-      # apt systems (see installer-plan in bb.edn). The -dev package is the
-      # one that matters: it ships the unversioned libraylib.so symlink that
-      # deps.edn's :jolt/native looks for, which the runtime package alone
-      # does not provide.
+      # raylib's availability in Ubuntu's archive varies by release, so this
+      # tries the distro package first and falls back to a source build.
+      # The fallback is not a workaround for a broken package name — the
+      # README documents source builds as a supported path, and it pins what
+      # gets linked instead of inheriting whatever the runner image ships.
+      #
+      # `bb lib:install` resolves to libraylib-dev on apt systems (see
+      # installer-plan in bb.edn). The -dev package is the one that matters:
+      # it ships the unversioned libraylib.so symlink that deps.edn's
+      # :jolt/native looks for, which the runtime package alone does not.
       - name: Install libraylib
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libraylib-dev
+          set -euo pipefail
+          sudo apt-get update -qq
+
+          echo "::group::what the archive offers"
+          apt-cache search raylib || true
+          apt-cache policy libraylib-dev || true
+          echo "::endgroup::"
+
+          if sudo apt-get install -y libraylib-dev; then
+            echo "installed libraylib-dev from apt"
+          else
+            echo "libraylib-dev unavailable — building raylib from source"
+            # raylib's own documented Linux build dependencies
+            sudo apt-get install -y --no-install-recommends \
+              build-essential cmake git \
+              libasound2-dev libx11-dev libxrandr-dev libxi-dev \
+              libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev \
+              libxinerama-dev libxkbcommon-dev
+            git clone --depth 1 --branch "$RAYLIB_REF" https://github.com/raysan5/raylib /tmp/raylib
+            cmake -S /tmp/raylib -B /tmp/raylib/build \
+              -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=OFF
+            cmake --build /tmp/raylib/build -j"$(nproc)"
+            sudo cmake --install /tmp/raylib/build
+            sudo ldconfig
+          fi
+        env:
+          # Pinned rather than tracking master, so a CI failure means this
+          # repo changed, not that upstream did.
+          RAYLIB_REF: "5.5"
 
       # Official install script from jolt's README. Prebuilt Linux x86_64
       # binaries need glibc 2.35+, which ubuntu-latest satisfies.
