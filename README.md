@@ -441,6 +441,7 @@ for setup, the three pre-PR gates (`bb check`, `bb lint:strict`,
 ## License
 
 Released under the **zlib/libpng license** — see [`LICENSE`](LICENSE).
+Third-party attribution lives in [`NOTICE`](NOTICE).
 
 That's the same license raylib itself uses, chosen deliberately: many examples here
 are Clojure ports of raylib's own example programs (the table above names the

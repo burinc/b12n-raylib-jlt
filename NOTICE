@@ -1,0 +1,19 @@
+Third-party attribution
+=======================
+
+This project is released under the zlib License; see LICENSE.
+
+raylib
+------
+  Copyright (c) 2013-2026 Ramon Santamaria (@raysan5)
+  https://github.com/raysan5/raylib
+  Licensed under the zlib/libpng license (the same license as this project).
+
+  This project does not vendor or redistribute raylib itself: it loads the
+  system-installed libraylib shared library at runtime over its C ABI.
+
+  Many examples in src/net/b12n/raylib_jlt/ are Clojure ports of raylib's
+  own example programs. The README's example table names the upstream
+  source for each (e.g. core/core_basic_window, shapes/shapes_bouncing_ball).
+  Those examples are likewise zlib/libpng licensed, and this project is
+  released under the same license so that the original terms carry through.
