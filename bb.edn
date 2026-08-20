@@ -263,11 +263,18 @@
 
   record
   {:doc "Batch-record a demo GIF for every example: bb record [--only a,b] [--force] [--dry-run]"
-   :task (let [{:keys [exit]} (apply shell {:continue true}
-                                     "screen-grab" "record"
-                                     "--manifest" "scripts/demo_manifest.edn"
-                                     *command-line-args*)]
-           (System/exit exit))}
+   :task (if-not (fs/which "screen-grab")
+           (binding [*out* *err*]
+             (println "bb record needs the `screen-grab` capture CLI on your PATH.")
+             (println "That tool is internal and not publicly released yet, so this")
+             (println "task is maintainer-only. You do not need it to view the demos:")
+             (println "every GIF is committed under docs/demos/ — see docs/demos/README.md.")
+             (System/exit 1))
+           (let [{:keys [exit]} (apply shell {:continue true}
+                                       "screen-grab" "record"
+                                       "--manifest" "scripts/demo_manifest.edn"
+                                       *command-line-args*)]
+             (System/exit exit)))}
 
   demos:examples
   {:doc "Print the demo item list as EDN for screen-grab"

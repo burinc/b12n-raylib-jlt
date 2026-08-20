@@ -17,6 +17,9 @@ raylib_shot.png
 # clojure-lsp's analysis cache, created by `bb lsp:*`
 .lsp/.cache/
 
+# jolt's own classpath cache, created by any `joltc -M:<alias>` run
+.jolt/
+
 # local dev artifacts (not part of the example suite)
 .claude/
 CONTINUATION_PROMPT.md

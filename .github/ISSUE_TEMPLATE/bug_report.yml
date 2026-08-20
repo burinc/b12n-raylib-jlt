@@ -1,0 +1,77 @@
+name: Bug report
+description: An example crashes, renders wrong, or won't compile
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Most failures here come down to three things: your CPU architecture, your
+        jolt version, and where `libraylib` came from. Please fill those in — they
+        turn a guess into a diagnosis.
+
+        **Known issue, please check first:** the `camera2d` and `camera-3d`
+        examples pass a struct by value using an AArch64-specific pointer trick.
+        On **x86-64** they can crash with an invalid memory reference. That is
+        [documented and expected](https://github.com/burinc/b12n-raylib-jlt/blob/main/docs/guide/struct-by-value-pointer-trick.md),
+        not a new bug — though a portable rlgl-matrix replacement is very welcome.
+
+  - type: input
+    id: example
+    attributes:
+      label: Which example?
+      description: The `bb` name or `joltc` alias, e.g. `bb tetris` or `joltc -M:camera2d`.
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened, and what did you expect?
+      description: Paste the full error output if there is one.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        Please paste the output of these three commands.
+      value: |
+        ```
+        $ uname -sm
+        (paste here — OS and CPU architecture)
+
+        $ jolt --version
+        (paste here)
+
+        $ bb lib:check
+        (paste here — tells us whether libraylib was found and where)
+        ```
+    validations:
+      required: true
+
+  - type: dropdown
+    id: raylib-source
+    attributes:
+      label: Where did libraylib come from?
+      options:
+        - System package manager (brew / pacman / apt / dnf / zypper / apk)
+        - A source build, pointed at via LD_LIBRARY_PATH / DYLD_LIBRARY_PATH
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: compile-check
+    attributes:
+      label: Does the headless compile-check pass?
+      description: |
+        `bb check` (or `joltc -M:check`) compiles every example without opening a
+        window. If it fails, the problem is in the shared binding layer rather
+        than in one example — paste its output here.
+      value: |
+        ```
+        $ bb check
+        (paste here)
+        ```
