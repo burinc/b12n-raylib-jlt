@@ -1,36 +1,22 @@
 name: CI
 
 # ---------------------------------------------------------------------------
-# DORMANT — this workflow does not run automatically.
+# Runs on pull requests and pushes to main, plus manual dispatch.
 #
-# The trigger is `workflow_dispatch` only, so nothing fires on push or on a
-# pull request. It consumes no Actions minutes until someone runs it by hand
-# from the Actions tab.
+# Actions is free for standard runners on public repositories, which this repo
+# now is — so the PR gate costs nothing. It was authored dormant while the repo
+# was private, where minutes bill against the account's included quota.
 #
-# To enable it, add these two keys under `on:` alongside workflow_dispatch:
-#
-#   pull_request:
-#     branches: [main]
-#   push:
-#     branches: [main]
-#
-# Before enabling, know two things:
-#
-#  1. Cost. Actions is free for standard runners on PUBLIC repositories; on a
-#     private repo it bills against the account's included minutes. This repo
-#     is private at the time of writing, so leaving the workflow dormant until
-#     it goes public avoids spending quota.
-#
-#  2. This has never been executed. It is written against verified facts —
-#     jolt's documented install script, the project's own apt package name
-#     from `bb lib:install`, and real action versions — but no run has
-#     confirmed it end to end. The first manual dispatch is the real test.
-#     The step most likely to need adjustment is "Compile every example":
-#     `bb check` dlopens libraylib, which pulls in GL/X11 transitively, and a
-#     headless runner may need packages beyond libraylib-dev.
+# The gate that matters most is "Compile every example": it is the only check
+# that catches a new example missing its `check.clj` require, the easiest of
+# the four touchpoints to skip (see CONTRIBUTING.md).
 # ---------------------------------------------------------------------------
 
 on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       jolt-version:
