@@ -111,6 +111,6 @@ structs).
 
 - [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md) — the
   >16-byte case (`Camera2D`/`Camera3D`) that a register can't hold.
-- [`b12n-tsj/struct-by-value-shim.md`](https://github.com/burinc/b12n-tsj/blob/main/docs/guide/struct-by-value-shim.md)
-  — the sibling project whose by-value struct (`TSNode`) is both large *and*
-  returned, so no register trick saves it.
+- `b12n-tsj` (the Jolt tree-sitter sibling, not yet public) — its by-value struct
+  (`TSNode`) is both large *and* returned, so no register trick saves it and it
+  must ship a C shim.

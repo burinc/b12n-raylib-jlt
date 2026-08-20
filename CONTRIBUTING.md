@@ -1,0 +1,116 @@
+# Contributing
+
+Thanks for taking an interest. This is a suite of [raylib](https://github.com/raysan5/raylib)
+examples written in [jolt](https://github.com/jolt-lang) (native Clojure, no JVM),
+calling the real `libraylib` over its C ABI through `jolt.ffi`.
+
+New examples are very welcome — the suite is deliberately mechanical to grow.
+
+The documentation is published at <https://raylib-jlt.b12n.app>. It's generated from
+this repo's `docs/guide/` — edit the Markdown here, never the site.
+
+## Setting up
+
+You need two things:
+
+```sh
+jolt --version    # any recent jolt; tested against v0.7.16
+bb lib:check      # is the native libraylib installed for this OS/arch?
+```
+
+If `bb lib:check` says no, `bb lib:install` will install it via your platform's
+package manager (brew / pacman / apt / dnf / zypper / apk), or `bb lib:install
+--dry-run` prints the command it would run so you can do it yourself.
+
+[babashka](https://babashka.org) is optional but makes everything friendlier —
+every example has a `bb <name>` task. Without it, use `joltc -M:<alias>` directly.
+
+## Before you open a PR
+
+Run the gates. All three are fast and none needs a JVM at runtime:
+
+```sh
+bb check              # headless compile-check of every example (no window opens)
+bb lint:strict        # clj-kondo over src, non-zero exit on any finding
+bb lsp:format-check   # clojure-lsp formatting, dry run
+```
+
+`bb lsp:fix` applies formatting and ns cleanup in place if `lsp:format-check`
+complains. **Formatting is owned by clojure-lsp, not cljfmt** — please don't run
+cljfmt over `src`, the two disagree on some compact literal tables.
+
+If you'd like these to run automatically, `bb hooks:install` sets up a local
+pre-commit hook (~2s). It's never committed, so each clone opts in.
+
+## Adding an example
+
+One new example touches exactly four places. The full recipe — with the source
+layout, the naming rules, and a diagram — lives in the example catalog:
+
+**[docs/guide/example-catalog.md § Adding an example — the four touchpoints](docs/guide/example-catalog.md#adding-an-example--the-four-touchpoints)**
+
+In short: the source namespace, a `deps.edn` alias, a `check.clj` require, and a
+`bb.edn` registry row. If you skip the `check.clj` require, `bb check` won't cover
+your example and CI-by-hand won't catch a compile break in it.
+
+Two rules worth knowing before you write any code:
+
+- **Definitions must precede their first use.** Since jolt 0.4.0 an unresolved
+  symbol is a compile error, not a late-bound reference. This bites hardest in the
+  shared `src/net/b12n/raylib_jlt/raylib.clj` binding layer, where one misordered
+  symbol stops *every* example from loading and only the first offender is
+  reported. Fix them one at a time; `bb check` is the quick confirmation.
+- **Write against the shared API, not raw FFI.** `net.b12n.raylib-jlt.raylib`
+  already exposes a keyword-argument drawing layer (`rl/text!`, `rl/rect!`,
+  `rl/circle!`, …) plus the color palette. Add a new binding there only if the
+  example genuinely needs a raylib call nothing else uses.
+
+## Understanding the FFI
+
+If you're touching the binding layer rather than adding an example, read
+[`docs/guide/`](docs/guide/index.md) first. Every non-obvious decision in
+`raylib.clj` traces back to how a particular C struct crosses the FFI boundary,
+and the answer differs per struct — `Color` packs into a `:uint`,
+`Camera2D`/`Camera3D` go by pointer, and `Vector2`/`Vector3` geometry has to fall
+back to rlgl immediate mode. Those three pages explain why.
+
+Note the **x86-64 caveat** documented in
+[`struct-by-value-pointer-trick.md`](docs/guide/struct-by-value-pointer-trick.md):
+the `Camera2D`/`Camera3D` pointer trick is AArch64-specific. If you're on x86-64
+and `camera2d` crashes with an invalid memory reference, that's the known cause,
+not a bug in your setup — and a portable rlgl-matrix replacement would be a
+genuinely valuable contribution.
+
+## Verifying a windowed example without watching it
+
+Every example honors two environment variables so it can prove itself unattended:
+
+```sh
+RAYLIB_APP_AUTO_QUIT_MS=2000 joltc -M:<alias>   # close after 2s
+RAYLIB_APP_SHOT=proof.png    joltc -M:<alias>   # dump one frame as a PNG
+```
+
+`bb run-all [secs]` reels through the whole suite this way. See
+[`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) for how the
+batched-geometry flush makes the screenshot non-empty.
+
+## Demo GIFs
+
+You don't need to record anything. Every GIF under `docs/demos/` is committed, and
+`docs/demos/README.md` is generated from `scripts/demo_manifest.edn`. The `bb
+record` task drives an internal capture tool that isn't publicly released, so it's
+maintainer-only — it will tell you so rather than failing obscurely. If your new
+example would benefit from a specific input sequence in its demo, add an
+`:overrides` entry for it in the manifest and mention it in your PR; a maintainer
+will record it.
+
+Publishing the site is likewise a maintainer task (`bb docs-sync`), so a docs change
+in your PR goes live when a maintainer next syncs — you don't need to do anything.
+
+## Licensing
+
+This project is released under the zlib/libpng license — the same license as raylib
+itself. By contributing, you agree your contribution is licensed under those terms.
+If your example is a port of an upstream raylib example, please name the original in
+the README table (e.g. `shapes/shapes_bouncing_ball`) so the attribution stays
+traceable.

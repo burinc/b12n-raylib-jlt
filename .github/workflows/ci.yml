@@ -1,0 +1,115 @@
+name: CI
+
+# ---------------------------------------------------------------------------
+# DORMANT — this workflow does not run automatically.
+#
+# The trigger is `workflow_dispatch` only, so nothing fires on push or on a
+# pull request. It consumes no Actions minutes until someone runs it by hand
+# from the Actions tab.
+#
+# To enable it, add these two keys under `on:` alongside workflow_dispatch:
+#
+#   pull_request:
+#     branches: [main]
+#   push:
+#     branches: [main]
+#
+# Before enabling, know two things:
+#
+#  1. Cost. Actions is free for standard runners on PUBLIC repositories; on a
+#     private repo it bills against the account's included minutes. This repo
+#     is private at the time of writing, so leaving the workflow dormant until
+#     it goes public avoids spending quota.
+#
+#  2. This has never been executed. It is written against verified facts —
+#     jolt's documented install script, the project's own apt package name
+#     from `bb lib:install`, and real action versions — but no run has
+#     confirmed it end to end. The first manual dispatch is the real test.
+#     The step most likely to need adjustment is "Compile every example":
+#     `bb check` dlopens libraylib, which pulls in GL/X11 transitively, and a
+#     headless runner may need packages beyond libraylib-dev.
+# ---------------------------------------------------------------------------
+
+on:
+  workflow_dispatch:
+    inputs:
+      jolt-version:
+        description: "jolt version to install (blank = latest release)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    name: compile · lint · format
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      # The project's own `bb lib:install` resolves to this exact package on
+      # apt systems (see installer-plan in bb.edn). The -dev package is the
+      # one that matters: it ships the unversioned libraylib.so symlink that
+      # deps.edn's :jolt/native looks for, which the runtime package alone
+      # does not provide.
+      - name: Install libraylib
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libraylib-dev
+
+      # Official install script from jolt's README. Prebuilt Linux x86_64
+      # binaries need glibc 2.35+, which ubuntu-latest satisfies.
+      # Passed through env rather than interpolated into the script body, so
+      # the input can't be used for shell injection.
+      - name: Install jolt
+        env:
+          JOLT_VERSION: ${{ inputs.jolt-version }}
+        run: |
+          if [ -n "$JOLT_VERSION" ]; then
+            curl -sSL https://raw.githubusercontent.com/jolt-lang/jolt/main/install \
+              | bash -s -- --version "$JOLT_VERSION"
+          else
+            curl -sSL https://raw.githubusercontent.com/jolt-lang/jolt/main/install | bash
+          fi
+          jolt --version
+
+      # Versions are pinned to match what the maintainer runs locally and what
+      # the `bb hooks:install` pre-commit hook enforces. Floating these to
+      # `latest` would let CI disagree with a clean local commit whenever
+      # clj-kondo or clojure-lsp changes a default.
+      #   `cli` (Clojure CLI) is required by clojure-lsp for classpath
+      #   discovery and by `bb lint`'s fallback path when no native clj-kondo
+      #   is present. Nothing in the example suite needs a JVM at runtime.
+      - uses: DeLaGuardo/setup-clojure@13.6.1
+        with:
+          bb: 1.12.196
+          clj-kondo: "2026.05.25"
+          cli: latest
+
+      - uses: clojure-lsp/setup-clojure-lsp@v1.0.3
+        with:
+          clojure-lsp-version: "2026.05.05-12.58.26"
+
+      # Fails loudly with the search paths it tried, so a packaging change on
+      # the runner image is diagnosable from the log alone.
+      - name: libraylib is discoverable
+        run: bb lib:check
+
+      # The gate that matters most: compiles all 75 example namespaces
+      # headlessly. It is the only check that catches a new example missing
+      # its `check.clj` require — the easiest of the four touchpoints to skip.
+      - name: Compile every example (headless)
+        run: bb check
+
+      - name: clj-kondo
+        run: bb lint:strict
+
+      # Formatting is owned by clojure-lsp, not cljfmt — see the note at the
+      # top of bb.edn for why only one formatter runs against src.
+      - name: Formatting
+        run: bb lsp:format-check
+
+      - name: Namespace forms
+        run: bb lsp:clean-ns-check

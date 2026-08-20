@@ -3,15 +3,16 @@
 User-facing documentation for `b12n-raylib-jlt`: a suite of **[raylib](https://github.com/raysan5/raylib)
 examples written in [jolt](https://github.com/jolt-lang)** (native Clojure on Chez
 Scheme, no JVM) over `jolt.ffi`. Each page below covers one FFI pattern or drawing
-convention, with citations to source files and cross-references to sibling projects
-in the [b12n umbrella wiki](https://github.com/burinc/b12n-wikis).
+convention, with citations to the source files that implement it.
 
 ## Why this exists
 
-When `b12n-raylib-jlt` is mirrored into
-[`b12n-wikis`](https://github.com/burinc/b12n-wikis), each page below becomes an
-entry under `b12n-wikis/b12n-raylib-jlt/`, and the wiki's `PATTERNS.md` cross-project
-index cites them for any Jolt-FFI-distinctive pattern.
+The examples show you *what* the suite draws; these pages explain *why* the binding
+layer is shaped the way it is. Almost every non-obvious decision in
+`net.b12n.raylib-jlt.raylib` traces back to one question — how a given C struct
+crosses the FFI boundary — and the answer differs per struct. Read these when you
+want to bind a C library from Jolt yourself, or when an example does something that
+looks needlessly indirect and you want the ABI reason behind it.
 
 ## What b12n-raylib-jlt is
 
@@ -20,11 +21,11 @@ handful of games (asteroids, tetris, pong, vampire-survivors), and a 3D set
 (orbiting cameras, waving cubes, an rlgl solar system) — each a small Clojure
 namespace on top of one shared binding layer, `net.b12n.raylib-jlt.raylib`.
 
-It is the **graphics sibling** of
-[`b12n-tsj`](https://github.com/burinc/b12n-tsj) (tree-sitter from Jolt). Both bind
-a real external C library directly over its C ABI with `jolt.ffi` — Chez
-`foreign-procedure` under the hood. They differ on how hard the library leans on
-**by-value structs**, and that difference is the whole story of the FFI pages here:
+It is the **graphics sibling** of `b12n-tsj` (tree-sitter from Jolt, not yet
+public). Both bind a real external C library directly over its C ABI with
+`jolt.ffi` — Chez `foreign-procedure` under the hood. They differ on how hard the
+library leans on **by-value structs**, and that difference is the whole story of the
+FFI pages here:
 
 > **raylib hits the *mild* version of struct-by-value — its hot path is `Color`,
 > a 4-byte struct that reduces to a `uint32`, and its only large structs
@@ -93,8 +94,13 @@ Nothing about `jolt.ffi` is raylib-specific: it binds any C ABI symbol. The
 
 ## See also
 
-- [`b12n-tsj`](https://github.com/burinc/b12n-tsj) — the Jolt sibling that binds a
-  by-value-*returning* C API (tree-sitter) and therefore needs the full C shim this
-  repo avoids. The [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md)
-  page is the delta between "fake it with a pointer" (raylib arguments) and "you
-  can't, write a shim" (tree-sitter returns).
+- [raylib](https://github.com/raysan5/raylib) — the upstream C library, and the
+  source of most examples here. Its own `examples/` tree is the reference these
+  ports are named after.
+- [jolt](https://github.com/jolt-lang) — the native Clojure implementation whose
+  `jolt.ffi` does all the binding work described on these pages.
+- `b12n-tsj` (not yet public) — the Jolt sibling that binds a by-value-*returning*
+  C API (tree-sitter) and therefore needs a full C shim this repo avoids.
+  [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md) is the
+  delta between "fake it with a pointer" (raylib arguments) and "you can't, write a
+  shim" (tree-sitter returns).

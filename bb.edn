@@ -263,11 +263,18 @@
 
   record
   {:doc "Batch-record a demo GIF for every example: bb record [--only a,b] [--force] [--dry-run]"
-   :task (let [{:keys [exit]} (apply shell {:continue true}
-                                     "screen-grab" "record"
-                                     "--manifest" "scripts/demo_manifest.edn"
-                                     *command-line-args*)]
-           (System/exit exit))}
+   :task (if-not (fs/which "screen-grab")
+           (binding [*out* *err*]
+             (println "bb record needs the `screen-grab` capture CLI on your PATH.")
+             (println "That tool is internal and not publicly released yet, so this")
+             (println "task is maintainer-only. You do not need it to view the demos:")
+             (println "every GIF is committed under docs/demos/ — see docs/demos/README.md.")
+             (System/exit 1))
+           (let [{:keys [exit]} (apply shell {:continue true}
+                                       "screen-grab" "record"
+                                       "--manifest" "scripts/demo_manifest.edn"
+                                       *command-line-args*)]
+             (System/exit exit)))}
 
   demos:examples
   {:doc "Print the demo item list as EDN for screen-grab"
@@ -278,6 +285,138 @@
                 :desc (nth row 3)
                 :src (reg/src-path (nth row 1))
                 :run (str "joltc -M:" (nth row 1))})))}
+
+  docs-sync
+  {:doc "Sync every downstream doc target after a docs/guide or README change: rebuild the site (~/dev/b12n-docs), commit+push its output (~/dev/b12n-raylib-jlt.github.io), and mirror+push docs/guide/*.md (~/dev/b12n-wikis/b12n-raylib-jlt/). Fetches and checks each target for concurrent remote changes first — never auto-rebases or force-pushes, just prints guidance and stops if behind; then deploy the built site to S3 + invalidate CloudFront (raylib-jlt.b12n.app). Fetches and checks each target for concurrent remote changes first — never auto-rebases or force-pushes, just prints guidance and stops if behind; skips cleanly wherever nothing changed. --no-push means publish nothing outward: commits locally and skips both the pushes AND the deploy. bb docs-sync [--no-push]"
+   ;; Modelled on b12n-cgevent's task of the same name. A pure bb.edn task
+   ;; rather than a Clojure entry point, because it orchestrates two sibling
+   ;; repos plus an external build tool (b12n-docs) — none of which is this
+   ;; project's own logic.
+   ;;
+   ;; The site's CNAME (raylib-jlt.b12n.net) is written by the b12n-docs
+   ;; engine from :cname in projects/b12n-raylib-jlt.edn, NOT committed by
+   ;; hand here: `bb site:build` deletes the whole output dir before writing,
+   ;; so a hand-placed CNAME would survive exactly one build and then vanish,
+   ;; silently taking the custom domain down.
+   :task
+   (let [push?     (not (some (fn [a] (= a "--no-push")) *command-line-args*))
+         home      (System/getProperty "user.home")
+         proj-dir  (System/getProperty "user.dir")
+         docs-repo (str home "/dev/b12n-docs")
+         site-repo (str home "/dev/b12n-raylib-jlt.github.io")
+         wiki-repo (str home "/dev/b12n-wikis")
+         wiki-dir  (str wiki-repo "/b12n-raylib-jlt")
+         guide-dir (str proj-dir "/docs/guide")
+         bucket    "b12n-site-raylib-jlt"
+         site-host "raylib-jlt.b12n.app"
+         hdr       (fn [label] (println (str "\n── " label " ──")))
+         dirty?    (fn [dir path]
+                     (let [res (shell {:dir dir :out :string} "git" "status" "--short" "--" path)]
+                       (not (str/blank? (:out res)))))
+         ;; Returns a keyword, never System/exit's mid-flight, so one repo's
+         ;; hiccup doesn't block the other (independent) step. `git add` and
+         ;; `git commit` are both scoped to `path` explicitly — never -A/. —
+         ;; because b12n-wikis is SHARED across many projects and a stray
+         ;; staged file from a concurrent session must not ride along.
+         sync!     (fn [opts]
+                     (let [label (:label opts) dir (:dir opts)
+                           path (:path opts) msg (:msg opts)]
+                       (hdr label)
+                       (if-not (dirty? dir path)
+                         (do (println "  up to date, nothing to commit") :skipped)
+                         (do
+                           (shell {:dir dir} "git" "add" "--" path)
+                           (shell {:dir dir} "git" "commit" "-m" msg "--" path)
+                           (if-not push?
+                             (do (println "  committed locally (--no-push)") :ok)
+                             (do
+                               (shell {:dir dir :continue true} "git" "fetch" "origin")
+                               (let [res (shell {:dir dir :out :string} "git" "status" "--short" "--branch")]
+                                 (if (str/includes? (:out res) "behind")
+                                   (do (println (str "  BEHIND origin — resolve manually (cd " dir " && git pull --rebase), not auto-pushing"))
+                                       :behind)
+                                   (let [pr (shell {:dir dir :continue true} "git" "push" "origin" "main")]
+                                     (if (zero? (:exit pr))
+                                       (do (println "  pushed") :ok)
+                                       (do (println "  PUSH FAILED") :push-failed)))))))))))
+         ;; Publishes the BUILT site (not the git repo) to the S3 origin
+         ;; behind CloudFront, then invalidates the edge cache. Provisioned
+         ;; by ~/dev/b12n-infra's static-site module
+         ;; (resources/static-site/raylib-jlt.edn).
+         ;;
+         ;; Degrades instead of exploding: skips with an explanation when the
+         ;; aws CLI is absent or the bucket doesn't exist yet (i.e. before
+         ;; anyone has run `bb render tofu:apply -- static-site raylib-jlt`),
+         ;; so docs-sync stays useful for people who only build and mirror.
+         ;;
+         ;; The distribution id is looked up by alias rather than hardcoded:
+         ;; tofu owns it, it changes if the distribution is ever replaced,
+         ;; and a stale hardcoded id would invalidate someone else's site.
+         deploy!   (fn []
+                     (hdr "4/4 Deploy to S3 + CloudFront")
+                     (cond
+                       (not push?)
+                       (do (println "  skipped (--no-push publishes nothing outward)") :skipped)
+
+                       (not (fs/which "aws"))
+                       (do (println "  aws CLI not on PATH \u2014 skipping deploy") :skipped)
+
+                       :else
+                       (let [probe (shell {:continue true :out :string :err :string}
+                                          "aws" "s3api" "head-bucket"
+                                          "--bucket" bucket "--profile" "b12n")]
+                         (if-not (zero? (:exit probe))
+                           (do (println (str "  s3://" bucket " not reachable. Most likely the infrastructure"))
+                               (println "  hasn't been applied yet; it could also be AWS credentials or")
+                               (println "  network. head-bucket said:")
+                               (println (str "    " (str/trim (str (:err probe) (:out probe)))))
+                               (println "  If it's the first case, run this once in ~/dev/b12n-infra:")
+                               (println "    bb render lock tofu:init tofu:plan tofu:apply -- static-site raylib-jlt")
+                               :skipped)
+                           (let [sync-res (shell {:continue true}
+                                                 "aws" "s3" "sync" (str site-repo "/docs/")
+                                                 (str "s3://" bucket "/")
+                                                 "--profile" "b12n" "--delete")]
+                             (if-not (zero? (:exit sync-res))
+                               (do (println "  S3 SYNC FAILED") :sync-failed)
+                               (let [q (str "DistributionList.Items[?contains(Aliases.Items, `" site-host "`)].Id | [0]")
+                                     dist (shell {:continue true :out :string}
+                                                 "aws" "cloudfront" "list-distributions"
+                                                 "--profile" "b12n" "--query" q "--output" "text")
+                                     id (str/trim (or (:out dist) ""))]
+                                 (if (or (str/blank? id) (= id "None"))
+                                   (do (println (str "  synced, but no CloudFront distribution found for " site-host))
+                                       (println "  (cache not invalidated \u2014 edge may serve stale files for a while)")
+                                       :no-distribution)
+                                   (let [inv (shell {:continue true}
+                                                    "aws" "cloudfront" "create-invalidation"
+                                                    "--profile" "b12n" "--distribution-id" id
+                                                    "--paths" "/*")]
+                                     (if (zero? (:exit inv))
+                                       (do (println (str "  synced + invalidated (" id ") \u2014 https://" site-host)) :ok)
+                                       (do (println "  synced, but INVALIDATION FAILED") :invalidation-failed)))))))))))]
+     (hdr "1/4 Rebuild site")
+     (let [res       (shell {:dir docs-repo :continue true} "bb" "site:build" "b12n-raylib-jlt")
+           build-ok? (zero? (:exit res))]
+       (when-not build-ok? (println "  bb site:build FAILED"))
+       (let [site-result (if build-ok?
+                           (sync! {:label "2/4 b12n-raylib-jlt.github.io" :dir site-repo :path "docs"
+                                   :msg "chore: rebuild docs (bb docs-sync)"})
+                           :build-failed)]
+         (fs/create-dirs wiki-dir)
+         (doseq [f (fs/glob guide-dir "*.md")]
+           (fs/copy f (str wiki-dir "/" (fs/file-name f)) {:replace-existing true}))
+         (let [wiki-result (sync! {:label "3/4 b12n-wikis" :dir wiki-repo :path "b12n-raylib-jlt"
+                                   :msg "b12n-raylib-jlt: mirror docs/guide (bb docs-sync)"})]
+           (let [deploy-result (deploy!)]
+             (hdr "Summary")
+             (println (str "  site:   " site-result))
+             (println (str "  wiki:   " wiki-result))
+             (println (str "  deploy: " deploy-result))
+             (when (some (fn [r] (contains? #{:behind :push-failed :build-failed
+                                              :sync-failed :invalidation-failed} r))
+                         [site-result wiki-result deploy-result])
+               (System/exit 1)))))))}
 
   examples
   {:doc "List every runnable example with its description"

@@ -5,10 +5,9 @@
 ;; [display-name  joltc-alias  group  description]
 ;; Single source of truth: bb.edn's :init requires this instead of inlining
 ;; the vector, and bb.edn's `demos:examples` task reads it too, printing it
-;; as EDN for the `screen-grab` CLI (see scripts/demo_manifest.edn and
-;; `bb record`). (screen-grab's own design spec is not included in this
-;; repo — see the centralized planning store referenced under
-;; Documentation in README.md.)
+;; as EDN for the demo recorder (see scripts/demo_manifest.edn and `bb record`).
+;; The recorder itself is an internal tool that is not publicly released; the
+;; committed GIFs under docs/demos/ are what readers actually consume.
 (def examples
   [["basic-window"      "run"      "core"   "the minimal raylib window + text"]
    ["input-keys"        "input"    "core"   "steer a ball with the arrow keys"]
