@@ -286,6 +286,77 @@
                 :src (reg/src-path (nth row 1))
                 :run (str "joltc -M:" (nth row 1))})))}
 
+  docs-sync
+  {:doc "Sync both downstream doc targets after a docs/guide or README change: rebuild the site (~/dev/b12n-docs), commit+push its output (~/dev/b12n-raylib-jlt.github.io), and mirror+push docs/guide/*.md (~/dev/b12n-wikis/b12n-raylib-jlt/). Fetches and checks each target for concurrent remote changes first — never auto-rebases or force-pushes, just prints guidance and stops if behind; skips cleanly wherever nothing changed. bb docs-sync [--no-push]"
+   ;; Modelled on b12n-cgevent's task of the same name. A pure bb.edn task
+   ;; rather than a Clojure entry point, because it orchestrates two sibling
+   ;; repos plus an external build tool (b12n-docs) — none of which is this
+   ;; project's own logic.
+   ;;
+   ;; The site's CNAME (raylib-jlt.b12n.net) is written by the b12n-docs
+   ;; engine from :cname in projects/b12n-raylib-jlt.edn, NOT committed by
+   ;; hand here: `bb site:build` deletes the whole output dir before writing,
+   ;; so a hand-placed CNAME would survive exactly one build and then vanish,
+   ;; silently taking the custom domain down.
+   :task
+   (let [push?     (not (some (fn [a] (= a "--no-push")) *command-line-args*))
+         home      (System/getProperty "user.home")
+         proj-dir  (System/getProperty "user.dir")
+         docs-repo (str home "/dev/b12n-docs")
+         site-repo (str home "/dev/b12n-raylib-jlt.github.io")
+         wiki-repo (str home "/dev/b12n-wikis")
+         wiki-dir  (str wiki-repo "/b12n-raylib-jlt")
+         guide-dir (str proj-dir "/docs/guide")
+         hdr       (fn [label] (println (str "\n── " label " ──")))
+         dirty?    (fn [dir path]
+                     (let [res (shell {:dir dir :out :string} "git" "status" "--short" "--" path)]
+                       (not (str/blank? (:out res)))))
+         ;; Returns a keyword, never System/exit's mid-flight, so one repo's
+         ;; hiccup doesn't block the other (independent) step. `git add` and
+         ;; `git commit` are both scoped to `path` explicitly — never -A/. —
+         ;; because b12n-wikis is SHARED across many projects and a stray
+         ;; staged file from a concurrent session must not ride along.
+         sync!     (fn [opts]
+                     (let [label (:label opts) dir (:dir opts)
+                           path (:path opts) msg (:msg opts)]
+                       (hdr label)
+                       (if-not (dirty? dir path)
+                         (do (println "  up to date, nothing to commit") :skipped)
+                         (do
+                           (shell {:dir dir} "git" "add" "--" path)
+                           (shell {:dir dir} "git" "commit" "-m" msg "--" path)
+                           (if-not push?
+                             (do (println "  committed locally (--no-push)") :ok)
+                             (do
+                               (shell {:dir dir :continue true} "git" "fetch" "origin")
+                               (let [res (shell {:dir dir :out :string} "git" "status" "--short" "--branch")]
+                                 (if (str/includes? (:out res) "behind")
+                                   (do (println (str "  BEHIND origin — resolve manually (cd " dir " && git pull --rebase), not auto-pushing"))
+                                       :behind)
+                                   (let [pr (shell {:dir dir :continue true} "git" "push" "origin" "main")]
+                                     (if (zero? (:exit pr))
+                                       (do (println "  pushed") :ok)
+                                       (do (println "  PUSH FAILED") :push-failed)))))))))))]
+     (hdr "1/3 Rebuild site")
+     (let [res       (shell {:dir docs-repo :continue true} "bb" "site:build" "b12n-raylib-jlt")
+           build-ok? (zero? (:exit res))]
+       (when-not build-ok? (println "  bb site:build FAILED"))
+       (let [site-result (if build-ok?
+                           (sync! {:label "2/3 b12n-raylib-jlt.github.io" :dir site-repo :path "docs"
+                                   :msg "chore: rebuild docs (bb docs-sync)"})
+                           :build-failed)]
+         (fs/create-dirs wiki-dir)
+         (doseq [f (fs/glob guide-dir "*.md")]
+           (fs/copy f (str wiki-dir "/" (fs/file-name f)) {:replace-existing true}))
+         (let [wiki-result (sync! {:label "3/3 b12n-wikis" :dir wiki-repo :path "b12n-raylib-jlt"
+                                   :msg "b12n-raylib-jlt: mirror docs/guide (bb docs-sync)"})]
+           (hdr "Summary")
+           (println (str "  site: " site-result))
+           (println (str "  wiki: " wiki-result))
+           (when (some (fn [r] (contains? #{:behind :push-failed :build-failed} r))
+                       [site-result wiki-result])
+             (System/exit 1))))))}
+
   examples
   {:doc "List every runnable example with its description"
    :task (doseq [row examples] (print-row row))}
