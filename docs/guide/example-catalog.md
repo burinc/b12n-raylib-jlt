@@ -2,7 +2,7 @@
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
-`joltc -M:<alias>`. `bb info` prints this grouping live; this page adds the "how it's
+`jolt -M:<alias>`. `bb info` prints this grouping live; this page adds the "how it's
 wired" recipe at the end.
 
 Run one, list them, or reel through all of them:
@@ -33,7 +33,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 
 | preview | `bb` name | shows |
 |---|---|---|
-| [<img src="../demos/basic-window.gif" width="80">](demos.md#basic-window) | `basic-window` | the minimal window + text (the default, `joltc -M:run`) |
+| [<img src="../demos/basic-window.gif" width="80">](demos.md#basic-window) | `basic-window` | the minimal window + text (the default, `jolt -M:run`) |
 | [<img src="../demos/input-keys.gif" width="80">](demos.md#input-keys) | `input-keys` | `IsKeyDown`, steer a ball with the arrow keys |
 | [<img src="../demos/input-mouse.gif" width="80">](demos.md#input-mouse) | `input-mouse` | `GetMouseX/Y`, `IsMouseButtonDown`, click to recolor |
 | [<img src="../demos/input-mouse-wheel.gif" width="80">](demos.md#input-mouse-wheel) | `input-mouse-wheel` | `GetMouseWheelMove` (a float return) scrolls a box |
@@ -137,7 +137,7 @@ The suite is deliberately mechanical to grow. One new example touches four place
    runs the canonical loop (see [`headless-smoke-testing.md`](headless-smoke-testing.md))
    against the `net.b12n.raylib-jlt.raylib` API.
 2. **`deps.edn` alias** — `:<name> {:main-opts ["-m" "net.b12n.raylib-jlt.<name>"]}` so
-   `joltc -M:<name>` works.
+   `jolt -M:<name>` works.
 3. **`check.clj` require** — add `net.b12n.raylib-jlt.<name>` to the `:require` list in
    `net.b12n.raylib-jlt.check`, so the headless compile-check covers it.
 4. **`bb.edn` registry row** — add `["<display-name>" "<alias>" "<group>" "<desc>"]`
@@ -159,7 +159,7 @@ symbol is a compile error rather than a late-bound reference, so a definition mu
 appear before its first use — in a fn body and in an `:or` destructuring default
 just as much as at top level. It bites hardest in the shared `raylib.clj` binding
 layer, where one misordered symbol stops *every* example from loading and only the
-first offender is reported. `joltc -M:check` is the quick confirmation; see the
+first offender is reported. `jolt -M:check` is the quick confirmation; see the
 [jolt note in the README](../../README.md#requirements).
 
 ## See also

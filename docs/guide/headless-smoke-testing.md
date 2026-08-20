@@ -92,7 +92,7 @@ flowchart LR
 One example, auto-quit + shot:
 
 ```sh
-RAYLIB_APP_AUTO_QUIT_MS=2000 RAYLIB_APP_SHOT=shot.png joltc -M:run
+RAYLIB_APP_AUTO_QUIT_MS=2000 RAYLIB_APP_SHOT=shot.png jolt -M:run
 # opens, renders ~2s, writes shot.png, exits
 ```
 
@@ -107,7 +107,7 @@ And the display-free check that belongs in CI — it compiles every example name
 without opening a window at all:
 
 ```sh
-joltc -M:check   # "net.b12n.raylib-jlt: all example namespaces compiled OK"
+jolt -M:check   # "net.b12n.raylib-jlt: all example namespaces compiled OK"
 bb check         # same, via babashka
 ```
 
@@ -115,7 +115,7 @@ bb check         # same, via babashka
 
 The screenshot path needs an **active display** — raylib/GLFW initializes a real GL
 context. On a Mac whose display has slept, window creation can fail with "Failed to
-determine Monitor" and then crash. `joltc -M:check` needs no display and always
+determine Monitor" and then crash. `jolt -M:check` needs no display and always
 works; `RAYLIB_APP_SHOT` needs a live (awake) display.
 
 ## A C-truthiness footnote

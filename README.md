@@ -69,12 +69,14 @@ Unhandled exception: Unable to resolve symbol: rgba in this context
 
 This is why the `Color` section (`rgba` plus the named palette) sits at the top of
 the file, above `shade-color` / `cube!` / `sphere!` which use it. Compilation stops
-at the first unresolved symbol, so fix them one at a time — `joltc -M:check`
+at the first unresolved symbol, so fix them one at a time — `jolt -M:check`
 compiles every example namespace headlessly and is the quickest confirmation that
 the suite still loads.
 
-`joltc` is a compatibility shim for `jolt` (the launcher was renamed in 0.5.0);
-every `joltc -M:<alias>` below works under either name.
+The launcher is `jolt`. It was called `joltc` before jolt 0.5.0, and current
+releases install only `jolt` — so if a `joltc` shim is still on your PATH from an older
+install, every `jolt -M:<alias>` below works under that name too. The `bb` tasks
+resolve whichever one you have.
 
 ### libraylib
 
@@ -135,7 +137,7 @@ bb record       # re-record the demo GIFs (needs an internal capture tool)
 bb docs-sync    # rebuild + publish the documentation site; --no-push to stay local
 ```
 
-The `bb` names are friendly aliases; each maps to a `joltc` alias below.
+The `bb` names are friendly aliases; each maps to a `jolt` alias below.
 
 #### Quality — lint / format / checks
 
@@ -193,24 +195,24 @@ with `git commit --no-verify`.
 bb nrepl [port]  # start a jolt nREPL server for interactive dev (default 7888)
 ```
 
-### With joltc directly
+### With jolt directly
 
-Each example is also a `joltc` alias:
+Each example is also a `jolt` alias:
 
 ```sh
-joltc -M:run        # basic window (default)      joltc -M:mouse     # circle follows cursor
-joltc -M:input      # move a circle, arrow keys   joltc -M:wheel     # move a box, mouse wheel
-joltc -M:bounce     # bouncing ball, SPACE pauses  joltc -M:shapes    # shape primitives + triangle
-joltc -M:colors     # named-color palette grid     joltc -M:gradient  # vertical color gradient
-joltc -M:text       # font sizes + MeasureText     joltc -M:logo      # the raylib logo
-joltc -M:stars      # twinkling starfield          joltc -M:eyes      # eyes follow the mouse
-joltc -M:camera2d   # 2D camera (see note below)
+jolt -M:run        # basic window (default)      jolt -M:mouse     # circle follows cursor
+jolt -M:input      # move a circle, arrow keys   jolt -M:wheel     # move a box, mouse wheel
+jolt -M:bounce     # bouncing ball, SPACE pauses  jolt -M:shapes    # shape primitives + triangle
+jolt -M:colors     # named-color palette grid     jolt -M:gradient  # vertical color gradient
+jolt -M:text       # font sizes + MeasureText     jolt -M:logo      # the raylib logo
+jolt -M:stars      # twinkling starfield          jolt -M:eyes      # eyes follow the mouse
+jolt -M:camera2d   # 2D camera (see note below)
 ```
 
 Headless compile-check of the whole suite (no window needed):
 
 ```sh
-joltc -M:check      # requires every example namespace; prints "compiled OK"
+jolt -M:check      # requires every example namespace; prints "compiled OK"
 ```
 
 ### Environment variables (used by every example)
@@ -417,7 +419,7 @@ b12n-raylib-jlt/
 └── src/net/b12n/raylib_jlt/
     ├── raylib.clj           ; ALL bindings + the kwarg API + Color palette + guards
     ├── check.clj            ; headless compile-check of every example
-    ├── core.clj             ; basic window (the default, joltc -M:run)
+    ├── core.clj             ; basic window (the default, jolt -M:run)
     ├── input.clj  bounce.clj  colors.clj   mouse.clj  wheel.clj
     ├── shapes.clj gradient.clj text.clj    logo.clj   stars.clj
     ├── eyes.clj   camera2d.clj

@@ -23,7 +23,7 @@ package manager (brew / pacman / apt / dnf / zypper / apk), or `bb lib:install
 --dry-run` prints the command it would run so you can do it yourself.
 
 [babashka](https://babashka.org) is optional but makes everything friendlier —
-every example has a `bb <name>` task. Without it, use `joltc -M:<alias>` directly.
+every example has a `bb <name>` task. Without it, use `jolt -M:<alias>` directly.
 
 ## Before you open a PR
 
@@ -86,8 +86,8 @@ genuinely valuable contribution.
 Every example honors two environment variables so it can prove itself unattended:
 
 ```sh
-RAYLIB_APP_AUTO_QUIT_MS=2000 joltc -M:<alias>   # close after 2s
-RAYLIB_APP_SHOT=proof.png    joltc -M:<alias>   # dump one frame as a PNG
+RAYLIB_APP_AUTO_QUIT_MS=2000 jolt -M:<alias>   # close after 2s
+RAYLIB_APP_SHOT=proof.png    jolt -M:<alias>   # dump one frame as a PNG
 ```
 
 `bb run-all [secs]` reels through the whole suite this way. See

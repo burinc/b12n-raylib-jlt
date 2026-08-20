@@ -62,6 +62,14 @@
         ["clojure" "-Sdeps" kondo-dep "-M" "-m" "clj-kondo.main"]))
 
     (require '[examples-registry :as reg])
+
+    ;; jolt's launcher was renamed `joltc` -> `jolt` in 0.5.0, and the current
+    ;; installer ships ONLY `jolt`. Machines that have used jolt since before
+    ;; the rename often still carry a `joltc` shim, which is why hardcoding
+    ;; `joltc` looks fine locally and fails on any fresh install (it did
+    ;; exactly that in CI: `Cannot run program "joltc"`). Prefer the modern
+    ;; name, fall back to the shim.
+    (def jolt-cmd (if (fs/which "jolt") "jolt" "joltc"))
     (def examples reg/examples)
     (def by-name reg/by-name)
 
@@ -69,7 +77,7 @@
       (let [row (get by-name name)]
         (if row
           (do (println (str "▶ " name))
-              (shell "joltc" (str "-M:" (nth row 1))))
+              (shell jolt-cmd (str "-M:" (nth row 1))))
           (do (binding [*out* *err*]
                 (println (str "Unknown example: " (pr-str name)))
                 (println "Run `bb examples` to see the list."))
@@ -259,7 +267,7 @@
            (doseq [row examples]
              (println (str "▶ " (nth row 0)))
              (shell {:extra-env {"RAYLIB_APP_AUTO_QUIT_MS" ms} :continue true}
-                    "joltc" (str "-M:" (nth row 1)))))}
+                    jolt-cmd (str "-M:" (nth row 1)))))}
 
   record
   {:doc "Batch-record a demo GIF for every example: bb record [--only a,b] [--force] [--dry-run]"
@@ -438,7 +446,7 @@
 
   check
   {:doc "Headless compile-check of every example (no window)"
-   :task (shell "joltc" "-M:check")}
+   :task (shell jolt-cmd "-M:check")}
 
   ;; --- quality: lint (clj-kondo) --------------------------------------------
   ;; Formatting lives under lsp:format below, not here — see the top-of-file
@@ -607,4 +615,4 @@
   ;; --- dev & repl ---------------------------------------------------------
   nrepl
   {:doc "Start a jolt nREPL server for interactive dev: bb nrepl [port] (default 7888)"
-   :task (shell "joltc" "nrepl-server" (or (first *command-line-args*) "7888"))}}}
+   :task (shell jolt-cmd "nrepl-server" (or (first *command-line-args*) "7888"))}}}
