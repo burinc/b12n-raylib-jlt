@@ -8,11 +8,11 @@ This repo keeps the raw binds positional (they mirror C) and layers an ergonomic
 
 ## Two layers, one boundary
 
-The FFI boundary stays a faithful, positional mirror of the C signature — that's the
+The FFI boundary stays a faithful, positional mirror of the C signature: that's the
 contract with the library and the thing to check against `raylib.h`:
 
 ```clojure
-;; src/net/b12n/raylib_jlt/raylib.clj — the FFI boundary (positional, mirrors C)
+;; src/net/b12n/raylib_jlt/raylib.clj, the FFI boundary (positional, mirrors C)
 (ffi/defcfn draw-text      "DrawText"      [:string :int :int :int :uint] :void)
 (ffi/defcfn draw-rectangle "DrawRectangle" [:int :int :int :int :uint] :void)
 (ffi/defcfn draw-circle    "DrawCircle"    [:int :int :float :uint] :void)
@@ -37,7 +37,7 @@ On top sits a thin wrapper per call that names the arguments and supplies defaul
   (draw-circle x y (double radius) color))
 ```
 
-The wrappers also absorb small coercions the raw bind is strict about — e.g.
+The wrappers also absorb small coercions the raw bind is strict about, e.g.
 `circle!` calls `(double radius)` so a caller can pass an int radius without a type
 error at the `:float` boundary.
 
@@ -52,18 +52,18 @@ The payoff at the call site (`net.b12n.raylib-jlt.core`):
 The `!` suffix marks these as side-effecting calls. Sixteen wrappers exist, in three
 groups:
 
-- **Window + 2D primitives, straight over a scalar bind** — `window!`, `text!`,
+- **Window + 2D primitives, straight over a scalar bind**: `window!`, `text!`,
   `fps!`, `rect!`, `rect-lines!`, `rect-gradient!`, `circle!`, `circle-lines!`,
   `ellipse!`, `line!`, `pixel!`.
-- **2D shapes rlgl has to draw** — `sector!`, `ring!`, `line-ex!`. Their raylib
+- **2D shapes rlgl has to draw**: `sector!`, `ring!`, `line-ex!`. Their raylib
   originals (`DrawCircleSector`, `DrawRing`, `DrawLineEx`) take a `Vector2` by
   value and are unbindable, so these emit triangles instead. Same keyword-arg
   surface; see [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md).
-- **3D** — `cube!` and `sphere!`, likewise rlgl vertex streams standing in for the
+- **3D**: `cube!` and `sphere!`, likewise rlgl vertex streams standing in for the
   by-value-`Vector3` `DrawCube` / `DrawSphere`.
 
 (`rl-color!` and `maybe-screenshot!` also end in `!` but are not part of this
-wrapper layer — one unpacks a `Color` for rlgl, the other is smoke-test plumbing.)
+wrapper layer, one unpacks a `Color` for rlgl, the other is smoke-test plumbing.)
 
 ## The style convention: >3 arguments → keyword args
 
@@ -85,7 +85,7 @@ themselves grouped `[x y z]` vectors so each stays one argument:
 (rl/cube! :pos [x 0 z] :size 0.8 :color rl/BLUE)
 ```
 
-The camera wrappers take a single map argument for the same reason — a `Camera2D`
+The camera wrappers take a single map argument for the same reason: a `Camera2D`
 has six scalars, well past three:
 
 ```clojure
@@ -95,7 +95,7 @@ has six scalars, well past three:
 
 ## Why not just bind everything keyword?
 
-Because the FFI boundary should stay a **1:1, positional mirror of the C signature** —
+Because the FFI boundary should stay a **1:1, positional mirror of the C signature**:
 that's what you diff against the header when a call misbehaves, and what keeps the
 "is this binding correct?" question answerable. Keyword ergonomics are a *caller*
 concern, so they live in a caller-facing layer above the boundary, never in the
@@ -104,9 +104,9 @@ the raw `:uint`/`rlColor4ub` binds rather than replacing them.
 
 ## See also
 
-- [`color-by-value.md`](color-by-value.md) — the packed-`Color` `:uint` the draw
+- [`color-by-value.md`](color-by-value.md): the packed-`Color` `:uint` the draw
   wrappers pass through unchanged.
-- [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md) — `cube!` is the keyword-arg
+- [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md): `cube!` is the keyword-arg
   wrapper over the positional `rl-vertex-3f` stream.
-- [`example-catalog.md`](example-catalog.md) — every example is written against this
+- [`example-catalog.md`](example-catalog.md): every example is written against this
   wrapper API.

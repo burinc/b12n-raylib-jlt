@@ -1,6 +1,6 @@
 # Full-size demo gallery
 
-Every example at full size — linked from [the example catalog](example-catalog.md)'s preview thumbnails.
+Every example at full size, linked from [the example catalog](example-catalog.md)'s preview thumbnails.
 
 ## games (10)
 

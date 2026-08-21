@@ -9,7 +9,7 @@
 
 - [ ] `bb check` passes (headless compile-check of every example)
 - [ ] `bb lint:strict` passes (clj-kondo, non-zero exit on any finding)
-- [ ] `bb lsp:format-check` passes (clojure-lsp formatting — **not** cljfmt)
+- [ ] `bb lsp:format-check` passes (clojure-lsp formatting, **not** cljfmt)
 
 ## If this adds an example
 

@@ -1,19 +1,19 @@
-# rlgl immediate mode — for the by-value float structs the pointer trick can't fake
+# rlgl immediate mode: for the by-value float structs the pointer trick can't fake
 
 Some raylib calls take a `Vector2` or `Vector3` **by value**: `DrawTriangle(Vector2,
 Vector2, Vector2, Color)`, `DrawCube(Vector3, …)`, `DrawSphere(Vector3, …)`. These
 are the one FFI case that neither [`color-by-value.md`](color-by-value.md) (packed
 `:uint`) nor [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md)
-(pointer for >16 bytes) can handle. The way out is to not call them at all — draw the
+(pointer for >16 bytes) can handle. The way out is to not call them at all: draw the
 same geometry with rlgl's **scalar** immediate mode.
 
 ## Why the earlier tricks don't apply
 
 A `Vector2` is 8 bytes of two floats; a `Vector3` is 12 bytes of three floats. Both
 are **≤16-byte homogeneous float aggregates (HFAs)**, and the AArch64 ABI passes
-those in **floating-point registers**, one field per register — *not* as an integer
+those in **floating-point registers**, one field per register, *not* as an integer
 (so the `Color` `:uint` trick is out) and *not* indirectly through a pointer (so the
-`Camera2D` `[:pointer]` trick is out — that only applies to composites **larger**
+`Camera2D` `[:pointer]` trick is out; that only applies to composites **larger**
 than 16 bytes). There is no scalar or pointer binding that reproduces "three floats
 in three FP registers." So these functions are simply unbindable from Jolt.
 
@@ -42,7 +42,7 @@ unpacks the shared packed `Color` into the four `u8` args.
 ## 3D: `cube!` is 12 rlgl triangles
 
 The same move scales to 3D. `with-camera-3d` gets the camera active (via the pointer
-trick), but `DrawCube` takes a `Vector3` by value — unbindable — so `cube!` builds a
+trick), but `DrawCube` takes a `Vector3` by value (unbindable), so `cube!` builds a
 box out of `rl-vertex-3f`. Each face is a quad = two triangles, and faces are shaded
 by darkening the packed color so the cube reads as 3D without a lighting pass:
 
@@ -66,16 +66,16 @@ by darkening the packed color so the cube reads as 3D without a lighting pass:
 stands on (`camera-3d`, `waving-cubes`, `box-collisions`, …). `DrawGrid` is scalar
 (`[:int :float]`) so it's bound and used directly.
 
-`sphere!` is the same idea for a ball — lat/long rings of `RL_TRIANGLES`, faces
-shaded by latitude (brighter toward +y) — and drives the `bouncing-spheres` example.
+`sphere!` is the same idea for a ball, lat/long rings of `RL_TRIANGLES` with faces
+shaded by latitude (brighter toward +y), and drives the `bouncing-spheres` example.
 `DrawSphere` takes a `Vector3` by value too, so it gets the same rlgl treatment as
 the cube.
 
-## The rlgl matrix stack — nested transforms for free
+## The rlgl matrix stack: nested transforms for free
 
 rlgl also exposes its transform stack, and it applies the **current** transform to
 each `rlVertex*` at **submit time**. So wrapping push/rotate/translate/scale around a
-`cube!` call moves that cube — the same nested-transform model as `BeginMode2D`, but
+`cube!` call moves that cube, the same nested-transform model as `BeginMode2D`, but
 in scalars:
 
 ```clojure
@@ -98,7 +98,7 @@ flowchart TD
 ```
 
 The `rlgl-solar-system` example (`net.b12n.raylib-jlt.rlgl-solar-system`) uses exactly
-this to make Earth orbit the Sun and the Moon orbit Earth — nested push/translate/
+this to make Earth orbit the Sun and the Moon orbit Earth: nested push/translate/
 rotate around three `cube!` calls, no matrix math in Clojure. It's also the
 **portable** substitute for the AArch64-only camera pointer trick (see the x86-64
 caveat in [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md)).
@@ -107,7 +107,7 @@ caveat in [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md)
 
 The same wall stops `DrawCircleSector` / `DrawRing` / `DrawCircleV`: they take a
 `Vector2` center **by value** (a float pair in FP registers), so they're unbindable by
-the pointer trick. The fix is the same — draw the arc as an rlgl triangle fan.
+the pointer trick. The fix is the same: draw the arc as an rlgl triangle fan.
 `sector!` (in `raylib.clj`) builds one:
 
 ```clojure
@@ -117,27 +117,27 @@ the pointer trick. The fix is the same — draw the arc as an rlgl triangle fan.
 
 Each sub-triangle is emitted `rim → center → rim` with the angle **increasing**
 (`rim = (sin θ, -cos θ)`, so 0° points up and grows clockwise). That order carries
-raylib's **front-facing winding** — a fan wound the other way is silently
+raylib's **front-facing winding**: a fan wound the other way is silently
 backface-culled (raylib enables `GL_CULL_FACE`). Two examples consume it:
 `pie-chart` (one fan per slice) and `vector-angle` (a translucent fan for the measured
 angle). `color-wheel` draws its own fan directly because it needs a *per-vertex* hue
 (a different `rl-color!` before each rim vertex), which a single-color helper can't
 express. The showpiece `penrose-tiling` fills ~900 deflation triangles of *mixed*
 winding, so it normalizes each to negative signed area (the proven front face) before
-the batch — the general form of the winding rule `sector!` bakes in.
+the batch, the general form of the winding rule `sector!` bakes in.
 
 ## 2D: `ring!` and `line-ex!`
 
 Two more by-value casualties get the same rlgl treatment:
 
-- **`ring!`** — a filled annulus (donut sector), the stand-in for `DrawRing`. Instead
+- **`ring!`**: a filled annulus (donut sector), the stand-in for `DrawRing`. Instead
   of a center-anchored fan it walks a **quad strip** between an inner and an outer
   radius: each angular step emits two triangles spanning `inner → outer` across `dθ`,
   wound front-facing. `analog-clock`'s bezel and `ring-drawing` use it.
-- **`line-ex!`** — a thick line, the stand-in for `DrawLineEx` (both `Vector2`
+- **`line-ex!`**: a thick line, the stand-in for `DrawLineEx` (both `Vector2`
   endpoints by value). It offsets the two endpoints by `±thick/2` along the unit
   perpendicular `(dy,-dx)/len` and fills the resulting quad as two triangles. That
-  perpendicular convention keeps the quad front-wound at **every** line direction — so
+  perpendicular convention keeps the quad front-wound at **every** line direction, so
   a rotating fan of them (`lines-drawing`) or a sweeping clock hand (`analog-clock`)
   never flips to a culled back face. `line-ex!` also draws the clock ticks and the
   `ring-drawing` outline stroke.
@@ -150,14 +150,14 @@ in `raylib.clj` beside the raw `rl-*` binds.
 When a C graphics API forces geometry through by-value small-float-vector arguments,
 look for a scalar immediate-mode or builder API on the same library and drive that
 instead of fighting the ABI. rlgl is raylib's; many GPU libraries ship an equivalent.
-The cost is you re-express shapes as vertex streams — cheap, and it keeps the whole
+The cost is you re-express shapes as vertex streams: cheap, and it keeps the whole
 FFI boundary scalar.
 
 ## See also
 
-- [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md) — the
+- [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md): the
   camera side (>16-byte structs) and why its matrix-op alternative lives here.
-- [`color-by-value.md`](color-by-value.md) — `rl-color!` shares the packed-`Color`
+- [`color-by-value.md`](color-by-value.md): `rl-color!` shares the packed-`Color`
   representation with the rest of the API.
-- [`kwarg-drawing-api.md`](kwarg-drawing-api.md) — `cube!` follows the keyword-arg
+- [`kwarg-drawing-api.md`](kwarg-drawing-api.md): `cube!` follows the keyword-arg
   convention; the raw `rl-*` binds stay positional.

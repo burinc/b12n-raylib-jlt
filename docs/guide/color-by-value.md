@@ -1,4 +1,4 @@
-# `Color` passed by value — as a packed `:uint`
+# `Color` passed by value, as a packed `:uint`
 
 Every raylib draw call takes a `Color`. `Color` is a struct passed **by value**,
 and Jolt's FFI (Chez `foreign-procedure`) has no calling convention for a by-value
@@ -19,7 +19,7 @@ void DrawText(const char *text, int x, int y, int fontSize, Color color);
 ```
 
 On both the AArch64 and x86-64 ABIs, a 4-byte struct made entirely of integers
-travels in a **single general-purpose register** — bit-for-bit identical to how a
+travels in a **single general-purpose register**, bit-for-bit identical to how a
 `uint32_t` travels. So a Jolt binding can declare the parameter as `:uint` and pass
 an ordinary integer; the C side reads the same four bytes back as `{r,g,b,a}`. No
 struct marshaling, no shim, no native allocation.
@@ -70,7 +70,7 @@ flowchart LR
 ## Two by-value Colors in one call
 
 `DrawRectangleGradientV` takes **two** `Color` values by value (top and bottom of
-the gradient). Because each is an independent `:uint`, this needs nothing special —
+the gradient). Because each is an independent `:uint`, this needs nothing special,
 just two `:uint` parameters:
 
 ```clojure
@@ -80,7 +80,7 @@ just two `:uint` parameters:
 
 The `gradient` example (`net.b12n.raylib-jlt.gradient`) uses it directly. Two by-value
 structs in one signature would be a real problem if they didn't each collapse to a
-register — this is a second dividend of the register-fit fact.
+register; this is a second dividend of the register-fit fact.
 
 ## Getting the color back out (for rlgl)
 
@@ -109,8 +109,8 @@ structs).
 
 ## See also
 
-- [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md) — the
+- [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md): the
   >16-byte case (`Camera2D`/`Camera3D`) that a register can't hold.
-- `b12n-tsj` (the Jolt tree-sitter sibling, not yet public) — its by-value struct
+- `b12n-tsj` (the Jolt tree-sitter sibling, not yet public): its by-value struct
   (`TSNode`) is both large *and* returned, so no register trick saves it and it
   must ship a C shim.
