@@ -1,15 +1,15 @@
-# b12n-raylib-jlt — raylib examples in Jolt
+# b12n-raylib-jlt: raylib examples in Jolt
 
 A community suite of [raylib](https://github.com/raysan5/raylib) examples written in
-**jolt** (native Clojure — no JVM). These call a **real external C library**: raylib is
+**jolt** (native Clojure, no JVM). These call a **real external C library**: raylib is
 the upstream C game library (raysan5/raylib), and jolt binds it directly over its C ABI
-with `jolt.ffi` — no wrapper library, no codegen, just the shared `libraylib` loaded at
+with `jolt.ffi`: no wrapper library, no codegen, just the shared `libraylib` loaded at
 runtime and called through the FFI.
 
 All the FFI bindings and an ergonomic keyword-argument drawing API live in one
 shared namespace, `net.b12n.raylib-jlt.raylib`; each example is a small namespace on top of it.
 
-**Documentation site: <https://raylib-jlt.b12n.app>** — the guide, the full example
+**Documentation site: <https://raylib-jlt.b12n.app>** carries the guide, the full example
 catalog, and every demo GIF at full size.
 
 ## Examples
@@ -38,7 +38,7 @@ catalog, and every demo GIF at full size.
 </tr>
 </table>
 
-**[Browse the full gallery →](docs/demos/README.md)** — every example, recorded via `bb record`.
+**[Browse the full gallery →](docs/demos/README.md)**: every example, recorded via `bb record`.
 `bb record --only <example-name>` matches an exact id or an id prefix
 (e.g. `--only camera-3d` also selects `camera-3d-first-person`); combine a
 short prefix with `--force` carefully.
@@ -69,12 +69,12 @@ Unhandled exception: Unable to resolve symbol: rgba in this context
 
 This is why the `Color` section (`rgba` plus the named palette) sits at the top of
 the file, above `shade-color` / `cube!` / `sphere!` which use it. Compilation stops
-at the first unresolved symbol, so fix them one at a time — `jolt -M:check`
+at the first unresolved symbol, so fix them one at a time. `jolt -M:check`
 compiles every example namespace headlessly and is the quickest confirmation that
 the suite still loads.
 
 The launcher is `jolt`. It was called `joltc` before jolt 0.5.0, and current
-releases install only `jolt` — so if a `joltc` shim is still on your PATH from an older
+releases install only `jolt`, so if a `joltc` shim is still on your PATH from an older
 install, every `jolt -M:<alias>` below works under that name too. The `bb` tasks
 resolve whichever one you have.
 
@@ -103,7 +103,7 @@ sudo pacman -S raylib        # Arch Linux
 
 **Using a source build of raylib** (e.g. from `~/dev/raylib`): build the shared
 library (`cmake --build build`), then point the dynamic loader at it instead of
-installing system-wide —
+installing system-wide:
 
 ```sh
 export LD_LIBRARY_PATH=$HOME/dev/raylib/build/raylib    # Linux
@@ -129,7 +129,7 @@ bb lib:install          # install libraylib via the platform package manager
 bb tasks                # raw babashka task list
 ```
 
-Two more exist for maintaining the published docs — both explain themselves and stop
+Two more exist for maintaining the published docs; both explain themselves and stop
 cleanly if their external tooling isn't available:
 
 ```sh
@@ -139,17 +139,17 @@ bb docs-sync    # rebuild + publish the documentation site; --no-push to stay lo
 
 The `bb` names are friendly aliases; each maps to a `jolt` alias below.
 
-#### Quality — lint / format / checks
+#### Quality: lint / format / checks
 
 ```sh
 bb lint                          # clj-kondo over src (report only)
 bb lint:strict                   # bb lint, but exit non-zero if any findings
 bb lsp:format                    # reformat all Clojure files (clojure-lsp)
-bb lsp:format-check              # check formatting — dry run
+bb lsp:format-check              # check formatting (dry run)
 bb lsp:clean-ns                  # clean + organize ns forms (clojure-lsp)
-bb lsp:clean-ns-check            # check ns forms — dry run
+bb lsp:clean-ns-check            # check ns forms (dry run)
 bb lsp:diagnostics               # clojure-lsp diagnostics
-bb lsp:check                     # all LSP checks (format + clean-ns + diagnostics) — dry run
+bb lsp:check                     # all LSP checks (format + clean-ns + diagnostics, dry run)
 bb lsp:fix                       # auto-fix: format + clean-ns (mutating)
 bb check:positional-args         # find fns with 3+ positional args (report only)
 bb check:positional-args:strict  # bb check:positional-args, but exit non-zero if any found
@@ -158,23 +158,23 @@ bb check:positional-args:strict  # bb check:positional-args, but exit non-zero i
 `bb check` and `bb lint`/`bb lsp:format-check` are the gates worth running before a
 commit: `check` compiles every example namespace, `lint` runs clj-kondo (static
 analysis), `lsp:format-check` runs clojure-lsp (formatting). **Formatting is owned
-by clojure-lsp, not cljfmt** — the two disagree on some compact literal tables
+by clojure-lsp, not cljfmt**; the two disagree on some compact literal tables
 (e.g. `digital_clock.clj`'s seven-segment map), so only one formatter runs against
 `src`; clojure-lsp was chosen so `lsp:clean-ns` (no cljfmt equivalent) and
 `lsp:format` share one tool. `bb lsp:fix` applies both format and clean-ns fixes
 in place.
 
-`lint` needs [clj-kondo](https://github.com/clj-kondo/clj-kondo) — it uses the
+`lint` needs [clj-kondo](https://github.com/clj-kondo/clj-kondo); it uses the
 native binary when installed and falls back to the
 [clojure CLI](https://clojure.org/guides/install_clojure) route otherwise. The
 `lsp:*` tasks need [clojure-lsp](https://clojure-lsp.io) on `PATH`. Nothing in the
-suite needs a JVM at *runtime* — these are dev-time tools only.
+suite needs a JVM at *runtime*; these are dev-time tools only.
 
 clj-kondo can't see through `jolt.ffi/defcfn`, which defines one var per bound C
-symbol — untaught, it reports ~500 false positives and is useless as a gate. The
+symbol; untaught, it reports ~500 false positives and is useless as a gate. The
 hook in [`.clj-kondo/hooks/jolt_ffi.clj`](.clj-kondo/hooks/jolt_ffi.clj) rewrites
 each `defcfn` into an equivalent `defn`, so the bindings resolve *and* call sites
-get arity- and return-type-checked — catching `(rl/init-window 1 2)` at lint time
+get arity- and return-type-checked, catching `(rl/init-window 1 2)` at lint time
 instead of as a native crash.
 
 #### Git hooks
@@ -185,7 +185,7 @@ bb hooks:install:full  # install FULL pre-commit hook (+ bb check, slower)
 bb hooks:uninstall     # remove the git pre-commit hook
 ```
 
-The pre-commit hook is local-only (`.git/hooks/pre-commit` is never committed) —
+The pre-commit hook is local-only (`.git/hooks/pre-commit` is never committed);
 each clone that wants it runs `bb hooks:install` once. Skip it for a single commit
 with `git commit --no-verify`.
 
@@ -217,9 +217,9 @@ jolt -M:check      # requires every example namespace; prints "compiled OK"
 
 ### Environment variables (used by every example)
 
-- `RAYLIB_APP_AUTO_QUIT_MS=<n>` — close the window after `n` milliseconds, so an
+- `RAYLIB_APP_AUTO_QUIT_MS=<n>`: close the window after `n` milliseconds, so an
   example is smoke-testable with no person at the keyboard.
-- `RAYLIB_APP_SHOT=<name>` — dump one frame as a PNG (headless visual proof). raylib
+- `RAYLIB_APP_SHOT=<name>`: dump one frame as a PNG (headless visual proof). raylib
   writes the file's **basename into the current working directory** (it ignores
   directory components), and the batched text is flushed first so it appears.
 
@@ -239,7 +239,7 @@ jolt -M:check      # requires every example namespace; prints "compiled OK"
 | `logo` | (raylib logo) | rectangles + text, positioned with `MeasureText` |
 | `stars` | (showcase) | `GetRandomValue` + bulk draw, per-star twinkle |
 | `eyes` | shapes/shapes_following_eyes | pupils track the mouse (scalar trig) |
-| `camera2d` | core/core_2d_camera | 2D camera — struct-by-value (see note) |
+| `camera2d` | core/core_2d_camera | 2D camera, struct-by-value (see note) |
 | `delta-time` | core/core_delta_time | per-frame vs `GetFrameTime` movement |
 | `scissor-test` | core/core_scissor_test | `BeginScissorMode` clips a grid |
 | `mouse-trail` | shapes/shapes_mouse_trail | fading cursor trail (alpha) |
@@ -258,7 +258,7 @@ jolt -M:check      # requires every example namespace; prints "compiled OK"
 | `hilbert-curve` | shapes | a rainbow Hilbert space-filling curve |
 | `math-angle-rotation` | shapes/shapes_math_angle_rotation | fixed spokes + a spinning line |
 | `words-alignment` | text/text_words_alignment | align a word with `MeasureText` |
-| `camera-3d` | core/core_3d_camera | orbiting 3D camera — `Camera3D` by value + rlgl cube |
+| `camera-3d` | core/core_3d_camera | orbiting 3D camera, `Camera3D` by value + rlgl cube |
 | `waving-cubes` | models/models_waving_cubes | 196 cubes rippling in 3D (shared `rl/cube!`) |
 | `camera-3d-first-person` | core/core_3d_camera_first_person | WASD + mouse-look walk through columns |
 | `tesseract-view` | (4D) | a rotating 4D hypercube projected 4D→3D→2D |
@@ -273,18 +273,18 @@ jolt -M:check      # requires every example namespace; prints "compiled OK"
 | `ball-physics` | shapes | 2D balls under gravity + restitution |
 | `lines-bezier` | shapes/shapes_lines_bezier | a cubic Bézier sampled in Clojure, follows the mouse |
 | `input-box` | text/text_input_box | a text field via `GetCharPressed` (blinking cursor) |
-| `asteroids` | (game) | the classic vector shooter — rotate/thrust/fire, splitting asteroids |
+| `asteroids` | (game) | the classic vector shooter: rotate/thrust/fire, splitting asteroids |
 | `tetris` | (game) | 10×20 well, 7 tetrominoes, rotation, line-clearing, levels |
 | `pong` | (game) | two-paddle classic, you (W/S) vs a ball-tracking CPU |
-| `vampire-survivors` | (game) | auto-firing survivors-like — chasing waves, XP gems, leveling |
-| `snake` | (game) | the classic snake — arrow keys, grow, don't crash |
+| `vampire-survivors` | (game) | auto-firing survivors-like: chasing waves, XP gems, leveling |
+| `snake` | (game) | the classic snake: arrow keys, grow, don't crash |
 | `breakout` | (game) | paddle (mouse) + ball + brick grid, clear to win |
 | `space-invaders` | (game) | marching alien grid, shoot up (arrows + SPACE) |
 | `flappy-bird` | (game) | flap through scrolling pipe gaps (SPACE) |
-| `game-2048` | (game) | **2048** — 4×4 tile-merge puzzle (arrow keys) |
-| `minesweeper` | (game) | reveal/flag grid, flood-fill (mouse L/R) — new `mouse-pressed?` |
+| `game-2048` | (game) | **2048**: 4×4 tile-merge puzzle (arrow keys) |
+| `minesweeper` | (game) | reveal/flag grid, flood-fill (mouse L/R), new `mouse-pressed?` |
 | `game-of-life` | (generative) | Conway's Game of Life on a toroidal grid (SPACE reseeds) |
-| `boids` | (generative) | Reynolds flocking — separation / alignment / cohesion |
+| `boids` | (generative) | Reynolds flocking: separation / alignment / cohesion |
 | `fireworks` | (generative) | rockets + gravity-fading particle bursts (alpha channel) |
 | `fourier-epicycles` | (generative) | a chain of rotating circles traces a square wave |
 | `spirograph` | (generative) | animated hypotrochoid roulette curves |
@@ -293,10 +293,10 @@ jolt -M:check      # requires every example namespace; prints "compiled OK"
 | `color-wheel` | shapes/shapes_rlgl_color_wheel | an HSV hue ring as an rlgl triangle fan (per-vertex color) |
 | `pie-chart` | shapes/shapes_pie_chart | labelled slices via `rl/sector!` + a legend |
 | `splines` | shapes/shapes_splines_drawing | Catmull-Rom / Bézier / B-spline through animated points (SPACE cycles) |
-| `vector-angle` | shapes/shapes_vector_angle | the signed angle between two vectors — arc + degrees (`atan2`) |
+| `vector-angle` | shapes/shapes_vector_angle | the signed angle between two vectors: arc + degrees (`atan2`) |
 | `easings` | shapes/shapes_easings_* | a 3×4 grid of balls, each on a different easing curve |
 | `penrose-tiling` | shapes/shapes_penrose_tile | a P3 Penrose rhombus tiling by golden-ratio deflation |
-| `analog-clock` | shapes/shapes_clock_of_clocks | a live analog clock — `ring!` bezel, `line-ex!` ticks/hands, **libc** local time |
+| `analog-clock` | shapes/shapes_clock_of_clocks | a live analog clock: `ring!` bezel, `line-ex!` ticks/hands, **libc** local time |
 | `digital-clock` | shapes/shapes_digital_clock | a seven-segment `HH:MM:SS` display (libc local time) |
 | `ring-drawing` | shapes/shapes_ring_drawing | an animated annulus via `rl/ring!` + a stroked outline |
 | `rounded-rectangle` | shapes/shapes_rounded_rectangle_drawing | rounded rects from `sector!` corners + rects |
@@ -342,52 +342,52 @@ calls so examples read self-descriptively:
 
 A few raylib calls (e.g. `DrawTriangle`) take `Vector2` by value, which does **not**
 reduce to the `Color` trick (a 2-float struct goes in floating-point registers). The
-`shapes` example draws its triangle with rlgl's scalar immediate mode instead —
+`shapes` example draws its triangle with rlgl's scalar immediate mode instead:
 `rlBegin` / `rlColor4ub` / `rlVertex2f` / `rlEnd`.
 
 ### `Camera2D` struct by value (the `camera2d` example)
 
 raylib's `BeginMode2D(Camera2D)` takes a 24-byte struct by value. On the AArch64
-(Apple) ABI a composite larger than 16 bytes is passed **indirectly** — the caller
-allocates a copy and passes a pointer — so `net.b12n.raylib-jlt.raylib/with-camera-2d` builds the
+(Apple) ABI a composite larger than 16 bytes is passed **indirectly**: the caller
+allocates a copy and passes a pointer, so `net.b12n.raylib-jlt.raylib/with-camera-2d` builds the
 struct in native memory (`ffi/alloc` + six `ffi/write :float`s) and binds
 `BeginMode2D` as `[:pointer]`.
 
 **This is AArch64-specific.** On the x86-64 SysV ABI those 24 bytes are passed on
-the stack, which a `[:pointer]` binding does not do — so this example is not portable
+the stack, which a `[:pointer]` binding does not do, so this example is not portable
 as written. The portable alternative is to apply the same transform with rlgl's
 scalar matrix ops (`rlPushMatrix` / `rlTranslatef` / `rlRotatef` / `rlScalef`,
 flushing the batch before `rlPopMatrix`), which is exactly what `BeginMode2D` does
 internally. If `camera2d` crashes with an "invalid memory reference", the struct
-passing is the cause — switch to the rlgl-matrix approach.
+passing is the cause; switch to the rlgl-matrix approach.
 
 ### 3D: `Camera3D` by value + rlgl geometry (the `camera-3d` example)
 
 The same pointer approach scales to 3D: `BeginMode3D(Camera3D)` takes a 44-byte
 struct (three `Vector3` + `fovy` + `projection`), which is `>16` bytes so it goes
-by pointer too — `net.b12n.raylib-jlt.raylib/with-camera-3d` builds it (`ffi/alloc` 44 +
+by pointer too; `net.b12n.raylib-jlt.raylib/with-camera-3d` builds it (`ffi/alloc` 44 +
 `ffi/write` nine floats + an `:int`). But 3D shape helpers (`DrawCube`,
-`DrawSphere`, `DrawLine3D`) take a `Vector3` **by value** — a 12-byte float struct
+`DrawSphere`, `DrawLine3D`) take a `Vector3` **by value**, a 12-byte float struct
 passed in FP registers, which the pointer trick does **not** cover. So `camera-3d`
 draws its cube with rlgl immediate mode (`rlVertex3f`, scalar) inside `BeginMode3D`;
-`DrawGrid` is scalar and used directly. That combination — `Camera3D` by pointer +
-rlgl for geometry — is the path for any 3D example here until jolt gains native
+`DrawGrid` is scalar and used directly. That combination (`Camera3D` by pointer +
+rlgl for geometry) is the path for any 3D example here until jolt gains native
 by-value struct support for `Vector3`-taking functions.
 
 ## Documentation
 
 Everything below is also published at **<https://raylib-jlt.b12n.app>**, which is the
-nicer way to read it — the guide pages are cross-linked and the demo gallery renders
+nicer way to read it; the guide pages are cross-linked and the demo gallery renders
 inline.
 
-- [`docs/guide/`](docs/guide/index.md) — patterns & pitfalls, each with source
+- [`docs/guide/`](docs/guide/index.md): patterns & pitfalls, each with source
   citations:
-  - [`color-by-value.md`](docs/guide/color-by-value.md) — why `Color` crosses the FFI as a packed `:uint`
-  - [`struct-by-value-pointer-trick.md`](docs/guide/struct-by-value-pointer-trick.md) — `Camera2D`/`Camera3D` by pointer on AArch64 (+ the x86-64 caveat)
-  - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md) — the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
-  - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md) — the positional-binds / keyword-wrappers two-layer design
-  - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md) — `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
-  - [`example-catalog.md`](docs/guide/example-catalog.md) — a tour of all 75, and the four-touchpoint recipe for adding one
+  - [`color-by-value.md`](docs/guide/color-by-value.md): why `Color` crosses the FFI as a packed `:uint`
+  - [`struct-by-value-pointer-trick.md`](docs/guide/struct-by-value-pointer-trick.md): `Camera2D`/`Camera3D` by pointer on AArch64 (+ the x86-64 caveat)
+  - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md): the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
+  - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md): the positional-binds / keyword-wrappers two-layer design
+  - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md): `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
+  - [`example-catalog.md`](docs/guide/example-catalog.md): a tour of all 75, and the four-touchpoint recipe for adding one
 
 - Two galleries show the same 75 GIFs for different purposes:
   [`docs/demos/README.md`](docs/demos/README.md) is the flat gallery generated by
@@ -399,13 +399,13 @@ inline.
   rebuilds the site, commits the generated output, mirrors the guide pages, and
   deploys to the CDN behind <https://raylib-jlt.b12n.app>. `bb docs-sync --no-push`
   does the rebuild and commits locally without publishing anything. It's a
-  maintainer task — it needs sibling repos and cloud credentials — and it explains
+  maintainer task (it needs sibling repos and cloud credentials), and it explains
   itself and skips rather than failing if either is absent.
 
 The suite has a sibling project, `b12n-tsj`, which binds tree-sitter from Jolt with
 the same `jolt.ffi` mechanism. It is not public yet, but the contrast shapes the FFI
 guides here: tree-sitter passes *and returns* a 32-byte struct by value, so it needs
-a full C shim — raylib's by-value structs stay within what the pointer trick and rlgl
+a full C shim: raylib's by-value structs stay within what the pointer trick and rlgl
 can cover, so this repo needs no shim at all.
 
 ## Layout
@@ -431,18 +431,18 @@ the `net.b12n.raylib-jlt.raylib` API, add a `:<name>` alias to `deps.edn`, add t
 namespace to `net.b12n.raylib-jlt.check` so the headless compile-check covers it, and add
 a registry row to `bb.edn` so it appears in `bb info` / `bb examples` / `bb run-all`.
 The [example catalog](docs/guide/example-catalog.md) walks through all four under
-"Adding an example — the four touchpoints".
+"Adding an example: the four touchpoints".
 
 ## Contributing
 
-New examples are welcome — the suite is deliberately mechanical to grow, and the
+New examples are welcome; the suite is deliberately mechanical to grow, and the
 four touchpoints above are the whole recipe. See [`CONTRIBUTING.md`](CONTRIBUTING.md)
 for setup, the three pre-PR gates (`bb check`, `bb lint:strict`,
 `bb lsp:format-check`), and what to know before touching the shared binding layer.
 
 ## License
 
-Released under the **zlib/libpng license** — see [`LICENSE`](LICENSE).
+Released under the **zlib/libpng license**; see [`LICENSE`](LICENSE).
 Third-party attribution lives in [`NOTICE`](NOTICE).
 
 That's the same license raylib itself uses, chosen deliberately: many examples here
@@ -450,5 +450,5 @@ are Clojure ports of raylib's own example programs (the table above names the
 upstream source for each), so matching licenses lets the original terms carry
 through unchanged. raylib is Copyright (c) 2013-2026 Ramon Santamaria (@raysan5).
 
-This project does not vendor or redistribute raylib — it loads the system-installed
+This project does not vendor or redistribute raylib; it loads the system-installed
 `libraylib` at runtime over its C ABI.

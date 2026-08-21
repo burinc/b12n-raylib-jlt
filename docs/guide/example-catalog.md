@@ -1,4 +1,4 @@
-# The example catalog — 75 raylib demos in jolt
+# The example catalog: 75 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -18,10 +18,10 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 
 | preview | `bb` name | shows |
 |---|---|---|
-| [<img src="../demos/asteroids.gif" width="80">](demos.md#asteroids) | `asteroids` | the classic vector shooter — rotate / thrust / fire, splitting asteroids |
+| [<img src="../demos/asteroids.gif" width="80">](demos.md#asteroids) | `asteroids` | the classic vector shooter: rotate / thrust / fire, splitting asteroids |
 | [<img src="../demos/tetris.gif" width="80">](demos.md#tetris) | `tetris` | 10×20 well, 7 tetrominoes, rotation, line-clearing, levels |
 | [<img src="../demos/pong.gif" width="80">](demos.md#pong) | `pong` | two-paddle classic, you (W/S) vs a ball-tracking CPU |
-| [<img src="../demos/vampire-survivors.gif" width="80">](demos.md#vampire-survivors) | `vampire-survivors` | auto-firing survivors-like — chasing waves, XP gems, leveling |
+| [<img src="../demos/vampire-survivors.gif" width="80">](demos.md#vampire-survivors) | `vampire-survivors` | auto-firing survivors-like: chasing waves, XP gems, leveling |
 | [<img src="../demos/snake.gif" width="80">](demos.md#snake) | `snake` | the classic snake (arrow keys, grow, don't crash) |
 | [<img src="../demos/breakout.gif" width="80">](demos.md#breakout) | `breakout` | paddle + ball + brick grid (mouse paddle) |
 | [<img src="../demos/space-invaders.gif" width="80">](demos.md#space-invaders) | `space-invaders` | marching aliens (arrows + SPACE to shoot) |
@@ -37,7 +37,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/input-keys.gif" width="80">](demos.md#input-keys) | `input-keys` | `IsKeyDown`, steer a ball with the arrow keys |
 | [<img src="../demos/input-mouse.gif" width="80">](demos.md#input-mouse) | `input-mouse` | `GetMouseX/Y`, `IsMouseButtonDown`, click to recolor |
 | [<img src="../demos/input-mouse-wheel.gif" width="80">](demos.md#input-mouse-wheel) | `input-mouse-wheel` | `GetMouseWheelMove` (a float return) scrolls a box |
-| [<img src="../demos/camera-2d.gif" width="80">](demos.md#camera-2d) | `camera-2d` | a 2D camera over a skyline — struct-by-value (see below) |
+| [<img src="../demos/camera-2d.gif" width="80">](demos.md#camera-2d) | `camera-2d` | a 2D camera over a skyline, struct-by-value (see below) |
 | [<img src="../demos/delta-time.gif" width="80">](demos.md#delta-time) | `delta-time` | per-frame vs `GetFrameTime` movement |
 | [<img src="../demos/scissor-test.gif" width="80">](demos.md#scissor-test) | `scissor-test` | `BeginScissorMode` clips a grid |
 | [<img src="../demos/basic-screen-manager.gif" width="80">](demos.md#basic-screen-manager) | `basic-screen-manager` | a LOGO / TITLE / GAMEPLAY / ENDING state flow |
@@ -94,7 +94,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 
 | preview | `bb` name | shows |
 |---|---|---|
-| [<img src="../demos/camera-3d.gif" width="80">](demos.md#camera-3d) | `camera-3d` | an orbiting 3D camera — `Camera3D` by value + rlgl cube |
+| [<img src="../demos/camera-3d.gif" width="80">](demos.md#camera-3d) | `camera-3d` | an orbiting 3D camera, `Camera3D` by value + rlgl cube |
 | [<img src="../demos/waving-cubes.gif" width="80">](demos.md#waving-cubes) | `waving-cubes` | 196 cubes rippling in 3D (shared `rl/cube!`) |
 | [<img src="../demos/camera-3d-first-person.gif" width="80">](demos.md#camera-3d-first-person) | `camera-3d-first-person` | WASD + mouse-look walk through columns |
 | [<img src="../demos/tesseract-view.gif" width="80">](demos.md#tesseract-view) | `tesseract-view` | a rotating 4D hypercube projected 4D→3D→2D |
@@ -124,23 +124,23 @@ The 3D set stands entirely on two building blocks from
 | [<img src="../demos/l-system.gif" width="80">](demos.md#l-system) | `l-system` | an L-system fractal plant (grows + regrows) |
 | [<img src="../demos/flow-field.gif" width="80">](demos.md#flow-field) | `flow-field` | particles steered by a flow field (trails) |
 
-All seven are pure math + the drawing API — no new bindings. They showcase the
+All seven are pure math + the drawing API, no new bindings. They showcase the
 suite as a generative-art canvas: cellular automata, agent flocking, particle
 systems, rotating-vector Fourier series, parametric roulette curves, string-rewrite
 fractals, and noise-steered flow fields.
 
-## Adding an example — the four touchpoints
+## Adding an example: the four touchpoints
 
 The suite is deliberately mechanical to grow. One new example touches four places:
 
-1. **Source** — `src/net/b12n/raylib_jlt/<name>.clj`, a namespace with a `-main` that
+1. **Source**: `src/net/b12n/raylib_jlt/<name>.clj`, a namespace with a `-main` that
    runs the canonical loop (see [`headless-smoke-testing.md`](headless-smoke-testing.md))
    against the `net.b12n.raylib-jlt.raylib` API.
-2. **`deps.edn` alias** — `:<name> {:main-opts ["-m" "net.b12n.raylib-jlt.<name>"]}` so
+2. **`deps.edn` alias**: `:<name> {:main-opts ["-m" "net.b12n.raylib-jlt.<name>"]}` so
    `jolt -M:<name>` works.
-3. **`check.clj` require** — add `net.b12n.raylib-jlt.<name>` to the `:require` list in
+3. **`check.clj` require**: add `net.b12n.raylib-jlt.<name>` to the `:require` list in
    `net.b12n.raylib-jlt.check`, so the headless compile-check covers it.
-4. **`bb.edn` registry row** — add `["<display-name>" "<alias>" "<group>" "<desc>"]`
+4. **`bb.edn` registry row**: add `["<display-name>" "<alias>" "<group>" "<desc>"]`
    to the `examples` vector and a matching `bb <name>` task, so it shows in
    `bb info` / `bb examples` / `bb run-all`.
 
@@ -152,11 +152,11 @@ flowchart LR
 ```
 
 Filenames use underscores (`basic_screen_manager.clj`); the namespace uses hyphens
-(`net.b12n.raylib-jlt.basic-screen-manager`) — Clojure's standard file↔ns mapping.
+(`net.b12n.raylib-jlt.basic-screen-manager`), Clojure's standard file↔ns mapping.
 
 One ordering rule applies inside every file: since **jolt 0.4.0** an unresolved
 symbol is a compile error rather than a late-bound reference, so a definition must
-appear before its first use — in a fn body and in an `:or` destructuring default
+appear before its first use, in a fn body and in an `:or` destructuring default
 just as much as at top level. It bites hardest in the shared `raylib.clj` binding
 layer, where one misordered symbol stops *every* example from loading and only the
 first offender is reported. `jolt -M:check` is the quick confirmation; see the
@@ -164,7 +164,7 @@ first offender is reported. `jolt -M:check` is the quick confirmation; see the
 
 ## See also
 
-- [`kwarg-drawing-api.md`](kwarg-drawing-api.md) — the API every example is written
+- [`kwarg-drawing-api.md`](kwarg-drawing-api.md): the API every example is written
   against.
-- [`headless-smoke-testing.md`](headless-smoke-testing.md) — the loop shape and how
+- [`headless-smoke-testing.md`](headless-smoke-testing.md): the loop shape and how
   `bb run-all` / `bb check` verify the catalog.

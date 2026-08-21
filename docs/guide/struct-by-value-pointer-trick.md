@@ -4,7 +4,7 @@ raylib's cameras are structs passed **by value**: `BeginMode2D(Camera2D)` takes 
 bytes, `BeginMode3D(Camera3D)` takes 44 bytes. Chez `foreign-procedure` (what
 `jolt.ffi/defcfn` lowers to) has no by-value-aggregate calling convention. Unlike
 `Color` (see [`color-by-value.md`](color-by-value.md)) these are far too big to fake
-as a register-width int. But on AArch64 there is still a way — and it comes straight
+as a register-width int. But on AArch64 there is still a way, and it comes straight
 out of the ABI.
 
 ## The ABI fact
@@ -23,7 +23,7 @@ void BeginMode2D(Camera2D camera);
 On the **AArch64** (Apple silicon) procedure-call standard, a composite larger than
 16 bytes is passed **indirectly**: the caller allocates the struct somewhere, and
 what actually goes in the argument register is a **pointer** to it. So at the machine
-level, `BeginMode2D(Camera2D)` and `BeginMode2D(Camera2D*)` are the *same call* — the
+level, `BeginMode2D(Camera2D)` and `BeginMode2D(Camera2D*)` are the *same call*: the
 callee receives a pointer either way.
 
 That means a Jolt binding can declare the parameter as `[:pointer]`, build the 24
@@ -71,7 +71,7 @@ flowchart LR
 
 ## Camera3D is the same recipe, bigger
 
-`Camera3D` is 44 bytes — three `Vector3` (position, target, up) + a `float fovy` +
+`Camera3D` is 44 bytes: three `Vector3` (position, target, up) + a `float fovy` +
 an `int projection`. `with-camera-3d` allocates 44 and writes nine floats then one
 int:
 
@@ -83,25 +83,25 @@ int:
   (begin-mode-3d-ptr p) (f) (end-mode-3d))
 ```
 
-Both wrappers use `try`/`finally` so the native buffer is freed even if `f` throws —
+Both wrappers use `try`/`finally` so the native buffer is freed even if `f` throws,
 the same discipline the sibling project applies to its node buffers.
 
-## The x86-64 caveat — this is **not** portable as written
+## The x86-64 caveat: this is **not** portable as written
 
 The trick works *because* AArch64 passes >16-byte structs indirectly. On the
 **x86-64 System V** ABI, those 24 bytes are classified and passed **on the stack**
-(in pieces), which a `[:pointer]` binding does **not** do — it would put a pointer
+(in pieces), which a `[:pointer]` binding does **not** do; it would put a pointer
 where the callee expects 24 bytes of struct data, and the call reads garbage
 (typically an "invalid memory reference" crash).
 
 So `camera2d`/`camera-3d` are AArch64-only as written. The **portable** alternative
 is to skip `BeginMode2D` entirely and apply the same transform with rlgl's scalar
-matrix ops (`rlPushMatrix`/`rlTranslatef`/`rlRotatef`/`rlScalef`) — which is exactly
+matrix ops (`rlPushMatrix`/`rlTranslatef`/`rlRotatef`/`rlScalef`), which is exactly
 what `BeginMode2D` does internally. See [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md)
 for the matrix stack. The source flags this inline:
 
 ```clojure
-;; NOTE: this is AArch64-specific — on the x86-64 SysV ABI the 24 bytes are passed
+;; NOTE: this is AArch64-specific. On the x86-64 SysV ABI the 24 bytes are passed
 ;; on the stack, which a [:pointer] binding does NOT do (see README). For a portable
 ;; alternative, apply the same transform with the scalar rlgl matrix ops instead.
 ```
@@ -109,7 +109,7 @@ for the matrix stack. The source flags this inline:
 ## By-value **returns** are a different, harder problem
 
 This trick fakes a by-value struct **argument**. It does nothing for a function that
-**returns** a struct by value — on AArch64 that uses the `x8` sret register, which
+**returns** a struct by value: on AArch64 that uses the `x8` sret register, which
 Chez doesn't expose. raylib's hot path never needs a by-value struct return, so this
 repo never hits it. Its Jolt sibling `b12n-tsj` (not yet public) is not so lucky:
 tree-sitter's
@@ -122,14 +122,14 @@ a C shim. That contrast is the reason both projects exist side by side.
 For any Chez/Jolt FFI on AArch64 that needs to pass a >16-byte struct **by value**:
 allocate `sizeof(T)` with `ffi/alloc`, write each field at its C offset, bind the
 function as `[:pointer]`, and free in `finally`. Confirm `sizeof` and every offset
-against the C header. Do **not** assume it ports to x86-64 — reach for rlgl matrix
+against the C header. Do **not** assume it ports to x86-64; reach for rlgl matrix
 ops (or a real shim) there.
 
 ## See also
 
-- [`color-by-value.md`](color-by-value.md) — the small-struct case that fits in a
+- [`color-by-value.md`](color-by-value.md): the small-struct case that fits in a
   register and needs none of this.
-- [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md) — the portable matrix-stack
+- [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md): the portable matrix-stack
   alternative, and the fallback for by-value *float* structs (`Vector2`/`Vector3`).
-- `b12n-tsj` (not yet public) — the sibling case where the pointer trick isn't
+- `b12n-tsj` (not yet public): the sibling case where the pointer trick isn't
   enough (by-value returns) and you must write a C shim.
