@@ -326,27 +326,59 @@
          ;; `git commit` are both scoped to `path` explicitly — never -A/. —
          ;; because b12n-wikis is SHARED across many projects and a stray
          ;; staged file from a concurrent session must not ride along.
+         ;; Commit if there is anything to commit, then push if the branch is
+         ;; ahead — the two are checked SEPARATELY on purpose. An earlier
+         ;; version returned :skipped whenever the tree was clean, which meant
+         ;; a commit that was already made but never pushed (a prior run that
+         ;; stopped at --no-push, or a hand commit) could never be pushed by
+         ;; this task at all: it reported "up to date" and left the branch
+         ;; ahead of origin indefinitely.
          sync!     (fn [opts]
                      (let [label (:label opts) dir (:dir opts)
                            path (:path opts) msg (:msg opts)]
                        (hdr label)
-                       (if-not (dirty? dir path)
-                         (do (println "  up to date, nothing to commit") :skipped)
-                         (do
-                           (shell {:dir dir} "git" "add" "--" path)
-                           (shell {:dir dir} "git" "commit" "-m" msg "--" path)
-                           (if-not push?
-                             (do (println "  committed locally (--no-push)") :ok)
-                             (do
-                               (shell {:dir dir :continue true} "git" "fetch" "origin")
-                               (let [res (shell {:dir dir :out :string} "git" "status" "--short" "--branch")]
-                                 (if (str/includes? (:out res) "behind")
-                                   (do (println (str "  BEHIND origin — resolve manually (cd " dir " && git pull --rebase), not auto-pushing"))
-                                       :behind)
-                                   (let [pr (shell {:dir dir :continue true} "git" "push" "origin" "main")]
-                                     (if (zero? (:exit pr))
-                                       (do (println "  pushed") :ok)
-                                       (do (println "  PUSH FAILED") :push-failed)))))))))))
+                       (let [committed? (if (dirty? dir path)
+                                          (do (shell {:dir dir} "git" "add" "--" path)
+                                              (shell {:dir dir} "git" "commit" "-m" msg "--" path)
+                                              true)
+                                          false)]
+                         (if-not push?
+                           (do (println (if committed?
+                                          "  committed locally (--no-push)"
+                                          "  nothing to commit (--no-push)"))
+                               :ok)
+                           (do
+                             (shell {:dir dir :continue true} "git" "fetch" "origin")
+                             ;; One status read, used for both checks, so a
+                             ;; diverged branch cannot slip between them.
+                             (let [st (:out (shell {:dir dir :out :string} "git" "status" "--short" "--branch"))]
+                               (cond
+                                 (str/includes? st "behind")
+                                 (do (println (str "  BEHIND origin — resolve manually (cd " dir " && git pull --rebase), not auto-pushing"))
+                                     :behind)
+
+                                 ;; No upstream means the status line carries no
+                                 ;; ahead/behind at all, so the check below would
+                                 ;; read as "nothing to push" and skip silently -
+                                 ;; the same failure this fn was just fixed for.
+                                 ;; git filter-repo drops the remote, so a repo
+                                 ;; can land here after a history rewrite.
+                                 (not (str/includes? st "..."))
+                                 (do (println (str "  NO UPSTREAM for main in " dir " — not pushing."))
+                                     (println "  Fix with: git branch --set-upstream-to=origin/main main")
+                                     :no-upstream)
+
+                                 (not (str/includes? st "ahead"))
+                                 (do (println "  up to date, nothing to push") :skipped)
+
+                                 :else
+                                 (let [pr (shell {:dir dir :continue true} "git" "push" "origin" "main")]
+                                   (if (zero? (:exit pr))
+                                     (do (println (if committed?
+                                                    "  committed + pushed"
+                                                    "  pushed (commit was already local)"))
+                                         :ok)
+                                     (do (println "  PUSH FAILED") :push-failed))))))))))
          ;; Publishes the BUILT site (not the git repo) to the S3 origin
          ;; behind CloudFront, then invalidates the edge cache. Provisioned
          ;; by ~/dev/b12n-infra's static-site module
@@ -421,7 +453,7 @@
              (println (str "  site:   " site-result))
              (println (str "  wiki:   " wiki-result))
              (println (str "  deploy: " deploy-result))
-             (when (some (fn [r] (contains? #{:behind :push-failed :build-failed
+             (when (some (fn [r] (contains? #{:behind :push-failed :build-failed :no-upstream
                                               :sync-failed :invalidation-failed} r))
                          [site-result wiki-result deploy-result])
                (System/exit 1)))))))}
