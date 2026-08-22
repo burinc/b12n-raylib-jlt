@@ -83,7 +83,8 @@
    ["ring-drawing"      "ring-drawing" "shapes" "an animated annulus via rl/ring!"]
    ["rounded-rectangle" "rounded-rectangle" "shapes" "rounded rects via sector! corners"]
    ["rectangle-scaling" "rectangle-scaling" "shapes" "drag the corner handle to resize a rect"]
-   ["lines-drawing"     "lines-drawing" "shapes" "a rotating fan of thick lines (line-ex!)"]])
+   ["lines-drawing"     "lines-drawing" "shapes" "a rotating fan of thick lines (line-ex!)"]
+   ["texture-procedural"  "texture-procedural" "textures" "four textures generated pixel by pixel (SPACE reseeds noise)"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 

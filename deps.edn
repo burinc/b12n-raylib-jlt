@@ -84,6 +84,7 @@
            :ring-drawing     {:main-opts ["-m" "net.b12n.raylib-jlt.ring-drawing"]}     ; animated rlgl annulus
            :rounded-rectangle {:main-opts ["-m" "net.b12n.raylib-jlt.rounded-rectangle"]} ; sector!-corner rounded rects
            :rectangle-scaling {:main-opts ["-m" "net.b12n.raylib-jlt.rectangle-scaling"]} ; drag-resize a rect
-           :lines-drawing    {:main-opts ["-m" "net.b12n.raylib-jlt.lines-drawing"]}}   ; a fan of thick lines (line-ex!)
+           :lines-drawing    {:main-opts ["-m" "net.b12n.raylib-jlt.lines-drawing"]}    ; a fan of thick lines (line-ex!)
+           :texture-procedural {:main-opts ["-m" "net.b12n.raylib-jlt.texture-procedural"]}} ; procedural textures via rlLoadTexture
 
  :tasks {run "joltc -M:run"}}

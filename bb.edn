@@ -252,6 +252,7 @@
   rounded-rectangle {:doc "▶ rounded rects via sector! corners"                 :task (run-example "rounded-rectangle")}
   rectangle-scaling {:doc "▶ drag the corner handle to resize a rect"           :task (run-example "rectangle-scaling")}
   lines-drawing     {:doc "▶ a rotating fan of thick lines (line-ex!)"           :task (run-example "lines-drawing")}
+  texture-procedural {:doc "▶ four textures generated pixel by pixel (SPACE reseeds noise)" :task (run-example "texture-procedural")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

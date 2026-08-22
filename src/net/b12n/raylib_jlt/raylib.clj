@@ -573,3 +573,380 @@
     (flush-batch)
     (take-screenshot shot-path)
     (binding [*out* *err*] (println "[net.b12n.raylib-jlt] SHOT" shot-path))))
+
+;; =============================================================================
+;; Scalar extensions
+;; =============================================================================
+;; Everything below is appended rather than slotted into the sections above on
+;; purpose: since jolt 0.4.0 a symbol must be defined before its first use in the
+;; file, and the ordering of the sections above is load-bearing (see the Color
+;; note at the top). Appending cannot disturb it. Nothing above refers to
+;; anything here.
+
+;; --- window state / config flags ---------------------------------------------
+;; SetConfigFlags must be called BEFORE InitWindow; SetWindowState/ClearWindowState
+;; take the same FLAG-* bits at runtime.
+(ffi/defcfn set-config-flags   "SetConfigFlags"   [:uint] :void)
+(ffi/defcfn set-window-state   "SetWindowState"   [:uint] :void)
+(ffi/defcfn clear-window-state "ClearWindowState" [:uint] :void)
+(ffi/defcfn toggle-fullscreen  "ToggleFullscreen" [] :void)
+(ffi/defcfn get-screen-width   "GetScreenWidth"   [] :int)
+(ffi/defcfn get-screen-height  "GetScreenHeight"  [] :int)
+(ffi/defcfn get-time           "GetTime"          [] :double)
+(ffi/defcfn ^:private window-state-raw   "IsWindowState"   [:uint] :int)
+(ffi/defcfn ^:private window-resized-raw "IsWindowResized" [] :int)
+
+(def ^:const FLAG-WINDOW-RESIZABLE   0x00000004)
+(def ^:const FLAG-WINDOW-UNDECORATED 0x00000008)
+(def ^:const FLAG-MSAA-4X-HINT       0x00000020)
+(def ^:const FLAG-VSYNC-HINT         0x00000040)
+(def ^:const FLAG-WINDOW-TOPMOST     0x00001000)
+(def ^:const FLAG-WINDOW-HIGHDPI     0x00002000)
+
+(defn window-state?
+  "IsWindowState — is this FLAG-* bit currently set?"
+  [flag]
+  (not (zero? (bit-and (window-state-raw flag) 0xff))))
+
+(defn window-resized?
+  "IsWindowResized — did the window change size on the last frame?"
+  []
+  (not (zero? (bit-and (window-resized-raw) 0xff))))
+
+;; --- monitors ----------------------------------------------------------------
+;; GetMonitorPosition returns a Vector2 by value and so has no binding; the
+;; scalar width/height/refresh/name queries cover what a monitor listing needs.
+(ffi/defcfn get-monitor-count        "GetMonitorCount"       [] :int)
+(ffi/defcfn get-current-monitor      "GetCurrentMonitor"     [] :int)
+(ffi/defcfn get-monitor-width        "GetMonitorWidth"       [:int] :int)
+(ffi/defcfn get-monitor-height       "GetMonitorHeight"      [:int] :int)
+(ffi/defcfn get-monitor-refresh-rate "GetMonitorRefreshRate" [:int] :int)
+(ffi/defcfn get-monitor-name         "GetMonitorName"        [:int] :string)
+
+;; --- clipboard ---------------------------------------------------------------
+;; GetClipboardText returns a const char* raylib owns; :string copies it out.
+(ffi/defcfn set-clipboard-text "SetClipboardText" [:string] :void)
+(ffi/defcfn get-clipboard-text "GetClipboardText" [] :string)
+
+;; --- gamepad -----------------------------------------------------------------
+(ffi/defcfn get-gamepad-axis-count    "GetGamepadAxisCount"    [:int] :int)
+(ffi/defcfn get-gamepad-axis-movement "GetGamepadAxisMovement" [:int :int] :float)
+(ffi/defcfn get-gamepad-name          "GetGamepadName"         [:int] :string)
+(ffi/defcfn ^:private gamepad-available-raw "IsGamepadAvailable"     [:int] :int)
+(ffi/defcfn ^:private gamepad-down-raw      "IsGamepadButtonDown"    [:int :int] :int)
+(ffi/defcfn ^:private gamepad-pressed-raw   "IsGamepadButtonPressed" [:int :int] :int)
+
+(defn gamepad-available?
+  [pad]
+  (not (zero? (bit-and (gamepad-available-raw pad) 0xff))))
+
+(defn gamepad-down?
+  [pad button]
+  (not (zero? (bit-and (gamepad-down-raw pad button) 0xff))))
+
+(defn gamepad-pressed?
+  [pad button]
+  (not (zero? (bit-and (gamepad-pressed-raw pad button) 0xff))))
+
+;; raylib GamepadButton / GamepadAxis
+(def ^:const PAD-UP     1)  (def ^:const PAD-RIGHT  2)
+(def ^:const PAD-DOWN   3)  (def ^:const PAD-LEFT   4)
+(def ^:const PAD-Y      5)  (def ^:const PAD-B      6)
+(def ^:const PAD-A      7)  (def ^:const PAD-X      8)
+(def ^:const PAD-L1     9)  (def ^:const PAD-L2    10)
+(def ^:const PAD-R1    11)  (def ^:const PAD-R2    12)
+(def ^:const PAD-SELECT 13) (def ^:const PAD-MENU  14)
+(def ^:const PAD-START 15)
+(def ^:const AXIS-LEFT-X 0) (def ^:const AXIS-LEFT-Y 1)
+(def ^:const AXIS-RIGHT-X 2) (def ^:const AXIS-RIGHT-Y 3)
+
+;; --- touch / gestures --------------------------------------------------------
+;; On desktop raylib synthesises touch point 0 from the mouse, so these read as a
+;; one-finger stream with no touchscreen attached.
+(ffi/defcfn get-touch-point-count "GetTouchPointCount" [] :int)
+(ffi/defcfn get-touch-point-id    "GetTouchPointId"    [:int] :int)
+(ffi/defcfn get-touch-x           "GetTouchX"          [] :int)
+(ffi/defcfn get-touch-y           "GetTouchY"          [] :int)
+(ffi/defcfn get-gesture-detected  "GetGestureDetected" [] :int)
+(ffi/defcfn set-gestures-enabled  "SetGesturesEnabled" [:uint] :void)
+
+(def ^:const GESTURE-NONE 0)        (def ^:const GESTURE-TAP 1)
+(def ^:const GESTURE-DOUBLETAP 2)   (def ^:const GESTURE-HOLD 4)
+(def ^:const GESTURE-DRAG 8)        (def ^:const GESTURE-SWIPE-RIGHT 16)
+(def ^:const GESTURE-SWIPE-LEFT 32) (def ^:const GESTURE-SWIPE-UP 64)
+(def ^:const GESTURE-SWIPE-DOWN 128)
+(def ^:const GESTURE-PINCH-IN 256)  (def ^:const GESTURE-PINCH-OUT 512)
+
+;; --- remaining input predicates ----------------------------------------------
+(ffi/defcfn set-mouse-cursor "SetMouseCursor" [:int] :void)
+(ffi/defcfn ^:private key-released-raw   "IsKeyReleased"          [:int] :int)
+(ffi/defcfn ^:private mouse-released-raw "IsMouseButtonReleased"  [:int] :int)
+
+(defn key-released?
+  [k]
+  (not (zero? (bit-and (key-released-raw k) 0xff))))
+
+(defn mouse-released?
+  [b]
+  (not (zero? (bit-and (mouse-released-raw b) 0xff))))
+
+;; --- more KeyboardKey constants ----------------------------------------------
+(def ^:const KEY-ESCAPE 256) (def ^:const KEY-TAB   258)
+(def ^:const KEY-DELETE 261) (def ^:const KEY-HOME  268)
+(def ^:const KEY-END    269) (def ^:const KEY-F1    290)
+(def ^:const KEY-F2     291) (def ^:const KEY-F3    292)
+(def ^:const KEY-LEFT-SHIFT 340) (def ^:const KEY-LEFT-CONTROL 341)
+(def ^:const KEY-LEFT-SUPER 343)
+(def ^:const KEY-ZERO 48) (def ^:const KEY-ONE   49) (def ^:const KEY-TWO   50)
+(def ^:const KEY-THREE 51) (def ^:const KEY-FOUR 52) (def ^:const KEY-FIVE  53)
+(def ^:const KEY-SIX  54) (def ^:const KEY-SEVEN 55) (def ^:const KEY-EIGHT 56)
+(def ^:const KEY-NINE 57)
+(def ^:const KEY-C 67) (def ^:const KEY-E 69) (def ^:const KEY-F 70)
+(def ^:const KEY-G 71) (def ^:const KEY-H 72) (def ^:const KEY-M 77)
+(def ^:const KEY-N 78) (def ^:const KEY-P 80) (def ^:const KEY-Q 81)
+(def ^:const KEY-T 84) (def ^:const KEY-V 86) (def ^:const KEY-X 88)
+(def ^:const KEY-Y 89) (def ^:const KEY-Z 90)
+
+;; --- extra scalar drawing ----------------------------------------------------
+(ffi/defcfn draw-circle-gradient  "DrawCircleGradient"     [:int :int :float :uint :uint] :void)
+(ffi/defcfn draw-rectangle-grad-h "DrawRectangleGradientH" [:int :int :int :int :uint :uint] :void)
+(ffi/defcfn begin-blend-mode      "BeginBlendMode"         [:int] :void)
+(ffi/defcfn end-blend-mode        "EndBlendMode"           [] :void)
+
+(def ^:const BLEND-ALPHA 0)      (def ^:const BLEND-ADDITIVE 1)
+(def ^:const BLEND-MULTIPLIED 2) (def ^:const BLEND-ADD-COLORS 3)
+(def ^:const BLEND-SUBTRACT-COLORS 4)
+
+(defn circle-gradient!
+  "DrawCircleGradient. :x :y :radius :inner :outer."
+  [& {:keys [x y radius inner outer]
+      :or {x 0
+           y 0
+           radius 10
+           inner WHITE
+           outer BLACK}}]
+  (draw-circle-gradient x y (double radius) inner outer))
+
+(defn rect-gradient-h!
+  "DrawRectangleGradientH (left->right). :x :y :width :height :left :right."
+  [& {:keys [x y width height left right]
+      :or {x 0
+           y 0
+           width 10
+           height 10
+           left WHITE
+           right BLACK}}]
+  (draw-rectangle-grad-h x y width height left right))
+
+;; --- rlgl textures -----------------------------------------------------------
+;; raylib's own texture API is unreachable from jolt: LoadTexture returns a
+;; 20-byte Texture2D BY VALUE, which the AArch64 ABI hands back through the x8
+;; indirect-result register, and Chez's foreign-procedure cannot express that.
+;; rlgl's layer underneath it is entirely scalar, though — rlLoadTexture takes a
+;; raw pixel pointer and returns the GL texture id as an unsigned int, and
+;; rlSetTexture/rlTexCoord2f draw with it in immediate mode. So a texture here is
+;; just that id: an int, no struct anywhere. What is lost is raylib's file
+;; loaders (LoadTexture/LoadImage decode PNGs into an Image struct); textures in
+;; this suite are therefore built pixel by pixel in native memory instead.
+(ffi/defcfn rl-load-texture       "rlLoadTexture"       [:pointer :int :int :int :int] :uint)
+(ffi/defcfn rl-unload-texture     "rlUnloadTexture"     [:uint] :void)
+(ffi/defcfn rl-update-texture     "rlUpdateTexture"     [:uint :int :int :int :int :int :pointer] :void)
+(ffi/defcfn rl-texture-parameters "rlTextureParameters" [:uint :int :int] :void)
+(ffi/defcfn rl-set-texture        "rlSetTexture"        [:uint] :void)
+(ffi/defcfn rl-tex-coord-2f       "rlTexCoord2f"        [:float :float] :void)
+(ffi/defcfn rl-normal-3f          "rlNormal3f"          [:float :float :float] :void)
+
+(def ^:const RL-QUADS 7)
+(def ^:const PIXELFORMAT-R8G8B8A8 7)          ; rlPixelFormat, 32bpp RGBA
+(def ^:const RL-TEXTURE-WRAP-S 0x2802)        (def ^:const RL-TEXTURE-WRAP-T 0x2803)
+(def ^:const RL-TEXTURE-WRAP-REPEAT 0x2901)   (def ^:const RL-TEXTURE-WRAP-CLAMP 0x812F)
+(def ^:const RL-TEXTURE-MAG-FILTER 0x2800)    (def ^:const RL-TEXTURE-MIN-FILTER 0x2801)
+(def ^:const RL-TEXTURE-FILTER-NEAREST 0x2600)
+(def ^:const RL-TEXTURE-FILTER-LINEAR 0x2601)
+
+(defn texture-filter!
+  "Set both min and mag filters on a texture id (RL-TEXTURE-FILTER-NEAREST for
+  crisp pixel art, RL-TEXTURE-FILTER-LINEAR for smooth scaling)."
+  [id filter]
+  (rl-texture-parameters id RL-TEXTURE-MIN-FILTER filter)
+  (rl-texture-parameters id RL-TEXTURE-MAG-FILTER filter))
+
+(defn texture-wrap!
+  "Set both S and T wrap modes on a texture id (REPEAT lets texcoords past 1.0
+  tile the image, CLAMP stretches the edge pixel)."
+  [id wrap]
+  (rl-texture-parameters id RL-TEXTURE-WRAP-S wrap)
+  (rl-texture-parameters id RL-TEXTURE-WRAP-T wrap))
+
+(defn texture-from-fn
+  "Build a `w` x `h` RGBA8 texture on the GPU from (f x y) -> packed Color, and
+  return its rlgl texture id. Frees the staging buffer once rlLoadTexture has
+  copied it to the GPU. Pair with `unload-texture!` when done.
+
+  A packed Color is already r | g<<8 | b<<16 | a<<24, which is byte-for-byte what
+  RGBA8 wants on a little-endian machine, so each pixel is one :uint write."
+  [w h f]
+  (let [buf (ffi/alloc (* w h 4))]
+    (try
+      (dotimes [y h]
+        (dotimes [x w]
+          (ffi/write buf :uint (* 4 (+ x (* y w))) (f x y))))
+      (let [id (rl-load-texture buf w h PIXELFORMAT-R8G8B8A8 1)]
+        (texture-filter! id RL-TEXTURE-FILTER-NEAREST)
+        (texture-wrap! id RL-TEXTURE-WRAP-REPEAT)
+        id)
+      (finally (ffi/free buf)))))
+
+(defn update-texture-from-fn!
+  "rlUpdateTexture - re-upload the whole `w` x `h` RGBA8 surface behind an
+  existing texture id from (f x y) -> packed Color. Cheaper than unloading and
+  reloading, and every quad already drawing that id picks the new texels up with
+  no change of its own."
+  [id w h f]
+  (let [buf (ffi/alloc (* w h 4))]
+    (try
+      (dotimes [y h]
+        (dotimes [x w]
+          (ffi/write buf :uint (* 4 (+ x (* y w))) (f x y))))
+      (rl-update-texture id 0 0 w h PIXELFORMAT-R8G8B8A8 buf)
+      (finally (ffi/free buf)))))
+
+(defn unload-texture!
+  "rlUnloadTexture — release a texture id created by texture-from-fn."
+  [id]
+  (rl-unload-texture id))
+
+(defn texture!
+  "Draw a texture id as an axis-aligned quad, the immediate-mode stand-in for
+  DrawTexturePro (whose Rectangle/Vector2 args are by value). Emits the same
+  topLeft -> bottomLeft -> bottomRight -> topRight winding raylib's own
+  DrawTexturePro uses, so it batches identically.
+    :x :y :width :height   destination rectangle in screen space
+    :u0 :v0 :u1 :v1        source texcoords (default the whole texture; values
+                           past 1.0 tile when the wrap mode is REPEAT, and
+                           v0 > v1 flips vertically, which is what a framebuffer
+                           texture needs)
+    :tint                  packed Color multiplied into the texels (default WHITE)"
+  [id & {:keys [x y width height u0 v0 u1 v1 tint]
+         :or {x 0
+              y 0
+              width 100
+              height 100
+              u0 0.0
+              v0 0.0
+              u1 1.0
+              v1 1.0
+              tint WHITE}}]
+  (let [x0 (double x) y0 (double y)
+        x1 (double (+ x width)) y1 (double (+ y height))]
+    (rl-set-texture id)
+    (rl-begin RL-QUADS)
+    (rl-color! tint)
+    (rl-normal-3f 0.0 0.0 1.0)
+    (rl-tex-coord-2f (double u0) (double v0)) (rl-vertex-2f x0 y0)
+    (rl-tex-coord-2f (double u0) (double v1)) (rl-vertex-2f x0 y1)
+    (rl-tex-coord-2f (double u1) (double v1)) (rl-vertex-2f x1 y1)
+    (rl-tex-coord-2f (double u1) (double v0)) (rl-vertex-2f x1 y0)
+    (rl-end)
+    (rl-set-texture 0)))
+
+;; --- rlgl framebuffers (render textures) -------------------------------------
+;; raylib's LoadRenderTexture returns a RenderTexture2D by value and so is out of
+;; reach for the same reason LoadTexture is, but rlgl's framebuffer calls are all
+;; scalar: rlLoadFramebuffer returns the FBO id, rlFramebufferAttach wires a color
+;; texture and a depth renderbuffer to it, and rlEnableFramebuffer binds it. What
+;; BeginTextureMode adds on top is viewport and projection bookkeeping, which
+;; with-render-texture replicates below.
+(ffi/defcfn rl-load-framebuffer      "rlLoadFramebuffer"      [] :uint)
+(ffi/defcfn rl-framebuffer-attach    "rlFramebufferAttach"    [:uint :uint :int :int :int] :void)
+(ffi/defcfn rl-enable-framebuffer    "rlEnableFramebuffer"    [:uint] :void)
+(ffi/defcfn rl-disable-framebuffer   "rlDisableFramebuffer"   [] :void)
+(ffi/defcfn rl-unload-framebuffer    "rlUnloadFramebuffer"    [:uint] :void)
+(ffi/defcfn rl-load-texture-depth    "rlLoadTextureDepth"     [:int :int :int] :uint)
+(ffi/defcfn rl-viewport              "rlViewport"             [:int :int :int :int] :void)
+(ffi/defcfn rl-matrix-mode           "rlMatrixMode"           [:int] :void)
+(ffi/defcfn rl-load-identity         "rlLoadIdentity"         [] :void)
+(ffi/defcfn rl-ortho                 "rlOrtho"                [:double :double :double :double :double :double] :void)
+(ffi/defcfn rl-set-framebuffer-width  "rlSetFramebufferWidth"  [:int] :void)
+(ffi/defcfn rl-set-framebuffer-height "rlSetFramebufferHeight" [:int] :void)
+(ffi/defcfn rl-get-framebuffer-width  "rlGetFramebufferWidth"  [] :int)
+(ffi/defcfn rl-get-framebuffer-height "rlGetFramebufferHeight" [] :int)
+(ffi/defcfn ^:private framebuffer-complete-raw "rlFramebufferComplete" [:uint] :int)
+
+(def ^:const RL-PROJECTION 0x1701)
+(def ^:const RL-MODELVIEW  0x1700)
+(def ^:const RL-ATTACHMENT-COLOR-CHANNEL0 0)
+(def ^:const RL-ATTACHMENT-DEPTH 100)
+(def ^:const RL-ATTACHMENT-TEXTURE2D 100)
+(def ^:const RL-ATTACHMENT-RENDERBUFFER 200)
+
+(defn render-texture
+  "Create an off-screen render target: an FBO with a `w` x `h` RGBA8 color
+  texture and a depth renderbuffer. Returns {:fbo :texture :width :height}, or
+  nil if the driver reports the framebuffer incomplete. Pair with
+  `unload-render-texture!`.
+
+  The color texture starts as an uninitialised buffer of the right size — rgba
+  black is written so a target that is drawn before it is first rendered into
+  reads as transparent rather than as whatever was in that allocation."
+  [w h]
+  (let [fbo (rl-load-framebuffer)
+        tex (texture-from-fn w h (fn [_ _] (rgba 0 0 0 0)))
+        depth (rl-load-texture-depth w h 1)]     ; useRenderBuffer = true
+    (texture-filter! tex RL-TEXTURE-FILTER-LINEAR)
+    (texture-wrap! tex RL-TEXTURE-WRAP-CLAMP)
+    (rl-framebuffer-attach fbo tex RL-ATTACHMENT-COLOR-CHANNEL0 RL-ATTACHMENT-TEXTURE2D 0)
+    (rl-framebuffer-attach fbo depth RL-ATTACHMENT-DEPTH RL-ATTACHMENT-RENDERBUFFER 0)
+    (when-not (zero? (bit-and (framebuffer-complete-raw fbo) 0xff))
+      {:fbo fbo
+       :texture tex
+       :width w
+       :height h})))
+
+(defn unload-render-texture!
+  "Release the FBO and its color texture. The depth renderbuffer goes with the
+  FBO, so it needs no separate call."
+  [{:keys [fbo texture]}]
+  (rl-unload-texture texture)
+  (rl-unload-framebuffer fbo))
+
+(defn with-render-texture
+  "Run (f) with drawing redirected into `rt`, then restore the screen — the
+  BeginTextureMode/EndTextureMode pair, spelled out in scalar rlgl calls.
+
+  Both halves flush the batch first: rlgl defers geometry until a draw call is
+  forced, so without the flush the shapes queued before the switch would be
+  rendered into whichever target happens to be bound afterwards. The default
+  framebuffer's size is read back before binding the FBO rather than assumed from
+  GetScreenWidth, so the restore is correct under HiDPI too, where raylib's
+  render size and the logical screen size differ.
+
+  Note the resulting texture is bottom-up in GL's convention: draw it back with
+  :v0 1.0 :v1 0.0 (as `texture!`'s docstring notes) or the image appears
+  upside down."
+  [{:keys [fbo width height]} f]
+  (let [screen-w (rl-get-framebuffer-width)
+        screen-h (rl-get-framebuffer-height)]
+    (flush-batch)
+    (rl-enable-framebuffer fbo)
+    (rl-viewport 0 0 width height)
+    (rl-set-framebuffer-width width)
+    (rl-set-framebuffer-height height)
+    (rl-matrix-mode RL-PROJECTION)
+    (rl-load-identity)
+    (rl-ortho 0.0 (double width) (double height) 0.0 0.0 1.0)
+    (rl-matrix-mode RL-MODELVIEW)
+    (rl-load-identity)
+    (try
+      (f)
+      (finally
+        (flush-batch)
+        (rl-disable-framebuffer)
+        (rl-viewport 0 0 screen-w screen-h)
+        (rl-set-framebuffer-width screen-w)
+        (rl-set-framebuffer-height screen-h)
+        (rl-matrix-mode RL-PROJECTION)
+        (rl-load-identity)
+        (rl-ortho 0.0 (double screen-w) (double screen-h) 0.0 0.0 1.0)
+        (rl-matrix-mode RL-MODELVIEW)
+        (rl-load-identity)))))

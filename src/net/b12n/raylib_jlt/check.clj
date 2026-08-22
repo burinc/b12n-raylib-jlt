@@ -75,6 +75,7 @@
    [net.b12n.raylib-jlt.tesseract-view]
    [net.b12n.raylib-jlt.tetris]
    [net.b12n.raylib-jlt.text]
+   [net.b12n.raylib-jlt.texture-procedural]
    [net.b12n.raylib-jlt.triangle-strip]
    [net.b12n.raylib-jlt.vampire-survivors]
    [net.b12n.raylib-jlt.vector-angle]
