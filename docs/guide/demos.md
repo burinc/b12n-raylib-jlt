@@ -122,7 +122,7 @@ a new random value every two seconds
 
 ### window-letterbox
 
-a fixed 640x360 picture letterboxed into a resizable window
+a fixed 480x360 picture letterboxed into the window (R resizes)
 
 ![window-letterbox](../demos/window-letterbox.gif)
 

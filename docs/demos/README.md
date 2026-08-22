@@ -120,6 +120,48 @@ a new random value every two seconds
 
 ![random-values](random-values.gif)
 
+### window-letterbox
+
+a fixed 480x360 picture letterboxed into the window (R resizes)
+
+![window-letterbox](window-letterbox.gif)
+
+### window-flags
+
+toggle vsync, resizable, undecorated and topmost live
+
+![window-flags](window-flags.gif)
+
+### monitor-detector
+
+every attached display, with the current one highlighted
+
+![monitor-detector](monitor-detector.gif)
+
+### clipboard-text
+
+type, C copies to the system clipboard, V pastes
+
+![clipboard-text](clipboard-text.gif)
+
+### input-gamepad
+
+live sticks, triggers and buttons for gamepad 0
+
+![input-gamepad](input-gamepad.gif)
+
+### input-multitouch
+
+active touch points (the mouse is point 0 on desktop)
+
+![input-multitouch](input-multitouch.gif)
+
+### input-virtual-controls
+
+an on-screen D-pad and action button
+
+![input-virtual-controls](input-virtual-controls.gif)
+
 ## shapes
 
 ### bouncing-ball
@@ -420,6 +462,30 @@ spheres bouncing in a 3D box (rl/sphere!)
 
 ![bouncing-spheres](bouncing-spheres.gif)
 
+### lorenz-attractor
+
+the Lorenz strange attractor traced in 3D (UP/DOWN rho)
+
+![lorenz-attractor](lorenz-attractor.gif)
+
+### dna-helix
+
+a turning double helix with coloured base pairs
+
+![dna-helix](dna-helix.gif)
+
+### yaw-pitch-roll
+
+the three aircraft rotations on the rlgl matrix stack
+
+![yaw-pitch-roll](yaw-pitch-roll.gif)
+
+### first-person-maze
+
+walk a grid maze in first person, with a minimap
+
+![first-person-maze](first-person-maze.gif)
+
 ## generative
 
 ### game-of-life
@@ -463,4 +529,36 @@ an L-system fractal plant (grows + regrows)
 particles steered by a flow field (trails)
 
 ![flow-field](flow-field.gif)
+
+### cellular-automata
+
+Wolfram's elementary automata (LEFT/RIGHT change rule)
+
+![cellular-automata](cellular-automata.gif)
+
+## textures
+
+### texture-procedural
+
+four textures generated pixel by pixel (SPACE reseeds noise)
+
+![texture-procedural](texture-procedural.gif)
+
+### texture-tiling
+
+one small tile repeated across the window (UP/DOWN density)
+
+![texture-tiling](texture-tiling.gif)
+
+### render-texture
+
+a scene rendered off-screen, then drawn back four times
+
+![render-texture](render-texture.gif)
+
+### bunnymark
+
+the sprite-count benchmark (hold the mouse to add bunnies)
+
+![bunnymark](bunnymark.gif)
 

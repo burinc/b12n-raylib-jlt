@@ -87,7 +87,7 @@
    ["texture-procedural"  "texture-procedural" "textures" "four textures generated pixel by pixel (SPACE reseeds noise)"]
    ["texture-tiling"      "texture-tiling" "textures" "one small tile repeated across the window (UP/DOWN density)"]
    ["render-texture"      "render-texture" "textures" "a scene rendered off-screen, then drawn back four times"]
-   ["window-letterbox"    "window-letterbox" "core" "a fixed 640x360 picture letterboxed into a resizable window"]
+   ["window-letterbox"    "window-letterbox" "core" "a fixed 480x360 picture letterboxed into the window (R resizes)"]
    ["bunnymark"           "bunnymark" "textures" "the sprite-count benchmark (hold the mouse to add bunnies)"]
    ["window-flags"        "window-flags" "core" "toggle vsync, resizable, undecorated and topmost live"]
    ["monitor-detector"    "monitor-detector" "core" "every attached display, with the current one highlighted"]

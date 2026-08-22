@@ -60,8 +60,11 @@
   "window-flags"            {:duration 8
                              :input [[1.5 :key "one"] [3.0 :key "two"] [4.5 :key "four"] [6.0 :key "one"]]}
   "clipboard-text"          {:input [[1.5 :key "c"] [3.5 :key "v"]]}
-  "input-multitouch"        {:input [[1.0 :click 300 200] [2.0 :click 420 260]
-                                     [3.0 :click 520 180] [4.0 :click 380 320]]}
+  "input-multitouch"        {:duration 8
+                             :input [[0.8 :click 240 200] [1.6 :click 330 250]
+                                     [2.4 :click 420 190] [3.2 :click 500 260]
+                                     [4.0 :click 560 330] [4.8 :click 460 360]
+                                     [5.6 :click 350 330] [6.4 :click 270 270]]}
   "input-virtual-controls"  {:duration 8
                              :input [[1.0 :click 174 320] [2.0 :click 130 276]
                                      [3.0 :click 86 320] [4.0 :click 680 320]

@@ -42,7 +42,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/scissor-test.gif" width="80">](demos.md#scissor-test) | `scissor-test` | `BeginScissorMode` clips a grid |
 | [<img src="../demos/basic-screen-manager.gif" width="80">](demos.md#basic-screen-manager) | `basic-screen-manager` | a LOGO / TITLE / GAMEPLAY / ENDING state flow |
 | [<img src="../demos/random-values.gif" width="80">](demos.md#random-values) | `random-values` | `GetRandomValue`, a new value every 2s |
-| [<img src="../demos/window-letterbox.gif" width="80">](demos.md#window-letterbox) | `window-letterbox` | a fixed 640x360 picture letterboxed into a resizable window |
+| [<img src="../demos/window-letterbox.gif" width="80">](demos.md#window-letterbox) | `window-letterbox` | a fixed 480x360 picture letterboxed into the window (R resizes) |
 | [<img src="../demos/window-flags.gif" width="80">](demos.md#window-flags) | `window-flags` | toggle vsync, resizable, undecorated and topmost live |
 | [<img src="../demos/monitor-detector.gif" width="80">](demos.md#monitor-detector) | `monitor-detector` | every attached display, with the current one highlighted |
 | [<img src="../demos/clipboard-text.gif" width="80">](demos.md#clipboard-text) | `clipboard-text` | type, C copies to the system clipboard, V pastes |

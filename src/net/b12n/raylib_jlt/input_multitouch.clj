@@ -6,6 +6,12 @@
   0 from the mouse, so holding the left button drags a single point around and the
   count reads 1.
 
+  Worth knowing about the desktop case: raylib updates touch position 0 from the
+  cursor-position callback, so GetTouchX / GetTouchY follow the pointer whether or
+  not a button is down, while GetTouchPointCount counts only actual presses. The
+  hollow ring below tracks the pointer for that reason and the filled circle
+  appears only when the count is non-zero.
+
   GetTouchPointCount and GetTouchPointId are scalar, but raylib's per-index
   GetTouchPosition returns a Vector2 by value and has no binding here, so this
   reads point 0 through the scalar GetTouchX / GetTouchY pair. That is the honest
@@ -38,6 +44,9 @@
             (let [[x y] (nth trail i)
                   a (int (* 160 (/ (double (inc i)) (count trail))))]
               (rl/circle! :x x :y y :radius 6 :color (rl/rgba 0 121 241 a))))
+          ;; The ring is where touch position 0 is, pressed or not.
+          (rl/circle-lines! :x tx :y ty :radius 26 :color rl/LIGHTGRAY)
+          (rl/circle! :x tx :y ty :radius 3 :color rl/GRAY)
           (when (pos? n)
             (rl/circle! :x tx :y ty :radius 40 :color (rl/rgba 0 121 241 90))
             (rl/circle-lines! :x tx :y ty :radius 40 :color rl/BLUE)
@@ -47,6 +56,9 @@
                     :x 40 :y 30 :size 24 :color rl/DARKGRAY)
           (rl/text! "on a desktop raylib makes the mouse touch point 0 - hold and drag"
                     :x 40 :y 62 :size 14 :color rl/GRAY)
+          (rl/text! (str "touch position 0: " tx ", " ty
+                         "   (tracks the pointer even at 0 points)")
+                    :x 40 :y 86 :size 14 :color rl/LIGHTGRAY)
           (when (> n 1)
             (rl/text! (str "other point ids: "
                            (apply str (interpose ", " (map (fn [i] (rl/get-touch-point-id i))
