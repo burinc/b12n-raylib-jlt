@@ -380,10 +380,10 @@
                      (hdr "4/4 Deploy to S3 + CloudFront")
                      (cond
                        (not push?)
-                       (do (println "  skipped (--no-push publishes nothing outward)") :skipped)
+                       (do (println "  skipped (--no-push publishes nothing outward)") :deploy-disabled)
 
                        (not (fs/which "aws"))
-                       (do (println "  aws CLI not on PATH \u2014 skipping deploy") :skipped)
+                       (do (println "  DEPLOY SKIPPED - aws CLI not on PATH.") :aws-missing)
 
                        :else
                        (let [probe (shell {:continue true :out :string :err :string}
@@ -411,31 +411,35 @@
                                    (when proxy
                                      (println (str "  HTTPS_PROXY is set (" proxy ") and the AWS CLI honours it.")))
                                    (println "  On a restricted laptop that proxy is the usual cause. Retry with:")
-                                   (println "    unset HTTPS_PROXY HTTP_PROXY https_proxy http_proxy && bb docs-sync"))
+                                   (println "    unset HTTPS_PROXY HTTP_PROXY https_proxy http_proxy && bb docs-sync")
+                                   :unreachable)
 
                                (hit? ["unable to locate credentials" "no credentials" "expiredtoken"
                                       "expired" "invalidclienttokenid" "signaturedoesnotmatch"
                                       "sso session" "token has expired"])
                                (do (println "  DEPLOY SKIPPED - AWS credentials for profile b12n are missing or expired.")
                                    (println (str "    " said))
-                                   (println "  Refresh them and re-run. The infrastructure is unaffected."))
+                                   (println "  Refresh them and re-run. The infrastructure is unaffected.")
+                                   :credentials)
 
                                (hit? ["403" "forbidden" "accessdenied"])
                                (do (println (str "  DEPLOY SKIPPED - s3://" bucket " EXISTS but profile b12n cannot read it (403)."))
                                    (println (str "    " said))
-                                   (println "  That is a permissions problem, not missing infrastructure."))
+                                   (println "  That is a permissions problem, not missing infrastructure.")
+                                   :forbidden)
 
                                (hit? ["404" "not found" "nosuchbucket"])
                                (do (println (str "  DEPLOY SKIPPED - s3://" bucket " does not exist."))
                                    (println "  THIS is the one that needs infrastructure. Run once in ~/dev/b12n-infra:")
-                                   (println "    bb render lock tofu:init tofu:plan tofu:apply -- static-site raylib-jlt"))
+                                   (println "    bb render lock tofu:init tofu:plan tofu:apply -- static-site raylib-jlt")
+                                   :missing-bucket)
 
                                :else
                                (do (println (str "  DEPLOY SKIPPED - head-bucket on s3://" bucket " failed for an unrecognized reason."))
                                    (println (str "    " said))
                                    (println "  Check by hand before assuming anything:")
-                                   (println (str "    aws s3api head-bucket --bucket " bucket " --profile b12n"))))
-                             :skipped)
+                                   (println (str "    aws s3api head-bucket --bucket " bucket " --profile b12n"))
+                                   :probe-failed)))
                            (let [sync-res (shell {:continue true}
                                                  "aws" "s3" "sync" (str site-repo "/docs/")
                                                  (str "s3://" bucket "/")
@@ -476,9 +480,13 @@
              (println (str "  site:   " site-result))
              (println (str "  wiki:   " wiki-result))
              (println (str "  deploy: " deploy-result))
-             (when (some (fn [r] (contains? #{:behind :push-failed :build-failed :no-upstream
-                                              :sync-failed :invalidation-failed} r))
-                         [site-result wiki-result deploy-result])
+             ;; Allowlist, not denylist. The successes are :ok, :skipped (sync!'s
+             ;; "up to date, nothing to push") and :deploy-disabled (--no-push).
+             ;; Everything else exits non-zero. Stated as an allowlist so a failure
+             ;; mode added later fails loudly by default instead of slipping through
+             ;; as a silent success - which is exactly how a skipped deploy exited 0.
+             (when-not (every? (fn [r] (contains? #{:ok :skipped :deploy-disabled} r))
+                               [site-result wiki-result deploy-result])
                (System/exit 1)))))))}
 
   examples
