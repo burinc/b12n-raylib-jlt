@@ -17,6 +17,7 @@
    [net.b12n.raylib-jlt.box-collisions]
    [net.b12n.raylib-jlt.breakout]
    [net.b12n.raylib-jlt.bullet-hell]
+   [net.b12n.raylib-jlt.bunnymark]
    [net.b12n.raylib-jlt.camera-3d]
    [net.b12n.raylib-jlt.camera-3d-first-person]
    [net.b12n.raylib-jlt.camera2d]
@@ -83,6 +84,7 @@
    [net.b12n.raylib-jlt.vector-angle]
    [net.b12n.raylib-jlt.waving-cubes]
    [net.b12n.raylib-jlt.wheel]
+   [net.b12n.raylib-jlt.window-letterbox]
    [net.b12n.raylib-jlt.wireframe-shapes]
    [net.b12n.raylib-jlt.words-alignment]
    [net.b12n.raylib-jlt.writing-anim]))

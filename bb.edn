@@ -255,6 +255,8 @@
   texture-procedural {:doc "▶ four textures generated pixel by pixel (SPACE reseeds noise)" :task (run-example "texture-procedural")}
   texture-tiling    {:doc "▶ one small tile repeated across the window (UP/DOWN density)" :task (run-example "texture-tiling")}
   render-texture    {:doc "▶ a scene rendered off-screen, then drawn back four times" :task (run-example "render-texture")}
+  window-letterbox  {:doc "▶ a fixed 640x360 picture letterboxed into a resizable window" :task (run-example "window-letterbox")}
+  bunnymark         {:doc "▶ the sprite-count benchmark (hold the mouse to add bunnies)" :task (run-example "bunnymark")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

@@ -87,6 +87,8 @@
            :lines-drawing    {:main-opts ["-m" "net.b12n.raylib-jlt.lines-drawing"]}    ; a fan of thick lines (line-ex!)
            :texture-procedural {:main-opts ["-m" "net.b12n.raylib-jlt.texture-procedural"]} ; procedural textures via rlLoadTexture
            :texture-tiling {:main-opts ["-m" "net.b12n.raylib-jlt.texture-tiling"]} ; one small tile repeated across the window (UP/DOWN density)
-           :render-texture {:main-opts ["-m" "net.b12n.raylib-jlt.render-texture"]}} ; a scene rendered off-screen, then drawn back four times
+           :render-texture {:main-opts ["-m" "net.b12n.raylib-jlt.render-texture"]} ; a scene rendered off-screen, then drawn back four times
+           :window-letterbox {:main-opts ["-m" "net.b12n.raylib-jlt.window-letterbox"]} ; a fixed 640x360 picture letterboxed into a resizable window
+           :bunnymark {:main-opts ["-m" "net.b12n.raylib-jlt.bunnymark"]}} ; the sprite-count benchmark (hold the mouse to add bunnies)
 
  :tasks {run "joltc -M:run"}}

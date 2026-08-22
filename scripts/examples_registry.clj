@@ -86,7 +86,9 @@
    ["lines-drawing"     "lines-drawing" "shapes" "a rotating fan of thick lines (line-ex!)"]
    ["texture-procedural"  "texture-procedural" "textures" "four textures generated pixel by pixel (SPACE reseeds noise)"]
    ["texture-tiling"      "texture-tiling" "textures" "one small tile repeated across the window (UP/DOWN density)"]
-   ["render-texture"      "render-texture" "textures" "a scene rendered off-screen, then drawn back four times"]])
+   ["render-texture"      "render-texture" "textures" "a scene rendered off-screen, then drawn back four times"]
+   ["window-letterbox"    "window-letterbox" "core" "a fixed 640x360 picture letterboxed into a resizable window"]
+   ["bunnymark"           "bunnymark" "textures" "the sprite-count benchmark (hold the mouse to add bunnies)"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
