@@ -122,37 +122,37 @@ a new random value every two seconds
 
 ### window-letterbox
 
-a fixed 480x360 picture letterboxed into the window (R resizes)
+a fixed picture letterboxed into the window
 
 ![window-letterbox](../demos/window-letterbox.gif)
 
 ### window-flags
 
-toggle vsync, resizable, undecorated and topmost live
+toggle vsync/resizable/topmost live
 
 ![window-flags](../demos/window-flags.gif)
 
 ### monitor-detector
 
-every attached display, with the current one highlighted
+every attached display, current one lit
 
 ![monitor-detector](../demos/monitor-detector.gif)
 
 ### clipboard-text
 
-type, C copies to the system clipboard, V pastes
+type, C copies, V pastes
 
 ![clipboard-text](../demos/clipboard-text.gif)
 
 ### input-gamepad
 
-live sticks, triggers and buttons for gamepad 0
+sticks, triggers and buttons for pad 0
 
 ![input-gamepad](../demos/input-gamepad.gif)
 
 ### input-multitouch
 
-active touch points (the mouse is point 0 on desktop)
+touch points (the mouse is point 0)
 
 ![input-multitouch](../demos/input-multitouch.gif)
 
@@ -464,25 +464,25 @@ spheres bouncing in a 3D box (rl/sphere!)
 
 ### lorenz-attractor
 
-the Lorenz strange attractor traced in 3D (UP/DOWN rho)
+the Lorenz attractor traced in 3D
 
 ![lorenz-attractor](../demos/lorenz-attractor.gif)
 
 ### dna-helix
 
-a turning double helix with coloured base pairs
+a turning double helix, coloured bases
 
 ![dna-helix](../demos/dna-helix.gif)
 
 ### yaw-pitch-roll
 
-the three aircraft rotations on the rlgl matrix stack
+the three aircraft rotations in 3D
 
 ![yaw-pitch-roll](../demos/yaw-pitch-roll.gif)
 
 ### first-person-maze
 
-walk a grid maze in first person, with a minimap
+walk a grid maze, with a minimap
 
 ![first-person-maze](../demos/first-person-maze.gif)
 
@@ -532,7 +532,7 @@ particles steered by a flow field (trails)
 
 ### cellular-automata
 
-Wolfram's elementary automata (LEFT/RIGHT change rule)
+Wolfram's elementary automata
 
 ![cellular-automata](../demos/cellular-automata.gif)
 
@@ -540,24 +540,24 @@ Wolfram's elementary automata (LEFT/RIGHT change rule)
 
 ### texture-procedural
 
-four textures generated pixel by pixel (SPACE reseeds noise)
+four textures built pixel by pixel
 
 ![texture-procedural](../demos/texture-procedural.gif)
 
 ### texture-tiling
 
-one small tile repeated across the window (UP/DOWN density)
+one tile repeated across the window
 
 ![texture-tiling](../demos/texture-tiling.gif)
 
 ### render-texture
 
-a scene rendered off-screen, then drawn back four times
+a scene drawn off-screen, then reused
 
 ![render-texture](../demos/render-texture.gif)
 
 ### bunnymark
 
-the sprite-count benchmark (hold the mouse to add bunnies)
+the sprite-count benchmark (click to add)
 
 ![bunnymark](../demos/bunnymark.gif)

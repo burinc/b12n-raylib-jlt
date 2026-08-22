@@ -252,22 +252,22 @@
   rounded-rectangle {:doc "▶ rounded rects via sector! corners"                 :task (run-example "rounded-rectangle")}
   rectangle-scaling {:doc "▶ drag the corner handle to resize a rect"           :task (run-example "rectangle-scaling")}
   lines-drawing     {:doc "▶ a rotating fan of thick lines (line-ex!)"           :task (run-example "lines-drawing")}
-  texture-procedural {:doc "▶ four textures generated pixel by pixel (SPACE reseeds noise)" :task (run-example "texture-procedural")}
-  texture-tiling    {:doc "▶ one small tile repeated across the window (UP/DOWN density)" :task (run-example "texture-tiling")}
-  render-texture    {:doc "▶ a scene rendered off-screen, then drawn back four times" :task (run-example "render-texture")}
-  window-letterbox  {:doc "▶ a fixed 480x360 picture letterboxed into the window (R resizes)" :task (run-example "window-letterbox")}
-  bunnymark         {:doc "▶ the sprite-count benchmark (hold the mouse to add bunnies)" :task (run-example "bunnymark")}
-  window-flags      {:doc "▶ toggle vsync, resizable, undecorated and topmost live" :task (run-example "window-flags")}
-  monitor-detector  {:doc "▶ every attached display, with the current one highlighted" :task (run-example "monitor-detector")}
-  clipboard-text    {:doc "▶ type, C copies to the system clipboard, V pastes" :task (run-example "clipboard-text")}
-  input-gamepad     {:doc "▶ live sticks, triggers and buttons for gamepad 0" :task (run-example "input-gamepad")}
-  input-multitouch  {:doc "▶ active touch points (the mouse is point 0 on desktop)" :task (run-example "input-multitouch")}
+  texture-procedural {:doc "▶ four textures built pixel by pixel" :task (run-example "texture-procedural")}
+  texture-tiling    {:doc "▶ one tile repeated across the window"               :task (run-example "texture-tiling")}
+  render-texture    {:doc "▶ a scene drawn off-screen, then reused"             :task (run-example "render-texture")}
+  window-letterbox  {:doc "▶ a fixed picture letterboxed into the window"       :task (run-example "window-letterbox")}
+  bunnymark         {:doc "▶ the sprite-count benchmark (click to add)"         :task (run-example "bunnymark")}
+  window-flags      {:doc "▶ toggle vsync/resizable/topmost live"               :task (run-example "window-flags")}
+  monitor-detector  {:doc "▶ every attached display, current one lit"           :task (run-example "monitor-detector")}
+  clipboard-text    {:doc "▶ type, C copies, V pastes"                          :task (run-example "clipboard-text")}
+  input-gamepad     {:doc "▶ sticks, triggers and buttons for pad 0"            :task (run-example "input-gamepad")}
+  input-multitouch  {:doc "▶ touch points (the mouse is point 0)"               :task (run-example "input-multitouch")}
   input-virtual-controls {:doc "▶ an on-screen D-pad and action button" :task (run-example "input-virtual-controls")}
-  lorenz-attractor  {:doc "▶ the Lorenz strange attractor traced in 3D (UP/DOWN rho)" :task (run-example "lorenz-attractor")}
-  dna-helix         {:doc "▶ a turning double helix with coloured base pairs" :task (run-example "dna-helix")}
-  yaw-pitch-roll    {:doc "▶ the three aircraft rotations on the rlgl matrix stack" :task (run-example "yaw-pitch-roll")}
-  first-person-maze {:doc "▶ walk a grid maze in first person, with a minimap" :task (run-example "first-person-maze")}
-  cellular-automata {:doc "▶ Wolfram's elementary automata (LEFT/RIGHT change rule)" :task (run-example "cellular-automata")}
+  lorenz-attractor  {:doc "▶ the Lorenz attractor traced in 3D"                 :task (run-example "lorenz-attractor")}
+  dna-helix         {:doc "▶ a turning double helix, coloured bases"            :task (run-example "dna-helix")}
+  yaw-pitch-roll    {:doc "▶ the three aircraft rotations in 3D"                :task (run-example "yaw-pitch-roll")}
+  first-person-maze {:doc "▶ walk a grid maze, with a minimap"                  :task (run-example "first-person-maze")}
+  cellular-automata {:doc "▶ Wolfram's elementary automata"                     :task (run-example "cellular-automata")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
