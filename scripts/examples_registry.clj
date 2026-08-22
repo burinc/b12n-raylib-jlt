@@ -94,7 +94,12 @@
    ["clipboard-text"      "clipboard-text" "core" "type, C copies to the system clipboard, V pastes"]
    ["input-gamepad"       "input-gamepad" "core" "live sticks, triggers and buttons for gamepad 0"]
    ["input-multitouch"    "input-multitouch" "core" "active touch points (the mouse is point 0 on desktop)"]
-   ["input-virtual-controls" "input-virtual-controls" "core" "an on-screen D-pad and action button"]])
+   ["input-virtual-controls" "input-virtual-controls" "core" "an on-screen D-pad and action button"]
+   ["lorenz-attractor"    "lorenz-attractor" "3d" "the Lorenz strange attractor traced in 3D (UP/DOWN rho)"]
+   ["dna-helix"           "dna-helix" "3d" "a turning double helix with coloured base pairs"]
+   ["yaw-pitch-roll"      "yaw-pitch-roll" "3d" "the three aircraft rotations on the rlgl matrix stack"]
+   ["first-person-maze"   "first-person-maze" "3d" "walk a grid maze in first person, with a minimap"]
+   ["cellular-automata"   "cellular-automata" "generative" "Wolfram's elementary automata (LEFT/RIGHT change rule)"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 

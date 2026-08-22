@@ -21,6 +21,7 @@
    [net.b12n.raylib-jlt.camera-3d]
    [net.b12n.raylib-jlt.camera-3d-first-person]
    [net.b12n.raylib-jlt.camera2d]
+   [net.b12n.raylib-jlt.cellular-automata]
    [net.b12n.raylib-jlt.clipboard-text]
    [net.b12n.raylib-jlt.collision-area]
    [net.b12n.raylib-jlt.color-wheel]
@@ -29,10 +30,12 @@
    [net.b12n.raylib-jlt.dashed-line]
    [net.b12n.raylib-jlt.delta-time]
    [net.b12n.raylib-jlt.digital-clock]
+   [net.b12n.raylib-jlt.dna-helix]
    [net.b12n.raylib-jlt.double-pendulum]
    [net.b12n.raylib-jlt.easings]
    [net.b12n.raylib-jlt.eyes]
    [net.b12n.raylib-jlt.fireworks]
+   [net.b12n.raylib-jlt.first-person-maze]
    [net.b12n.raylib-jlt.flappy-bird]
    [net.b12n.raylib-jlt.flow-field]
    [net.b12n.raylib-jlt.format-text]
@@ -51,6 +54,7 @@
    [net.b12n.raylib-jlt.lines-bezier]
    [net.b12n.raylib-jlt.lines-drawing]
    [net.b12n.raylib-jlt.logo]
+   [net.b12n.raylib-jlt.lorenz-attractor]
    [net.b12n.raylib-jlt.math-angle-rotation]
    [net.b12n.raylib-jlt.math-sine-cosine]
    [net.b12n.raylib-jlt.minesweeper]
@@ -93,7 +97,8 @@
    [net.b12n.raylib-jlt.window-letterbox]
    [net.b12n.raylib-jlt.wireframe-shapes]
    [net.b12n.raylib-jlt.words-alignment]
-   [net.b12n.raylib-jlt.writing-anim]))
+   [net.b12n.raylib-jlt.writing-anim]
+   [net.b12n.raylib-jlt.yaw-pitch-roll]))
 
 (defn -main
   [& _]

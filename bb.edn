@@ -263,6 +263,11 @@
   input-gamepad     {:doc "▶ live sticks, triggers and buttons for gamepad 0" :task (run-example "input-gamepad")}
   input-multitouch  {:doc "▶ active touch points (the mouse is point 0 on desktop)" :task (run-example "input-multitouch")}
   input-virtual-controls {:doc "▶ an on-screen D-pad and action button" :task (run-example "input-virtual-controls")}
+  lorenz-attractor  {:doc "▶ the Lorenz strange attractor traced in 3D (UP/DOWN rho)" :task (run-example "lorenz-attractor")}
+  dna-helix         {:doc "▶ a turning double helix with coloured base pairs" :task (run-example "dna-helix")}
+  yaw-pitch-roll    {:doc "▶ the three aircraft rotations on the rlgl matrix stack" :task (run-example "yaw-pitch-roll")}
+  first-person-maze {:doc "▶ walk a grid maze in first person, with a minimap" :task (run-example "first-person-maze")}
+  cellular-automata {:doc "▶ Wolfram's elementary automata (LEFT/RIGHT change rule)" :task (run-example "cellular-automata")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
