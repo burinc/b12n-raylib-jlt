@@ -85,6 +85,8 @@
            :rounded-rectangle {:main-opts ["-m" "net.b12n.raylib-jlt.rounded-rectangle"]} ; sector!-corner rounded rects
            :rectangle-scaling {:main-opts ["-m" "net.b12n.raylib-jlt.rectangle-scaling"]} ; drag-resize a rect
            :lines-drawing    {:main-opts ["-m" "net.b12n.raylib-jlt.lines-drawing"]}    ; a fan of thick lines (line-ex!)
-           :texture-procedural {:main-opts ["-m" "net.b12n.raylib-jlt.texture-procedural"]}} ; procedural textures via rlLoadTexture
+           :texture-procedural {:main-opts ["-m" "net.b12n.raylib-jlt.texture-procedural"]} ; procedural textures via rlLoadTexture
+           :texture-tiling {:main-opts ["-m" "net.b12n.raylib-jlt.texture-tiling"]} ; one small tile repeated across the window (UP/DOWN density)
+           :render-texture {:main-opts ["-m" "net.b12n.raylib-jlt.render-texture"]}} ; a scene rendered off-screen, then drawn back four times
 
  :tasks {run "joltc -M:run"}}

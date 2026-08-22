@@ -871,6 +871,9 @@
 (ffi/defcfn rl-set-framebuffer-height "rlSetFramebufferHeight" [:int] :void)
 (ffi/defcfn rl-get-framebuffer-width  "rlGetFramebufferWidth"  [] :int)
 (ffi/defcfn rl-get-framebuffer-height "rlGetFramebufferHeight" [] :int)
+(ffi/defcfn rl-mult-matrix-f         "rlMultMatrixf"          [:pointer] :void)
+(ffi/defcfn get-render-width         "GetRenderWidth"         [] :int)
+(ffi/defcfn get-render-height        "GetRenderHeight"        [] :int)
 (ffi/defcfn ^:private framebuffer-complete-raw "rlFramebufferComplete" [:uint] :int)
 
 (def ^:const RL-PROJECTION 0x1701)
@@ -910,43 +913,67 @@
   (rl-unload-texture texture)
   (rl-unload-framebuffer fbo))
 
+(defn- restore-screen-projection!
+  "Put the viewport and both matrices back the way raylib leaves them for window
+  drawing. This is EndTextureMode's SetupViewport call plus the screen-scale
+  matrix BeginDrawing multiplies in, reproduced from the two scalar getters that
+  expose what CORE holds privately.
+
+  The scale matters and is easy to miss. On a HiDPI display raylib keeps the
+  window at its logical size (GetScreenWidth) while rendering at the physical one
+  (GetRenderWidth), projects in physical pixels, and bridges the two with a
+  modelview scale of render/screen. Restoring only the viewport and the
+  projection leaves that scale at identity, and every subsequent frame draws at
+  half size in the lower-left corner. rlGetFramebufferWidth is NOT that number:
+  it reports the logical size, so it cannot stand in for GetRenderWidth here."
+  []
+  (let [rw (get-render-width)
+        rh (get-render-height)
+        sx (/ (double rw) (max 1 (get-screen-width)))
+        sy (/ (double rh) (max 1 (get-screen-height)))
+        m (ffi/alloc 64)]                       ; 16 floats, column-major
+    (try
+      (rl-viewport 0 0 rw rh)
+      (rl-set-framebuffer-width rw)
+      (rl-set-framebuffer-height rh)
+      (rl-matrix-mode RL-PROJECTION)
+      (rl-load-identity)
+      (rl-ortho 0.0 (double rw) (double rh) 0.0 0.0 1.0)
+      (rl-matrix-mode RL-MODELVIEW)
+      (rl-load-identity)
+      (dotimes [i 16] (ffi/write m :float (* 4 i) 0.0))
+      (ffi/write m :float 0 sx)
+      (ffi/write m :float 20 sy)
+      (ffi/write m :float 40 1.0)
+      (ffi/write m :float 60 1.0)
+      (rl-mult-matrix-f m)
+      (finally (ffi/free m)))))
+
 (defn with-render-texture
-  "Run (f) with drawing redirected into `rt`, then restore the screen — the
+  "Run (f) with drawing redirected into `rt`, then restore the screen - the
   BeginTextureMode/EndTextureMode pair, spelled out in scalar rlgl calls.
 
   Both halves flush the batch first: rlgl defers geometry until a draw call is
   forced, so without the flush the shapes queued before the switch would be
-  rendered into whichever target happens to be bound afterwards. The default
-  framebuffer's size is read back before binding the FBO rather than assumed from
-  GetScreenWidth, so the restore is correct under HiDPI too, where raylib's
-  render size and the logical screen size differ.
+  rendered into whichever target happens to be bound afterwards.
 
   Note the resulting texture is bottom-up in GL's convention: draw it back with
   :v0 1.0 :v1 0.0 (as `texture!`'s docstring notes) or the image appears
   upside down."
   [{:keys [fbo width height]} f]
-  (let [screen-w (rl-get-framebuffer-width)
-        screen-h (rl-get-framebuffer-height)]
-    (flush-batch)
-    (rl-enable-framebuffer fbo)
-    (rl-viewport 0 0 width height)
-    (rl-set-framebuffer-width width)
-    (rl-set-framebuffer-height height)
-    (rl-matrix-mode RL-PROJECTION)
-    (rl-load-identity)
-    (rl-ortho 0.0 (double width) (double height) 0.0 0.0 1.0)
-    (rl-matrix-mode RL-MODELVIEW)
-    (rl-load-identity)
-    (try
-      (f)
-      (finally
-        (flush-batch)
-        (rl-disable-framebuffer)
-        (rl-viewport 0 0 screen-w screen-h)
-        (rl-set-framebuffer-width screen-w)
-        (rl-set-framebuffer-height screen-h)
-        (rl-matrix-mode RL-PROJECTION)
-        (rl-load-identity)
-        (rl-ortho 0.0 (double screen-w) (double screen-h) 0.0 0.0 1.0)
-        (rl-matrix-mode RL-MODELVIEW)
-        (rl-load-identity)))))
+  (flush-batch)
+  (rl-enable-framebuffer fbo)
+  (rl-viewport 0 0 width height)
+  (rl-set-framebuffer-width width)
+  (rl-set-framebuffer-height height)
+  (rl-matrix-mode RL-PROJECTION)
+  (rl-load-identity)
+  (rl-ortho 0.0 (double width) (double height) 0.0 0.0 1.0)
+  (rl-matrix-mode RL-MODELVIEW)
+  (rl-load-identity)
+  (try
+    (f)
+    (finally
+      (flush-batch)
+      (rl-disable-framebuffer)
+      (restore-screen-projection!))))

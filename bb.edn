@@ -253,6 +253,8 @@
   rectangle-scaling {:doc "▶ drag the corner handle to resize a rect"           :task (run-example "rectangle-scaling")}
   lines-drawing     {:doc "▶ a rotating fan of thick lines (line-ex!)"           :task (run-example "lines-drawing")}
   texture-procedural {:doc "▶ four textures generated pixel by pixel (SPACE reseeds noise)" :task (run-example "texture-procedural")}
+  texture-tiling    {:doc "▶ one small tile repeated across the window (UP/DOWN density)" :task (run-example "texture-tiling")}
+  render-texture    {:doc "▶ a scene rendered off-screen, then drawn back four times" :task (run-example "render-texture")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
