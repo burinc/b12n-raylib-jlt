@@ -28,7 +28,8 @@
         head-y 20.0
         dx (- x cx)
         dy (- y head-y)
-        head? (< (+ (* dx dx) (* (* 1.15 dy) (* 1.15 dy))) 81)
+        sy (* 1.15 dy)
+        head? (< (+ (* dx dx) (* sy sy)) 81)
         ear? (and (< 4 y 18)
                   (or (< 8 x 13) (< 19 x 24)))
         eye? (and (< 17 y 21) (or (< 11 x 14) (< 18 x 21)))]
