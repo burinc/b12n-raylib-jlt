@@ -18,10 +18,10 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 
 | preview | `bb` name | shows |
 |---|---|---|
-| [<img src="../demos/asteroids.gif" width="80">](demos.md#asteroids) | `asteroids` | the classic vector shooter: rotate / thrust / fire, splitting asteroids |
-| [<img src="../demos/tetris.gif" width="80">](demos.md#tetris) | `tetris` | 10×20 well, 7 tetrominoes, rotation, line-clearing, levels |
-| [<img src="../demos/pong.gif" width="80">](demos.md#pong) | `pong` | two-paddle classic, you (W/S) vs a ball-tracking CPU |
-| [<img src="../demos/vampire-survivors.gif" width="80">](demos.md#vampire-survivors) | `vampire-survivors` | auto-firing survivors-like: chasing waves, XP gems, leveling |
+| [<img src="../demos/asteroids.gif" width="80">](demos.md#asteroids) | `asteroids` | the classic vector shooter, splitting rocks |
+| [<img src="../demos/tetris.gif" width="80">](demos.md#tetris) | `tetris` | 10×20 well, 7 tetrominoes, lines, levels |
+| [<img src="../demos/pong.gif" width="80">](demos.md#pong) | `pong` | two-paddle classic, you (W/S) vs a CPU |
+| [<img src="../demos/vampire-survivors.gif" width="80">](demos.md#vampire-survivors) | `vampire-survivors` | auto-firing survivors-like: waves, XP, levels |
 | [<img src="../demos/snake.gif" width="80">](demos.md#snake) | `snake` | the classic snake (arrow keys, grow, don't crash) |
 | [<img src="../demos/breakout.gif" width="80">](demos.md#breakout) | `breakout` | paddle + ball + brick grid (mouse paddle) |
 | [<img src="../demos/space-invaders.gif" width="80">](demos.md#space-invaders) | `space-invaders` | marching aliens (arrows + SPACE to shoot) |
@@ -33,21 +33,21 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 
 | preview | `bb` name | shows |
 |---|---|---|
-| [<img src="../demos/basic-window.gif" width="80">](demos.md#basic-window) | `basic-window` | the minimal window + text (the default, `jolt -M:run`) |
+| [<img src="../demos/basic-window.gif" width="80">](demos.md#basic-window) | `basic-window` | the minimal window + text (`jolt -M:run`) |
 | [<img src="../demos/input-keys.gif" width="80">](demos.md#input-keys) | `input-keys` | `IsKeyDown`, steer a ball with the arrow keys |
-| [<img src="../demos/input-mouse.gif" width="80">](demos.md#input-mouse) | `input-mouse` | `GetMouseX/Y`, `IsMouseButtonDown`, click to recolor |
-| [<img src="../demos/input-mouse-wheel.gif" width="80">](demos.md#input-mouse-wheel) | `input-mouse-wheel` | `GetMouseWheelMove` (a float return) scrolls a box |
-| [<img src="../demos/camera-2d.gif" width="80">](demos.md#camera-2d) | `camera-2d` | a 2D camera over a skyline, struct-by-value (see below) |
+| [<img src="../demos/input-mouse.gif" width="80">](demos.md#input-mouse) | `input-mouse` | `GetMouseX/Y` + click to recolor |
+| [<img src="../demos/input-mouse-wheel.gif" width="80">](demos.md#input-mouse-wheel) | `input-mouse-wheel` | `GetMouseWheelMove` scrolls a box |
+| [<img src="../demos/camera-2d.gif" width="80">](demos.md#camera-2d) | `camera-2d` | a 2D camera over a skyline (struct by value) |
 | [<img src="../demos/delta-time.gif" width="80">](demos.md#delta-time) | `delta-time` | per-frame vs `GetFrameTime` movement |
 | [<img src="../demos/scissor-test.gif" width="80">](demos.md#scissor-test) | `scissor-test` | `BeginScissorMode` clips a grid |
 | [<img src="../demos/basic-screen-manager.gif" width="80">](demos.md#basic-screen-manager) | `basic-screen-manager` | a LOGO / TITLE / GAMEPLAY / ENDING state flow |
 | [<img src="../demos/random-values.gif" width="80">](demos.md#random-values) | `random-values` | `GetRandomValue`, a new value every 2s |
-| [<img src="../demos/window-letterbox.gif" width="80">](demos.md#window-letterbox) | `window-letterbox` | a fixed 480x360 picture letterboxed into the window (R resizes) |
-| [<img src="../demos/window-flags.gif" width="80">](demos.md#window-flags) | `window-flags` | toggle vsync, resizable, undecorated and topmost live |
-| [<img src="../demos/monitor-detector.gif" width="80">](demos.md#monitor-detector) | `monitor-detector` | every attached display, with the current one highlighted |
+| [<img src="../demos/window-letterbox.gif" width="80">](demos.md#window-letterbox) | `window-letterbox` | a fixed picture letterboxed into the window |
+| [<img src="../demos/window-flags.gif" width="80">](demos.md#window-flags) | `window-flags` | toggle vsync/resizable/topmost live |
+| [<img src="../demos/monitor-detector.gif" width="80">](demos.md#monitor-detector) | `monitor-detector` | every attached display, current one lit |
 | [<img src="../demos/clipboard-text.gif" width="80">](demos.md#clipboard-text) | `clipboard-text` | type, C copies to the system clipboard, V pastes |
 | [<img src="../demos/input-gamepad.gif" width="80">](demos.md#input-gamepad) | `input-gamepad` | live sticks, triggers and buttons for gamepad 0 |
-| [<img src="../demos/input-multitouch.gif" width="80">](demos.md#input-multitouch) | `input-multitouch` | active touch points (the mouse is point 0 on desktop) |
+| [<img src="../demos/input-multitouch.gif" width="80">](demos.md#input-multitouch) | `input-multitouch` | touch points (the mouse is point 0) |
 | [<img src="../demos/input-virtual-controls.gif" width="80">](demos.md#input-virtual-controls) | `input-virtual-controls` | an on-screen D-pad and action button |
 
 ## shapes (32)
@@ -66,7 +66,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/math-sine-cosine.gif" width="80">](demos.md#math-sine-cosine) | `math-sine-cosine` | a live unit-circle sine/cosine visualization |
 | [<img src="../demos/bullet-hell.gif" width="80">](demos.md#bullet-hell) | `bullet-hell` | a rotating bullet spiral |
 | [<img src="../demos/triangle-strip.gif" width="80">](demos.md#triangle-strip) | `triangle-strip` | a rainbow strip via rlgl immediate mode |
-| [<img src="../demos/collision-area.gif" width="80">](demos.md#collision-area) | `collision-area` | AABB collision between two boxes (computed in Clojure) |
+| [<img src="../demos/collision-area.gif" width="80">](demos.md#collision-area) | `collision-area` | AABB collision between two boxes |
 | [<img src="../demos/dashed-line.gif" width="80">](demos.md#dashed-line) | `dashed-line` | a dashed line follows the mouse |
 | [<img src="../demos/double-pendulum.gif" width="80">](demos.md#double-pendulum) | `double-pendulum` | chaotic double-pendulum motion + trail |
 | [<img src="../demos/kaleidoscope.gif" width="80">](demos.md#kaleidoscope) | `kaleidoscope` | strokes mirrored with 6-fold symmetry |
@@ -74,18 +74,18 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/math-angle-rotation.gif" width="80">](demos.md#math-angle-rotation) | `math-angle-rotation` | fixed spokes + a spinning line |
 | [<img src="../demos/ball-physics.gif" width="80">](demos.md#ball-physics) | `ball-physics` | 2D balls under gravity, SPACE respawns |
 | [<img src="../demos/lines-bezier.gif" width="80">](demos.md#lines-bezier) | `lines-bezier` | a cubic Bézier that follows the mouse |
-| [<img src="../demos/color-wheel.gif" width="80">](demos.md#color-wheel) | `color-wheel` | an HSV color wheel drawn as an rlgl triangle fan (per-vertex hue) |
+| [<img src="../demos/color-wheel.gif" width="80">](demos.md#color-wheel) | `color-wheel` | an HSV wheel as an rlgl triangle fan |
 | [<img src="../demos/pie-chart.gif" width="80">](demos.md#pie-chart) | `pie-chart` | labelled pie slices via `rl/sector!` + a legend |
-| [<img src="../demos/splines.gif" width="80">](demos.md#splines) | `splines` | Catmull-Rom / cubic-Bézier / uniform-B-spline through animated points (SPACE cycles) |
-| [<img src="../demos/vector-angle.gif" width="80">](demos.md#vector-angle) | `vector-angle` | the signed angle between two vectors, filled arc + degrees readout (`atan2`) |
-| [<img src="../demos/easings.gif" width="80">](demos.md#easings) | `easings` | a 3×4 grid of balls, each animating on a different easing curve |
-| [<img src="../demos/penrose-tiling.gif" width="80">](demos.md#penrose-tiling) | `penrose-tiling` | a P3 Penrose rhombus tiling built by golden-ratio deflation |
-| [<img src="../demos/analog-clock.gif" width="80">](demos.md#analog-clock) | `analog-clock` | a live analog clock (bezel `ring!`, ticks + hands `line-ex!`, libc local time) |
-| [<img src="../demos/digital-clock.gif" width="80">](demos.md#digital-clock) | `digital-clock` | a seven-segment `HH:MM:SS` display (libc local time) |
-| [<img src="../demos/ring-drawing.gif" width="80">](demos.md#ring-drawing) | `ring-drawing` | an animated annulus via `rl/ring!` + a stroked outline |
-| [<img src="../demos/rounded-rectangle.gif" width="80">](demos.md#rounded-rectangle) | `rounded-rectangle` | rounded rectangles built from `sector!` corners + rects |
-| [<img src="../demos/rectangle-scaling.gif" width="80">](demos.md#rectangle-scaling) | `rectangle-scaling` | drag the bottom-right corner handle to resize a rectangle |
-| [<img src="../demos/lines-drawing.gif" width="80">](demos.md#lines-drawing) | `lines-drawing` | a rotating fan of thick lines via `rl/line-ex!` (rlgl quads) |
+| [<img src="../demos/splines.gif" width="80">](demos.md#splines) | `splines` | Catmull-Rom / Bézier / B-spline (SPACE cycles) |
+| [<img src="../demos/vector-angle.gif" width="80">](demos.md#vector-angle) | `vector-angle` | the signed angle between two vectors (`atan2`) |
+| [<img src="../demos/easings.gif" width="80">](demos.md#easings) | `easings` | a grid of balls, each on a different easing |
+| [<img src="../demos/penrose-tiling.gif" width="80">](demos.md#penrose-tiling) | `penrose-tiling` | a P3 Penrose tiling by golden-ratio deflation |
+| [<img src="../demos/analog-clock.gif" width="80">](demos.md#analog-clock) | `analog-clock` | a live analog clock (libc local time) |
+| [<img src="../demos/digital-clock.gif" width="80">](demos.md#digital-clock) | `digital-clock` | a seven-segment `HH:MM:SS` display |
+| [<img src="../demos/ring-drawing.gif" width="80">](demos.md#ring-drawing) | `ring-drawing` | an animated annulus via `rl/ring!` |
+| [<img src="../demos/rounded-rectangle.gif" width="80">](demos.md#rounded-rectangle) | `rounded-rectangle` | rounded rects from `sector!` corners |
+| [<img src="../demos/rectangle-scaling.gif" width="80">](demos.md#rectangle-scaling) | `rectangle-scaling` | drag the corner handle to resize a rect |
+| [<img src="../demos/lines-drawing.gif" width="80">](demos.md#lines-drawing) | `lines-drawing` | a rotating fan of thick `rl/line-ex!` lines |
 
 ## text (5)
 
@@ -101,11 +101,11 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 
 | preview | `bb` name | shows |
 |---|---|---|
-| [<img src="../demos/camera-3d.gif" width="80">](demos.md#camera-3d) | `camera-3d` | an orbiting 3D camera, `Camera3D` by value + rlgl cube |
+| [<img src="../demos/camera-3d.gif" width="80">](demos.md#camera-3d) | `camera-3d` | an orbiting 3D camera, `Camera3D` by value |
 | [<img src="../demos/waving-cubes.gif" width="80">](demos.md#waving-cubes) | `waving-cubes` | 196 cubes rippling in 3D (shared `rl/cube!`) |
 | [<img src="../demos/camera-3d-first-person.gif" width="80">](demos.md#camera-3d-first-person) | `camera-3d-first-person` | WASD + mouse-look walk through columns |
 | [<img src="../demos/tesseract-view.gif" width="80">](demos.md#tesseract-view) | `tesseract-view` | a rotating 4D hypercube projected 4D→3D→2D |
-| [<img src="../demos/wireframe-shapes.gif" width="80">](demos.md#wireframe-shapes) | `wireframe-shapes` | pyramid / octahedron / torus / helix as rlgl 3D lines |
+| [<img src="../demos/wireframe-shapes.gif" width="80">](demos.md#wireframe-shapes) | `wireframe-shapes` | pyramid / torus / helix as rlgl 3D lines |
 | [<img src="../demos/rlgl-solar-system.gif" width="80">](demos.md#rlgl-solar-system) | `rlgl-solar-system` | Sun / Earth / Moon via the rlgl matrix stack |
 | [<img src="../demos/box-collisions.gif" width="80">](demos.md#box-collisions) | `box-collisions` | a player cube vs. boxes, 3D AABB highlight |
 | [<img src="../demos/rotating-cube.gif" width="80">](demos.md#rotating-cube) | `rotating-cube` | a single cube spinning via the rlgl matrix stack |
@@ -113,9 +113,9 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/orthographic-projection.gif" width="80">](demos.md#orthographic-projection) | `orthographic-projection` | perspective vs orthographic (SPACE toggles) |
 | [<img src="../demos/point-cloud.gif" width="80">](demos.md#point-cloud) | `point-cloud` | ~1500 points as tiny rlgl cubes, rotating |
 | [<img src="../demos/bouncing-spheres.gif" width="80">](demos.md#bouncing-spheres) | `bouncing-spheres` | spheres bouncing in a 3D box (rl/sphere!) |
-| [<img src="../demos/lorenz-attractor.gif" width="80">](demos.md#lorenz-attractor) | `lorenz-attractor` | the Lorenz strange attractor traced in 3D (UP/DOWN rho) |
+| [<img src="../demos/lorenz-attractor.gif" width="80">](demos.md#lorenz-attractor) | `lorenz-attractor` | the Lorenz attractor traced in 3D |
 | [<img src="../demos/dna-helix.gif" width="80">](demos.md#dna-helix) | `dna-helix` | a turning double helix with coloured base pairs |
-| [<img src="../demos/yaw-pitch-roll.gif" width="80">](demos.md#yaw-pitch-roll) | `yaw-pitch-roll` | the three aircraft rotations on the rlgl matrix stack |
+| [<img src="../demos/yaw-pitch-roll.gif" width="80">](demos.md#yaw-pitch-roll) | `yaw-pitch-roll` | the three aircraft rotations in 3D |
 | [<img src="../demos/first-person-maze.gif" width="80">](demos.md#first-person-maze) | `first-person-maze` | walk a grid maze in first person, with a minimap |
 
 The 3D set stands entirely on two building blocks from
@@ -134,7 +134,7 @@ The 3D set stands entirely on two building blocks from
 | [<img src="../demos/spirograph.gif" width="80">](demos.md#spirograph) | `spirograph` | animated hypotrochoid roulette curves |
 | [<img src="../demos/l-system.gif" width="80">](demos.md#l-system) | `l-system` | an L-system fractal plant (grows + regrows) |
 | [<img src="../demos/flow-field.gif" width="80">](demos.md#flow-field) | `flow-field` | particles steered by a flow field (trails) |
-| [<img src="../demos/cellular-automata.gif" width="80">](demos.md#cellular-automata) | `cellular-automata` | Wolfram's elementary automata (LEFT/RIGHT change rule) |
+| [<img src="../demos/cellular-automata.gif" width="80">](demos.md#cellular-automata) | `cellular-automata` | Wolfram's elementary automata |
 
 All eight are pure math + the drawing API, no new bindings. They showcase the
 suite as a generative-art canvas: cellular automata, agent flocking, particle
@@ -150,10 +150,10 @@ native memory rather than loaded from a file. See
 
 | preview | `bb` name | shows |
 |---|---|---|
-| [<img src="../demos/texture-procedural.gif" width="80">](demos.md#texture-procedural) | `texture-procedural` | four textures generated pixel by pixel (SPACE reseeds noise) |
-| [<img src="../demos/texture-tiling.gif" width="80">](demos.md#texture-tiling) | `texture-tiling` | one small tile repeated across the window (UP/DOWN density) |
-| [<img src="../demos/render-texture.gif" width="80">](demos.md#render-texture) | `render-texture` | a scene rendered off-screen, then drawn back four times |
-| [<img src="../demos/bunnymark.gif" width="80">](demos.md#bunnymark) | `bunnymark` | the sprite-count benchmark (hold the mouse to add bunnies) |
+| [<img src="../demos/texture-procedural.gif" width="80">](demos.md#texture-procedural) | `texture-procedural` | four textures built pixel by pixel |
+| [<img src="../demos/texture-tiling.gif" width="80">](demos.md#texture-tiling) | `texture-tiling` | one tile repeated across the window |
+| [<img src="../demos/render-texture.gif" width="80">](demos.md#render-texture) | `render-texture` | a scene drawn off-screen, then reused |
+| [<img src="../demos/bunnymark.gif" width="80">](demos.md#bunnymark) | `bunnymark` | the sprite-count benchmark (click to add) |
 
 ## Adding an example: the five touchpoints
 
