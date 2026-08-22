@@ -16,7 +16,7 @@ looks needlessly indirect and you want the ABI reason behind it.
 
 ## What b12n-raylib-jlt is
 
-A community suite of 75 raylib examples: the classic core/shapes/text demos, a
+A community suite of 91 raylib examples: the classic core/shapes/text demos, a
 handful of games (asteroids, tetris, pong, vampire-survivors), and a 3D set
 (orbiting cameras, waving cubes, an rlgl solar system), each a small Clojure
 namespace on top of one shared binding layer, `net.b12n.raylib-jlt.raylib`.
@@ -33,7 +33,7 @@ FFI pages here:
 > AArch64. tree-sitter hits the *severe* version: a 32-byte `TSNode` passed AND
 > returned by value, so it needs a full C shim. raylib needs none.**
 
-Three ABI facts drive every distinctive decision in this repo:
+Four ABI facts drive every distinctive decision in this repo:
 
 1. **`Color` packs into a `:uint`**: a 4-byte all-integer struct travels in one
    general-purpose register, so every draw call passes color as an int, no struct
@@ -45,6 +45,11 @@ Three ABI facts drive every distinctive decision in this repo:
    registers, which the pointer trick does *not* cover, so shapes and 3D cubes are
    drawn with rlgl's scalar immediate mode instead.
    ([`rlgl-immediate-mode.md`](rlgl-immediate-mode.md))
+4. **Structs coming back are worse than structs going in**: `LoadTexture` returns
+   a 20-byte `Texture2D` through AArch64's `x8` indirect-result register, which
+   `foreign-procedure` cannot express at all, so textures and framebuffers are
+   reached through rlgl's scalar layer underneath raylib.
+   ([`textures-via-rlgl.md`](textures-via-rlgl.md))
 
 Nothing about `jolt.ffi` is raylib-specific: it binds any C ABI symbol. The
 `analog-clock` / `digital-clock` examples call plain **libc** `time()`/`localtime()`
@@ -69,6 +74,12 @@ Nothing about `jolt.ffi` is raylib-specific: it binds any C ABI symbol. The
   (`rlBegin`/`rlVertex2f`/`rlVertex3f`/`rlColor4ub`) for the 2D triangle and the 3D
   `cube!`, plus the rlgl matrix stack for nested transforms (the solar-system demo).
   Source: `raylib.clj` (`cube!`, `quad-3f`, the `rl-*` binds).
+- ✅ [`textures-via-rlgl.md`](textures-via-rlgl.md): why every raylib `Load*`
+  function is unbindable (a >16-byte struct returned through `x8`), and how
+  `rlLoadTexture` / `rlLoadFramebuffer` reach the same GPU objects with nothing
+  but ints. Includes the HiDPI restore that `EndTextureMode` does across two
+  functions and which is easy to get subtly wrong. Source: `raylib.clj`
+  (`texture-from-fn`, `texture!`, `render-texture`, `with-render-texture`).
 
 ### The drawing API
 
@@ -87,10 +98,11 @@ Nothing about `jolt.ffi` is raylib-specific: it binds any C ABI symbol. The
 
 ### Orientation
 
-- ✅ [`example-catalog.md`](example-catalog.md): a tour of all 75 examples grouped
-  games / core / shapes / text / 3d / generative, what each demonstrates, and the four-touchpoint
-  recipe for adding one (source ns + `deps.edn` alias + `check.clj` require +
-  `bb.edn` registry row). Read this for the map; the FFI pages for the mechanics.
+- ✅ [`example-catalog.md`](example-catalog.md): a tour of all 91 examples grouped
+  games / core / shapes / text / 3d / generative / textures, what each demonstrates, and the
+  five-touchpoint recipe for adding one (source ns + `deps.edn` alias +
+  `check.clj` require + `examples_registry.clj` row + `bb.edn` task). Read this
+  for the map; the FFI pages for the mechanics.
 
 ## See also
 

@@ -64,8 +64,7 @@ reveal/flag grid (mouse L reveal, R flag)
 
 ![minesweeper](../demos/minesweeper.gif)
 
-
-## core (9)
+## core (16)
 
 ### basic-window
 
@@ -121,6 +120,47 @@ a new random value every two seconds
 
 ![random-values](../demos/random-values.gif)
 
+### window-letterbox
+
+a fixed 640x360 picture letterboxed into a resizable window
+
+![window-letterbox](../demos/window-letterbox.gif)
+
+### window-flags
+
+toggle vsync, resizable, undecorated and topmost live
+
+![window-flags](../demos/window-flags.gif)
+
+### monitor-detector
+
+every attached display, with the current one highlighted
+
+![monitor-detector](../demos/monitor-detector.gif)
+
+### clipboard-text
+
+type, C copies to the system clipboard, V pastes
+
+![clipboard-text](../demos/clipboard-text.gif)
+
+### input-gamepad
+
+live sticks, triggers and buttons for gamepad 0
+
+![input-gamepad](../demos/input-gamepad.gif)
+
+### input-multitouch
+
+active touch points (the mouse is point 0 on desktop)
+
+![input-multitouch](../demos/input-multitouch.gif)
+
+### input-virtual-controls
+
+an on-screen D-pad and action button
+
+![input-virtual-controls](../demos/input-virtual-controls.gif)
 
 ## shapes (32)
 
@@ -316,7 +356,6 @@ a rotating fan of thick lines (line-ex!)
 
 ![lines-drawing](../demos/lines-drawing.gif)
 
-
 ## text (5)
 
 ### font-sizes
@@ -349,8 +388,7 @@ type into a text box (GetCharPressed)
 
 ![input-box](../demos/input-box.gif)
 
-
-## 3d (12)
+## 3d (16)
 
 ### camera-3d
 
@@ -424,8 +462,31 @@ spheres bouncing in a 3D box (rl/sphere!)
 
 ![bouncing-spheres](../demos/bouncing-spheres.gif)
 
+### lorenz-attractor
 
-## generative (7)
+the Lorenz strange attractor traced in 3D (UP/DOWN rho)
+
+![lorenz-attractor](../demos/lorenz-attractor.gif)
+
+### dna-helix
+
+a turning double helix with coloured base pairs
+
+![dna-helix](../demos/dna-helix.gif)
+
+### yaw-pitch-roll
+
+the three aircraft rotations on the rlgl matrix stack
+
+![yaw-pitch-roll](../demos/yaw-pitch-roll.gif)
+
+### first-person-maze
+
+walk a grid maze in first person, with a minimap
+
+![first-person-maze](../demos/first-person-maze.gif)
+
+## generative (8)
 
 ### game-of-life
 
@@ -469,3 +530,34 @@ particles steered by a flow field (trails)
 
 ![flow-field](../demos/flow-field.gif)
 
+### cellular-automata
+
+Wolfram's elementary automata (LEFT/RIGHT change rule)
+
+![cellular-automata](../demos/cellular-automata.gif)
+
+## textures (4)
+
+### texture-procedural
+
+four textures generated pixel by pixel (SPACE reseeds noise)
+
+![texture-procedural](../demos/texture-procedural.gif)
+
+### texture-tiling
+
+one small tile repeated across the window (UP/DOWN density)
+
+![texture-tiling](../demos/texture-tiling.gif)
+
+### render-texture
+
+a scene rendered off-screen, then drawn back four times
+
+![render-texture](../demos/render-texture.gif)
+
+### bunnymark
+
+the sprite-count benchmark (hold the mouse to add bunnies)
+
+![bunnymark](../demos/bunnymark.gif)

@@ -12,6 +12,35 @@ Examples read at <https://raylib-jlt.b12n.app>.
 
 ## Unreleased
 
+- **The suite is 91 examples, up from 75**, which is parity with the JVM
+  port. 16 new ones: 4 textures, 7 core (window flags, monitors,
+  clipboard, gamepad, touch, virtual controls, letterboxing), 4 in 3D
+  (Lorenz attractor, DNA helix, yaw/pitch/roll, first-person maze) and
+  elementary cellular automata.
+- **raylib's textures are reachable now**, which they were not before.
+  `LoadTexture` returns a 20-byte `Texture2D` by value, which AArch64
+  hands back through the `x8` indirect-result register and Chez's
+  `foreign-procedure` cannot express at all, so the whole texture, image,
+  font, shader, model and audio half of raylib was off the table. rlgl's
+  layer underneath is entirely scalar, so a texture here is just the GL
+  id `rlLoadTexture` returns: an int, no struct anywhere. Textures are
+  built pixel by pixel in native memory rather than decoded from a file,
+  which is the part of `LoadTexture` that does not come back.
+  [`textures-via-rlgl.md`](docs/guide/textures-via-rlgl.md) is the new
+  guide page.
+- Render textures too: `rl/render-texture` and `rl/with-render-texture`
+  spell out `BeginTextureMode`/`EndTextureMode` in scalar rlgl calls,
+  including the HiDPI screen-scale matrix raylib reestablishes across
+  `EndTextureMode` and the following `BeginDrawing`. Leaving that at
+  identity draws every later frame at half size in the corner.
+- New scalar bindings for the rest: window state and config flags,
+  monitors, clipboard, gamepad, touch and gestures, key and mouse release
+  predicates, `DrawCircleGradient`, `DrawRectangleGradientH` and blend
+  modes.
+- The registry moved to `scripts/examples_registry.clj` some time ago but
+  the catalog still described it as a `bb.edn` row; adding an example is
+  five touchpoints, not four, and the guide now says which.
+
 - `bb docs-sync` says which kind of deploy failure it hit — unreachable
   AWS, missing or expired credentials, a 403, or a genuinely absent
   bucket — instead of blaming missing infrastructure for all four and

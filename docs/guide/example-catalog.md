@@ -1,4 +1,4 @@
-# The example catalog: 75 raylib demos in jolt
+# The example catalog: 91 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -29,7 +29,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/game-2048.gif" width="80">](demos.md#game-2048) | `game-2048` | 2048: 4x4 tile-merge puzzle (arrow keys) |
 | [<img src="../demos/minesweeper.gif" width="80">](demos.md#minesweeper) | `minesweeper` | reveal/flag grid (mouse L reveal, R flag) |
 
-## core (9)
+## core (16)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -42,6 +42,13 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/scissor-test.gif" width="80">](demos.md#scissor-test) | `scissor-test` | `BeginScissorMode` clips a grid |
 | [<img src="../demos/basic-screen-manager.gif" width="80">](demos.md#basic-screen-manager) | `basic-screen-manager` | a LOGO / TITLE / GAMEPLAY / ENDING state flow |
 | [<img src="../demos/random-values.gif" width="80">](demos.md#random-values) | `random-values` | `GetRandomValue`, a new value every 2s |
+| [<img src="../demos/window-letterbox.gif" width="80">](demos.md#window-letterbox) | `window-letterbox` | a fixed 640x360 picture letterboxed into a resizable window |
+| [<img src="../demos/window-flags.gif" width="80">](demos.md#window-flags) | `window-flags` | toggle vsync, resizable, undecorated and topmost live |
+| [<img src="../demos/monitor-detector.gif" width="80">](demos.md#monitor-detector) | `monitor-detector` | every attached display, with the current one highlighted |
+| [<img src="../demos/clipboard-text.gif" width="80">](demos.md#clipboard-text) | `clipboard-text` | type, C copies to the system clipboard, V pastes |
+| [<img src="../demos/input-gamepad.gif" width="80">](demos.md#input-gamepad) | `input-gamepad` | live sticks, triggers and buttons for gamepad 0 |
+| [<img src="../demos/input-multitouch.gif" width="80">](demos.md#input-multitouch) | `input-multitouch` | active touch points (the mouse is point 0 on desktop) |
+| [<img src="../demos/input-virtual-controls.gif" width="80">](demos.md#input-virtual-controls) | `input-virtual-controls` | an on-screen D-pad and action button |
 
 ## shapes (32)
 
@@ -90,7 +97,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/words-alignment.gif" width="80">](demos.md#words-alignment) | `words-alignment` | align a word inside a box with `MeasureText` |
 | [<img src="../demos/input-box.gif" width="80">](demos.md#input-box) | `input-box` | type into a text box (GetCharPressed) |
 
-## 3d (12)
+## 3d (16)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -106,13 +113,17 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/orthographic-projection.gif" width="80">](demos.md#orthographic-projection) | `orthographic-projection` | perspective vs orthographic (SPACE toggles) |
 | [<img src="../demos/point-cloud.gif" width="80">](demos.md#point-cloud) | `point-cloud` | ~1500 points as tiny rlgl cubes, rotating |
 | [<img src="../demos/bouncing-spheres.gif" width="80">](demos.md#bouncing-spheres) | `bouncing-spheres` | spheres bouncing in a 3D box (rl/sphere!) |
+| [<img src="../demos/lorenz-attractor.gif" width="80">](demos.md#lorenz-attractor) | `lorenz-attractor` | the Lorenz strange attractor traced in 3D (UP/DOWN rho) |
+| [<img src="../demos/dna-helix.gif" width="80">](demos.md#dna-helix) | `dna-helix` | a turning double helix with coloured base pairs |
+| [<img src="../demos/yaw-pitch-roll.gif" width="80">](demos.md#yaw-pitch-roll) | `yaw-pitch-roll` | the three aircraft rotations on the rlgl matrix stack |
+| [<img src="../demos/first-person-maze.gif" width="80">](demos.md#first-person-maze) | `first-person-maze` | walk a grid maze in first person, with a minimap |
 
 The 3D set stands entirely on two building blocks from
 [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md) and
 [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md): `with-camera-3d`
 (the camera, by pointer) and `cube!` (the geometry, by rlgl vertices).
 
-## generative (7)
+## generative (8)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -123,15 +134,30 @@ The 3D set stands entirely on two building blocks from
 | [<img src="../demos/spirograph.gif" width="80">](demos.md#spirograph) | `spirograph` | animated hypotrochoid roulette curves |
 | [<img src="../demos/l-system.gif" width="80">](demos.md#l-system) | `l-system` | an L-system fractal plant (grows + regrows) |
 | [<img src="../demos/flow-field.gif" width="80">](demos.md#flow-field) | `flow-field` | particles steered by a flow field (trails) |
+| [<img src="../demos/cellular-automata.gif" width="80">](demos.md#cellular-automata) | `cellular-automata` | Wolfram's elementary automata (LEFT/RIGHT change rule) |
 
-All seven are pure math + the drawing API, no new bindings. They showcase the
+All eight are pure math + the drawing API, no new bindings. They showcase the
 suite as a generative-art canvas: cellular automata, agent flocking, particle
 systems, rotating-vector Fourier series, parametric roulette curves, string-rewrite
 fractals, and noise-steered flow fields.
 
-## Adding an example: the four touchpoints
+## textures (4)
 
-The suite is deliberately mechanical to grow. One new example touches four places:
+raylib's texture API returns structs by value and has no binding here; these go
+through rlgl's scalar layer instead, so every texture is built pixel by pixel in
+native memory rather than loaded from a file. See
+[`textures-via-rlgl.md`](textures-via-rlgl.md).
+
+| preview | `bb` name | shows |
+|---|---|---|
+| [<img src="../demos/texture-procedural.gif" width="80">](demos.md#texture-procedural) | `texture-procedural` | four textures generated pixel by pixel (SPACE reseeds noise) |
+| [<img src="../demos/texture-tiling.gif" width="80">](demos.md#texture-tiling) | `texture-tiling` | one small tile repeated across the window (UP/DOWN density) |
+| [<img src="../demos/render-texture.gif" width="80">](demos.md#render-texture) | `render-texture` | a scene rendered off-screen, then drawn back four times |
+| [<img src="../demos/bunnymark.gif" width="80">](demos.md#bunnymark) | `bunnymark` | the sprite-count benchmark (hold the mouse to add bunnies) |
+
+## Adding an example: the five touchpoints
+
+The suite is deliberately mechanical to grow. One new example touches five places:
 
 1. **Source**: `src/net/b12n/raylib_jlt/<name>.clj`, a namespace with a `-main` that
    runs the canonical loop (see [`headless-smoke-testing.md`](headless-smoke-testing.md))
@@ -140,15 +166,21 @@ The suite is deliberately mechanical to grow. One new example touches four place
    `jolt -M:<name>` works.
 3. **`check.clj` require**: add `net.b12n.raylib-jlt.<name>` to the `:require` list in
    `net.b12n.raylib-jlt.check`, so the headless compile-check covers it.
-4. **`bb.edn` registry row**: add `["<display-name>" "<alias>" "<group>" "<desc>"]`
-   to the `examples` vector and a matching `bb <name>` task, so it shows in
-   `bb info` / `bb examples` / `bb run-all`.
+4. **Registry row**: add `["<display-name>" "<alias>" "<group>" "<desc>"]` to the
+   `examples` vector in [`scripts/examples_registry.clj`](../../scripts/examples_registry.clj),
+   the single source of truth that `bb.edn` and the demo recorder both read.
+5. **`bb.edn` task**: add a matching `<name> {:doc "..." :task (run-example "<name>")}`
+   row, so `bb <name>` works alongside `bb info` / `bb examples` / `bb run-all`.
+
+A new group needs two more edits: the group list in `bb.edn`'s `info` task and the
+`:groups` vector in `scripts/demo_manifest.edn`.
 
 ```mermaid
 flowchart LR
   src["src/…/<name>.clj<br/>the example"] --> deps["deps.edn<br/>:<name> alias"]
   src --> chk["check.clj<br/>require (headless compile)"]
-  src --> bb["bb.edn<br/>registry row + task"]
+  src --> reg["scripts/examples_registry.clj<br/>registry row"]
+  reg --> bb["bb.edn<br/>bb &lt;name&gt; task"]
 ```
 
 Filenames use underscores (`basic_screen_manager.clj`); the namespace uses hyphens

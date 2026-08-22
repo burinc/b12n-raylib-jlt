@@ -512,7 +512,7 @@
   info
   {:doc "Grouped cheat-sheet of all examples"
    :task (do
-           (doseq [g ["games" "core" "shapes" "text" "3d" "generative"]]
+           (doseq [g ["games" "core" "shapes" "text" "3d" "generative" "textures"]]
              (let [rows (filterv (fn [row] (= g (nth row 2))) examples)]
                (println (str "\n=== " g " (" (count rows) ") ==="))
                (doseq [row rows] (print-row row))))
