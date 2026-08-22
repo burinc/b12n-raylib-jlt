@@ -390,13 +390,52 @@
                                           "aws" "s3api" "head-bucket"
                                           "--bucket" bucket "--profile" "b12n")]
                          (if-not (zero? (:exit probe))
-                           (do (println (str "  s3://" bucket " not reachable. Most likely the infrastructure"))
-                               (println "  hasn't been applied yet; it could also be AWS credentials or")
-                               (println "  network. head-bucket said:")
-                               (println (str "    " (str/trim (str (:err probe) (:out probe)))))
-                               (println "  If it's the first case, run this once in ~/dev/b12n-infra:")
-                               (println "    bb render lock tofu:init tofu:plan tofu:apply -- static-site raylib-jlt")
-                               :skipped)
+                           ;; head-bucket failing does NOT by itself mean the bucket is missing.
+                           ;; It fails identically when the CLI cannot reach AWS at all - and on a
+                           ;; restricted laptop HTTPS_PROXY is set, which the AWS CLI honours, so
+                           ;; every call dies at the proxy while DNS and git keep working. Sending
+                           ;; someone to tofu:apply for that means creating infrastructure that
+                           ;; already exists. So classify the failure before advising anything.
+                           (let [err   (str/lower-case (str (:err probe) " " (:out probe)))
+                                 said  (first (str/split-lines (str/trim (str (:err probe) (:out probe)))))
+                                 hit?  (fn [ss] (some (fn [s] (str/includes? err s)) ss))
+                                 proxy (or (System/getenv "HTTPS_PROXY") (System/getenv "https_proxy"))]
+                             (cond
+                               (hit? ["proxy" "could not connect" "connect timeout" "endpoint url"
+                                      "name resolution" "network is unreachable" "connection refused"
+                                      "timed out" "connection was closed"])
+                               (do (println "  DEPLOY SKIPPED - could not reach AWS at all.")
+                                   (println (str "    " said))
+                                   (println "  This is a network problem on THIS MACHINE. It is NOT evidence")
+                                   (println "  about whether the bucket exists - do NOT run tofu:apply for it.")
+                                   (when proxy
+                                     (println (str "  HTTPS_PROXY is set (" proxy ") and the AWS CLI honours it.")))
+                                   (println "  On a restricted laptop that proxy is the usual cause. Retry with:")
+                                   (println "    unset HTTPS_PROXY HTTP_PROXY https_proxy http_proxy && bb docs-sync"))
+
+                               (hit? ["unable to locate credentials" "no credentials" "expiredtoken"
+                                      "expired" "invalidclienttokenid" "signaturedoesnotmatch"
+                                      "sso session" "token has expired"])
+                               (do (println "  DEPLOY SKIPPED - AWS credentials for profile b12n are missing or expired.")
+                                   (println (str "    " said))
+                                   (println "  Refresh them and re-run. The infrastructure is unaffected."))
+
+                               (hit? ["403" "forbidden" "accessdenied"])
+                               (do (println (str "  DEPLOY SKIPPED - s3://" bucket " EXISTS but profile b12n cannot read it (403)."))
+                                   (println (str "    " said))
+                                   (println "  That is a permissions problem, not missing infrastructure."))
+
+                               (hit? ["404" "not found" "nosuchbucket"])
+                               (do (println (str "  DEPLOY SKIPPED - s3://" bucket " does not exist."))
+                                   (println "  THIS is the one that needs infrastructure. Run once in ~/dev/b12n-infra:")
+                                   (println "    bb render lock tofu:init tofu:plan tofu:apply -- static-site raylib-jlt"))
+
+                               :else
+                               (do (println (str "  DEPLOY SKIPPED - head-bucket on s3://" bucket " failed for an unrecognized reason."))
+                                   (println (str "    " said))
+                                   (println "  Check by hand before assuming anything:")
+                                   (println (str "    aws s3api head-bucket --bucket " bucket " --profile b12n"))))
+                             :skipped)
                            (let [sync-res (shell {:continue true}
                                                  "aws" "s3" "sync" (str site-repo "/docs/")
                                                  (str "s3://" bucket "/")
