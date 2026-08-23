@@ -6,6 +6,14 @@
 ;; the linter is unusable as a gate.
 {:hooks {:analyze-call {jolt.ffi/defcfn hooks.jolt-ffi/defcfn}}
 
+ ;; jolt.ffi's lexical-allocation macros take a [binding expr] pair and scope the
+ ;; binding over the body, which is with-open's shape exactly. Without this the
+ ;; bound symbol reads as unresolved.
+ :lint-as {jolt.ffi/with-layout    clojure.core/with-open
+           jolt.ffi/with-alloc     clojure.core/with-open
+           jolt.ffi/with-out       clojure.core/with-open
+           jolt.ffi/with-c-string  clojure.core/with-open}
+
  ;; :redundant-nested-call flags (+ a (+ b c)) in favour of (+ a b c). That is
  ;; the right call for a plain accumulation, and those sites were flattened. In
  ;; the namespaces below the nesting is load-bearing *notation* — it mirrors the

@@ -708,7 +708,13 @@
 (def ^:const KEY-Y 89) (def ^:const KEY-Z 90)
 
 ;; --- extra scalar drawing ----------------------------------------------------
-(ffi/defcfn draw-circle-gradient  "DrawCircleGradient"     [:int :int :float :uint :uint] :void)
+;; raylib 6.0 takes the centre as a by-value Vector2; 5.5 took two ints. The C
+;; symbol name did not change, so a symbol-existence check (nm) says nothing and
+;; only a header diff catches it - the 5.5 binding against a 6.0 library passes
+;; two ints where a struct is expected and draws somewhere else entirely.
+(ffi/defcfn ^:private draw-circle-gradient-raw "DrawCircleGradient"
+  [[:by-value [:struct [[:x :float] [:y :float]]]] :float :uint :uint] :void)
+(def ^:private vector2-layout (ffi/layout [:struct [[:x :float] [:y :float]]]))
 (ffi/defcfn draw-rectangle-grad-h "DrawRectangleGradientH" [:int :int :int :int :uint :uint] :void)
 (ffi/defcfn begin-blend-mode      "BeginBlendMode"         [:int] :void)
 (ffi/defcfn end-blend-mode        "EndBlendMode"           [] :void)
@@ -725,7 +731,12 @@
            radius 10
            inner WHITE
            outer BLACK}}]
-  (draw-circle-gradient x y (double radius) inner outer))
+  ;; The kwarg surface stays scalar - the Vector2 is staged here so callers never
+  ;; see the struct.
+  (ffi/with-layout [c vector2-layout]
+    (ffi/write-field c vector2-layout :x (double x))
+    (ffi/write-field c vector2-layout :y (double y))
+    (draw-circle-gradient-raw c (double radius) inner outer)))
 
 (defn rect-gradient-h!
   "DrawRectangleGradientH (left->right). :x :y :width :height :left :right."
