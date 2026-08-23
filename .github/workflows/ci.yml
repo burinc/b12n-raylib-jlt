@@ -75,7 +75,7 @@ jobs:
         env:
           # Pinned rather than tracking master, so a CI failure means this
           # repo changed, not that upstream did.
-          RAYLIB_REF: "5.5"
+          RAYLIB_REF: "6.0"
 
       # Official install script from jolt's README. Prebuilt Linux x86_64
       # binaries need glibc 2.35+, which ubuntu-latest satisfies.
@@ -112,10 +112,18 @@ jobs:
 
       # Fails loudly with the search paths it tried, so a packaging change on
       # the runner image is diagnosable from the log alone.
-      - name: libraylib is discoverable
+      #
+      # This also gates the VERSION, which is what makes the apt-first install
+      # above safe. The pin only governs the source-build fallback; when apt
+      # succeeds we get whatever the archive carries. Since DrawCircleGradient
+      # takes a by-value Vector2 in 6.0 and two ints before it — same symbol
+      # name — an older library links fine and draws in the wrong place. So
+      # lib:check refuses anything that does not export a 6.0-only symbol, and
+      # this job goes red here rather than green at `bb check`.
+      - name: libraylib is discoverable, and is 6.0+
         run: bb lib:check
 
-      # The gate that matters most: compiles all 75 example namespaces
+      # The gate that matters most: compiles all 91 example namespaces
       # headlessly. It is the only check that catches a new example missing
       # its `check.clj` require — the easiest of the four touchpoints to skip.
       #
