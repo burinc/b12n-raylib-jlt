@@ -292,6 +292,7 @@
   yaw-pitch-roll    {:doc "▶ the three aircraft rotations in 3D"                :task (run-example "yaw-pitch-roll")}
   first-person-maze {:doc "▶ walk a grid maze, with a minimap"                  :task (run-example "first-person-maze")}
   cellular-automata {:doc "▶ Wolfram's elementary automata"                     :task (run-example "cellular-automata")}
+  julia-set         {:doc "▶ the Julia set, mouse-steered, in a shader" :task (run-example "julia-set")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
@@ -536,7 +537,7 @@
   info
   {:doc "Grouped cheat-sheet of all examples"
    :task (do
-           (doseq [g ["games" "core" "shapes" "text" "3d" "generative" "textures"]]
+           (doseq [g ["games" "core" "shapes" "text" "3d" "generative" "textures" "shaders"]]
              (let [rows (filterv (fn [row] (= g (nth row 2))) examples)]
                (println (str "\n=== " g " (" (count rows) ") ==="))
                (doseq [row rows] (print-row row))))

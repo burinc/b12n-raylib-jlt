@@ -24,7 +24,9 @@
           {:key "generative"
            :title "generative"}
           {:key "textures"
-           :title "textures"}]
+           :title "textures"}
+          {:key "shaders"
+           :title "shaders"}]
 
  :defaults {:duration 6
             :fps 10

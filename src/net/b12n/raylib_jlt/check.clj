@@ -49,6 +49,7 @@
    [net.b12n.raylib-jlt.input-gamepad]
    [net.b12n.raylib-jlt.input-multitouch]
    [net.b12n.raylib-jlt.input-virtual-controls]
+   [net.b12n.raylib-jlt.julia-set]
    [net.b12n.raylib-jlt.kaleidoscope]
    [net.b12n.raylib-jlt.l-system]
    [net.b12n.raylib-jlt.lines-bezier]

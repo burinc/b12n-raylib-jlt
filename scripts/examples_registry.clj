@@ -99,7 +99,8 @@
    ["dna-helix"           "dna-helix" "3d" "a turning double helix, coloured bases"]
    ["yaw-pitch-roll"      "yaw-pitch-roll" "3d" "the three aircraft rotations in 3D"]
    ["first-person-maze"   "first-person-maze" "3d" "walk a grid maze, with a minimap"]
-   ["cellular-automata"   "cellular-automata" "generative" "Wolfram's elementary automata"]])
+   ["cellular-automata"   "cellular-automata" "generative" "Wolfram's elementary automata"]
+   ["julia-set"           "julia-set" "shaders" "the Julia set, mouse-steered, in a shader"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
