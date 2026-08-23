@@ -295,6 +295,7 @@
   julia-set         {:doc "▶ the Julia set, mouse-steered, in a shader" :task (run-example "julia-set")}
   mandelbrot-set    {:doc "▶ the Mandelbrot set, zoomable, in a shader" :task (run-example "mandelbrot-set")}
   raymarching       {:doc "▶ a raymarched SDF scene in a shader" :task (run-example "raymarching")}
+  rounded-rect-shader {:doc "▶ SDF rounded rects: fill, border, shadow" :task (run-example "rounded-rect-shader")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

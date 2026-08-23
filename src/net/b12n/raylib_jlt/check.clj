@@ -77,6 +77,7 @@
    [net.b12n.raylib-jlt.ring-drawing]
    [net.b12n.raylib-jlt.rlgl-solar-system]
    [net.b12n.raylib-jlt.rotating-cube]
+   [net.b12n.raylib-jlt.rounded-rect-shader]
    [net.b12n.raylib-jlt.rounded-rectangle]
    [net.b12n.raylib-jlt.scissor-test]
    [net.b12n.raylib-jlt.shapes]
