@@ -35,11 +35,19 @@ Examples read at <https://raylib-jlt.b12n.app>.
   `with-c-string` bind their first symbol, so the lint gate stops reporting it as
   unresolved.
 
-- **The suite is 91 examples, up from 75**, which is parity with the JVM
-  port. 16 new ones: 4 textures, 7 core (window flags, monitors,
-  clipboard, gamepad, touch, virtual controls, letterboxing), 4 in 3D
-  (Lorenz attractor, DNA helix, yaw/pitch/roll, first-person maze) and
-  elementary cellular automata.
+- **The suite is 97 examples, up from 75.** 16 took it to 91, which is parity
+  with the JVM port: 4 textures, 7 core (window flags, monitors, clipboard,
+  gamepad, touch, virtual controls, letterboxing), 4 in 3D (Lorenz attractor,
+  DNA helix, yaw/pitch/roll, first-person maze) and elementary cellular
+  automata.
+- **Shaders, a category that was closed.** 6 more: `julia-set`,
+  `mandelbrot-set`, `raymarching`, `rounded-rect-shader`, `palette-switch`,
+  `shader-hot-reload`. `LoadShader` returns a `Shader` by value, which Chez's
+  `foreign-procedure` cannot express - jolt 0.7.23's `[:by-value [:struct ...]]`
+  is what opened it, and it **raises the project's jolt floor to 0.7.23**, the
+  first hard version floor this suite has had. GLSL lives as a string in each
+  namespace rather than a `.glsl` file, so an example stays self-contained.
+- These six have no demo GIFs yet, so the catalog lists them without previews.
 - **raylib's textures are reachable now**, which they were not before.
   `LoadTexture` returns a 20-byte `Texture2D` by value, which AArch64
   hands back through the `x8` indirect-result register and Chez's
