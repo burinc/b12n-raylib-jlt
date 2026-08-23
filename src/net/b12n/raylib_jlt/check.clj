@@ -64,6 +64,7 @@
    [net.b12n.raylib-jlt.mouse]
    [net.b12n.raylib-jlt.mouse-trail]
    [net.b12n.raylib-jlt.orthographic-projection]
+   [net.b12n.raylib-jlt.palette-switch]
    [net.b12n.raylib-jlt.penrose-tiling]
    [net.b12n.raylib-jlt.pie-chart]
    [net.b12n.raylib-jlt.point-cloud]

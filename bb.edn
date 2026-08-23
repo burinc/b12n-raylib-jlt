@@ -296,6 +296,7 @@
   mandelbrot-set    {:doc "▶ the Mandelbrot set, zoomable, in a shader" :task (run-example "mandelbrot-set")}
   raymarching       {:doc "▶ a raymarched SDF scene in a shader" :task (run-example "raymarching")}
   rounded-rect-shader {:doc "▶ SDF rounded rects: fill, border, shadow" :task (run-example "rounded-rect-shader")}
+  palette-switch    {:doc "▶ bands recolored by an ivec3 palette" :task (run-example "palette-switch")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
