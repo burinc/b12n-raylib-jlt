@@ -293,6 +293,7 @@
   first-person-maze {:doc "▶ walk a grid maze, with a minimap"                  :task (run-example "first-person-maze")}
   cellular-automata {:doc "▶ Wolfram's elementary automata"                     :task (run-example "cellular-automata")}
   julia-set         {:doc "▶ the Julia set, mouse-steered, in a shader" :task (run-example "julia-set")}
+  mandelbrot-set    {:doc "▶ the Mandelbrot set, zoomable, in a shader" :task (run-example "mandelbrot-set")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

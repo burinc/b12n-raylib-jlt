@@ -56,6 +56,7 @@
    [net.b12n.raylib-jlt.lines-drawing]
    [net.b12n.raylib-jlt.logo]
    [net.b12n.raylib-jlt.lorenz-attractor]
+   [net.b12n.raylib-jlt.mandelbrot-set]
    [net.b12n.raylib-jlt.math-angle-rotation]
    [net.b12n.raylib-jlt.math-sine-cosine]
    [net.b12n.raylib-jlt.minesweeper]
