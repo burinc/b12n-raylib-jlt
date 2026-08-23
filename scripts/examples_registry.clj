@@ -101,7 +101,8 @@
    ["first-person-maze"   "first-person-maze" "3d" "walk a grid maze, with a minimap"]
    ["cellular-automata"   "cellular-automata" "generative" "Wolfram's elementary automata"]
    ["julia-set"           "julia-set" "shaders" "the Julia set, mouse-steered, in a shader"]
-   ["mandelbrot-set"      "mandelbrot-set" "shaders" "the Mandelbrot set, zoomable, in a shader"]])
+   ["mandelbrot-set"      "mandelbrot-set" "shaders" "the Mandelbrot set, zoomable, in a shader"]
+   ["raymarching"         "raymarching" "shaders" "a raymarched SDF scene in a shader"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 

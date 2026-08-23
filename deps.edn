@@ -102,6 +102,7 @@
            :first-person-maze {:main-opts ["-m" "net.b12n.raylib-jlt.first-person-maze"]} ; walk a grid maze in first person, with a minimap
            :cellular-automata {:main-opts ["-m" "net.b12n.raylib-jlt.cellular-automata"]} ; Wolfram's elementary automata (LEFT/RIGHT change rule)
            :julia-set {:main-opts ["-m" "net.b12n.raylib-jlt.julia-set"]} ; the Julia set, mouse-steered, in a shader
-           :mandelbrot-set {:main-opts ["-m" "net.b12n.raylib-jlt.mandelbrot-set"]}} ; the Mandelbrot set, zoomable, in a shader
+           :mandelbrot-set {:main-opts ["-m" "net.b12n.raylib-jlt.mandelbrot-set"]} ; the Mandelbrot set, zoomable, in a shader
+           :raymarching {:main-opts ["-m" "net.b12n.raylib-jlt.raymarching"]}} ; a raymarched SDF scene in a shader
 
  :tasks {run "joltc -M:run"}}

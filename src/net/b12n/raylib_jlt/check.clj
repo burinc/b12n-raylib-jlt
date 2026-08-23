@@ -70,6 +70,7 @@
    [net.b12n.raylib-jlt.pong]
    [net.b12n.raylib-jlt.random-values]
    [net.b12n.raylib-jlt.raylib]
+   [net.b12n.raylib-jlt.raymarching]
    [net.b12n.raylib-jlt.rectangle-scaling]
    [net.b12n.raylib-jlt.recursive-tree]
    [net.b12n.raylib-jlt.render-texture]

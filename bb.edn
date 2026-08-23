@@ -294,6 +294,7 @@
   cellular-automata {:doc "▶ Wolfram's elementary automata"                     :task (run-example "cellular-automata")}
   julia-set         {:doc "▶ the Julia set, mouse-steered, in a shader" :task (run-example "julia-set")}
   mandelbrot-set    {:doc "▶ the Mandelbrot set, zoomable, in a shader" :task (run-example "mandelbrot-set")}
+  raymarching       {:doc "▶ a raymarched SDF scene in a shader" :task (run-example "raymarching")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
