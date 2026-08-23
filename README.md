@@ -53,10 +53,14 @@ the task tells you so if the tool is absent.
 ### jolt
 
 ```sh
-jolt --version               # tested against jolt v0.7.16
+jolt --version               # requires jolt v0.7.23 or newer
 ```
 
-Any recent jolt works. One thing to know if you edit the shared binding layer
+**0.7.23 is a hard floor**, not a suggestion: `DrawCircleGradient` is bound with
+`[:by-value [:struct ...]]`, which does not exist before it. Older jolt fails at
+compile with a type error rather than at runtime.
+
+One thing to know if you edit the shared binding layer
 (`src/net/b12n/raylib_jlt/raylib.clj`): since **jolt 0.4.0** unresolved symbols are a
 compile error rather than being resolved late, so a definition must appear before
 its first use in the file. That layer is shared by every example, so a single
@@ -80,7 +84,11 @@ resolve whichever one you have.
 
 ### libraylib
 
-The system `libraylib` shared library must be installed. With babashka you can
+The system `libraylib` shared library must be installed, **version 6.0 or
+newer**. `bb lib:check` verifies this and refuses an older one: 6.0 changed
+`DrawCircleGradient` to take its centre as a by-value `Vector2` where 5.5 took
+two ints, and because the symbol name did not change, a 5.5 library links
+without complaint and draws in the wrong place. With babashka you can
 check and install it for your platform (Linux, macOS Intel, macOS Apple Silicon):
 
 ```sh
@@ -99,7 +107,7 @@ sudo pacman -S raylib        # Arch Linux
 
 `deps.edn` points jolt at it via a `:jolt/native` entry (Homebrew's
 `/opt/homebrew/lib/libraylib.dylib` first, then the bare name on the loader path;
-`libraylib.so.5` / `libraylib.so` on Linux).
+`libraylib.so.6` / `libraylib.so` on Linux).
 
 **Using a source build of raylib** (e.g. from `~/dev/raylib`): build the shared
 library (`cmake --build build`), then point the dynamic loader at it instead of

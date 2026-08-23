@@ -12,6 +12,29 @@ Examples read at <https://raylib-jlt.b12n.app>.
 
 ## Unreleased
 
+- **The suite tracks raylib 6.0**, up from 5.5, and `bb lib:check` now refuses
+  anything older. macOS is `brew upgrade raylib`; Linux keeps the apt-or-source
+  path with the CI pin moved to the 6.0 tag.
+- **`DrawCircleGradient` takes its centre as a by-value `Vector2` in 6.0**, where
+  5.5 took two ints. The C symbol name did not change, so this is the kind of
+  break nothing loud catches: all 109 symbols the project binds resolve in both
+  versions, and an old binding against a new library simply draws in the wrong
+  place. Only a header signature diff finds it. It is the reason `lib:check`
+  gates the version rather than warning.
+- **jolt 0.7.23 is now a hard floor**, because that binding uses
+  `[:by-value [:struct ...]]`. Older jolt fails at compile, not at runtime.
+- Most of the upgrade was nothing, which is worth recording: every struct layout
+  is byte-identical between 5.5 and 6.0 (`Color` 4, `Vector2` 8, `Vector3` 12,
+  `Camera2D` 24, `Camera3D` 44, `Texture2D` 20), all 108 hardcoded constants
+  still match, and none of the four functions 6.0 removes were bound. The packed
+  `Color`, both pointer-trick cameras and every rlgl path are untouched.
+- One constant is worth knowing for later: `SHADER_UNIFORM_SAMPLER2D` moved from
+  8 to 12, because 6.0 inserted four UINT variants ahead of it. Nothing here uses
+  it yet.
+- clj-kondo learned that `jolt.ffi`'s `with-layout` / `with-alloc` / `with-out` /
+  `with-c-string` bind their first symbol, so the lint gate stops reporting it as
+  unresolved.
+
 - **The suite is 91 examples, up from 75**, which is parity with the JVM
   port. 16 new ones: 4 textures, 7 core (window flags, monitors,
   clipboard, gamepad, touch, virtual controls, letterboxing), 4 in 3D
