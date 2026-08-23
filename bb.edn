@@ -154,6 +154,30 @@
         {:found nil :checked [] :ldconfig []}))
 
     ;; Does this path name a libraylib artifact (file) or hold one (dir)?
+    ;; raylib exposes no version at runtime - there is no GetVersion in 5.5 or 6.0,
+    ;; confirmed against both headers and both shipped dylibs. So the version is
+    ;; read off the exported symbol table instead: DrawLineDashed is one of the 23
+    ;; functions 6.0 added and is absent from 5.5. GetKeyName, ComputeSHA256 and
+    ;; DrawEllipseV are equally good sentinels if this one ever moves.
+    ;;
+    ;; This matters because the symbol table is the only honest source. A header on
+    ;; the machine can declare functions the installed library does not export, and
+    ;; binding one of those compiles cleanly and dies at runtime with a SIGSEGV at
+    ;; address 0 rather than a readable missing-symbol error.
+    (def raylib-6-sentinel "DrawLineDashed")
+
+    (defn raylib-6? [lib-path]
+      (let [nm-args (if (= :macos (os-kind)) ["nm" "-gU"] ["nm" "-D" "--defined-only"])
+            {:keys [exit out]} (apply shell {:out :string :err :string :continue true}
+                                     (conj (vec nm-args) lib-path))]
+        (when (zero? exit)
+          ;; Anchored to line end, with an optional leading underscore: macOS nm
+          ;; prints _DrawLineDashed and Linux nm prints DrawLineDashed. A \\b word
+          ;; boundary does NOT work here - underscore is a word character, so
+          ;; \\bDrawLineDashed cannot match the macOS spelling and the check reads
+          ;; as "older than 6.0" on a 6.0 library.
+          (boolean (re-find (re-pattern (str "(?m)^.*\\s_?" raylib-6-sentinel "$")) (or out ""))))))
+
     (defn lib-present? [p]
       (cond
         (not (fs/exists? p)) false
@@ -621,7 +645,26 @@
              (println "ldconfig cache:")
              (doseq [l ldconfig] (println (str "    " l))))
            (if found
-             (println (str "\n✓ libraylib found: " found))
+             (let [six? (raylib-6? found)]
+               (println (str "\n✓ libraylib found: " found))
+               (cond
+                 (nil? six?)
+                 (println "  version: could not read the symbol table (nm unavailable?) - not gating")
+
+                 six?
+                 (println (str "  version: 6.0 or newer (exports " raylib-6-sentinel ")"))
+
+                 :else
+                 (do (binding [*out* *err*]
+                       (println (str "\n✗ this libraylib predates 6.0 - it does not export "
+                                     raylib-6-sentinel "."))
+                       (println "  The suite needs 6.0: DrawCircleGradient takes a by-value Vector2")
+                       (println "  there and two ints before it, and the symbol name is the same, so")
+                       (println "  an older library links fine and draws in the wrong place.")
+                       (println (if (= :macos (os-kind))
+                                  "  Upgrade with:  brew upgrade raylib"
+                                  "  Upgrade with:  bb lib:install  (or build 6.0 from source)")))
+                     (System/exit 1))))
              (do
                (binding [*out* *err*]
                  (println "\n✗ libraylib NOT found.")
