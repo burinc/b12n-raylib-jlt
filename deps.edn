@@ -105,6 +105,7 @@
            :mandelbrot-set {:main-opts ["-m" "net.b12n.raylib-jlt.mandelbrot-set"]} ; the Mandelbrot set, zoomable, in a shader
            :raymarching {:main-opts ["-m" "net.b12n.raylib-jlt.raymarching"]} ; a raymarched SDF scene in a shader
            :rounded-rect-shader {:main-opts ["-m" "net.b12n.raylib-jlt.rounded-rect-shader"]} ; SDF rounded rects: fill, border, shadow
-           :palette-switch {:main-opts ["-m" "net.b12n.raylib-jlt.palette-switch"]}} ; bands recolored by an ivec3 palette
+           :palette-switch {:main-opts ["-m" "net.b12n.raylib-jlt.palette-switch"]} ; bands recolored by an ivec3 palette
+           :shader-hot-reload {:main-opts ["-m" "net.b12n.raylib-jlt.shader-hot-reload"]}} ; swap and recompile the GLSL at runtime
 
  :tasks {run "joltc -M:run"}}

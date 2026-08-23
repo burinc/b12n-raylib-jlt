@@ -81,6 +81,7 @@
    [net.b12n.raylib-jlt.rounded-rect-shader]
    [net.b12n.raylib-jlt.rounded-rectangle]
    [net.b12n.raylib-jlt.scissor-test]
+   [net.b12n.raylib-jlt.shader-hot-reload]
    [net.b12n.raylib-jlt.shapes]
    [net.b12n.raylib-jlt.snake]
    [net.b12n.raylib-jlt.space-invaders]

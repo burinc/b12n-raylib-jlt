@@ -297,6 +297,7 @@
   raymarching       {:doc "▶ a raymarched SDF scene in a shader" :task (run-example "raymarching")}
   rounded-rect-shader {:doc "▶ SDF rounded rects: fill, border, shadow" :task (run-example "rounded-rect-shader")}
   palette-switch    {:doc "▶ bands recolored by an ivec3 palette" :task (run-example "palette-switch")}
+  shader-hot-reload {:doc "▶ swap and recompile the GLSL at runtime" :task (run-example "shader-hot-reload")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

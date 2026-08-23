@@ -104,7 +104,8 @@
    ["mandelbrot-set"      "mandelbrot-set" "shaders" "the Mandelbrot set, zoomable, in a shader"]
    ["raymarching"         "raymarching" "shaders" "a raymarched SDF scene in a shader"]
    ["rounded-rect-shader" "rounded-rect-shader" "shaders" "SDF rounded rects: fill, border, shadow"]
-   ["palette-switch"      "palette-switch" "shaders" "bands recolored by an ivec3 palette"]])
+   ["palette-switch"      "palette-switch" "shaders" "bands recolored by an ivec3 palette"]
+   ["shader-hot-reload"   "shader-hot-reload" "shaders" "swap and recompile the GLSL at runtime"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
