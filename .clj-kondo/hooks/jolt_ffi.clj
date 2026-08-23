@@ -19,8 +19,18 @@
       the FFI mistake that otherwise surfaces only as a native crash,
     * its return type, so `(+ 1 (rl/measure-text …))` type-checks.
 
+  Two shapes carry an argument the C signature does not show, and both are
+  handled below or the arity check reports a false positive:
+
+    * a `[:by-value [:struct …]]` RETURN. jolt writes the struct through a
+      caller-supplied destination pointer passed as the FIRST argument, so the
+      Clojure arity is one MORE than the argtype vector.
+    * a `:varargs` marker inside the argtype vector. It is a boundary marker,
+      not a parameter, so the arity is one LESS than the vector's length.
+
   Return-type mapping is deliberately conservative: numeric C types become a
-  number, `:string` a string, and everything else (`:void`, `:pointer`) nil.
+  number, `:string` a string, and everything else (`:void`, `:pointer`,
+  an aggregate) nil.
   `:pointer` is an opaque handle that only ever gets passed back into other
   `ffi/*` calls, which are themselves untyped here, so calling it nil costs
   nothing today. If a pointer ever flows somewhere type-checked, widen this map
@@ -39,14 +49,30 @@
       (= :string k)             (api/string-node "")
       :else                     (api/token-node nil))))
 
+(defn- aggregate?
+  "A [:by-value [:struct …]] type node."
+  [n]
+  (and n (api/vector-node? n)
+       (= :by-value (some-> n :children first api/sexpr))))
+
+(defn- varargs-marker?
+  [n]
+  (= :varargs (api/sexpr n)))
+
 (defn defcfn
   [{:keys [node]}]
   (let [[_defcfn name-node _c-symbol arg-types ret] (:children node)]
     ;; Only rewrite the shape we understand; anything else falls through to the
     ;; default analysis rather than silently interning a wrong var.
     (if (and name-node arg-types (api/vector-node? arg-types))
-      (let [params (map-indexed (fn [i _] (api/token-node (symbol (str "_arg" i))))
-                                (:children arg-types))
+      (let [;; :varargs marks the fixed/variadic boundary and is not itself a
+            ;; parameter, so it does not count toward the arity.
+            arg-count (count (remove varargs-marker? (:children arg-types)))
+            ;; An aggregate return is written through a destination pointer that
+            ;; jolt takes as the first argument, so the callable is one wider
+            ;; than the C signature reads.
+            n (cond-> arg-count (aggregate? ret) inc)
+            params (map (fn [i] (api/token-node (symbol (str "_arg" i)))) (range n))
             expanded (api/list-node
                       [(api/token-node 'clojure.core/defn)
                        name-node

@@ -988,3 +988,129 @@
       (flush-batch)
       (rl-disable-framebuffer)
       (restore-screen-projection!))))
+
+;; --- shaders -----------------------------------------------------------------
+;; raylib's Shader is {unsigned int id; int *locs;} - 16 bytes, passed and
+;; returned BY VALUE. jolt 0.7.23's [:by-value [:struct ...]] expresses that
+;; directly, so this calls raylib's real shader API rather than reaching under it
+;; to rlgl the way the texture section above has to. In particular
+;; LoadShaderFromMemory fills the locations array itself; nothing here builds one.
+;;
+;; The struct descriptor is spelled out in every signature on purpose: it is a
+;; compile-time literal and a def'd alias is rejected with
+;;   jolt.ffi return type must be a keyword or [:by-value [:struct ...]], got V2
+(ffi/defcfn ^:private load-shader-from-memory "LoadShaderFromMemory" [:pointer :string]
+  [:by-value [:struct [[:id :uint] [:locs :pointer]]]])
+(ffi/defcfn ^:private begin-shader-mode "BeginShaderMode"
+  [[:by-value [:struct [[:id :uint] [:locs :pointer]]]]] :void)
+(ffi/defcfn end-shader-mode "EndShaderMode" [] :void)
+(ffi/defcfn ^:private get-shader-location "GetShaderLocation"
+  [[:by-value [:struct [[:id :uint] [:locs :pointer]]]] :string] :int)
+(ffi/defcfn ^:private set-shader-value-raw "SetShaderValue"
+  [[:by-value [:struct [[:id :uint] [:locs :pointer]]]] :int :pointer :int] :void)
+(ffi/defcfn ^:private set-shader-value-v-raw "SetShaderValueV"
+  [[:by-value [:struct [[:id :uint] [:locs :pointer]]]] :int :pointer :int :int] :void)
+(ffi/defcfn ^:private unload-shader-raw "UnloadShader"
+  [[:by-value [:struct [[:id :uint] [:locs :pointer]]]]] :void)
+
+(def shader-layout (ffi/layout [:struct [[:id :uint] [:locs :pointer]]]))
+
+;; ShaderUniformDataType, raylib 6.0. The UINT variants at 8-11 are new in 6.0
+;; and pushed SAMPLER2D from 8 to 12 - a silent break for anything carrying the
+;; 5.5 value, since a wrong type tag binds the wrong slot without erroring.
+(def ^:const UNIFORM-FLOAT 0)  (def ^:const UNIFORM-VEC2 1)
+(def ^:const UNIFORM-VEC3 2)   (def ^:const UNIFORM-VEC4 3)
+(def ^:const UNIFORM-INT 4)    (def ^:const UNIFORM-IVEC2 5)
+(def ^:const UNIFORM-IVEC3 6)  (def ^:const UNIFORM-IVEC4 7)
+(def ^:const UNIFORM-SAMPLER2D 12)
+
+(defn shader
+  "Compile `fs-source` as a fragment shader against raylib's default vertex
+  shader. Returns a pointer to the Shader struct, or nil if the program did not
+  link (raylib prints the compiler log to stderr). Pair with `unload-shader!`.
+
+  GLSL is a string here rather than a file, because LoadShaderFromMemory takes
+  source: nothing is read from disk, so each example stays self-contained and the
+  demo recorder never has a working-directory question. The source must open with
+  `#version 330` - the desktop backend is GL 3.3 core.
+
+  ffi/null rather than nil for the vertex stage, meaning \"use raylib's default\".
+  jolt carries nil across a :string as NULL only since jolt#708, which is merged
+  but not in a release, so the :pointer spelling keeps this working on a stock
+  0.7.23."
+  [fs-source]
+  (let [p (ffi/alloc (ffi/layout-size shader-layout))]
+    (load-shader-from-memory p ffi/null fs-source)
+    (if (pos? (ffi/read-field p shader-layout :id))
+      p
+      (do (ffi/free p) nil))))
+
+(defn unload-shader!
+  "UnloadShader, then release the struct this side."
+  [sh]
+  (unload-shader-raw sh)
+  (ffi/free sh))
+
+(defn uniform-loc
+  "The location of a named uniform, or -1 if the shader does not declare it (or
+  the compiler optimised it away). Look these up once, outside the frame loop -
+  each call is a GL query."
+  [sh name]
+  (get-shader-location sh name))
+
+(defn with-shader
+  "Run (f) with `sh` active. BeginShaderMode / EndShaderMode, so raylib does the
+  batch flush on both edges."
+  [sh f]
+  (begin-shader-mode sh)
+  (try
+    (f)
+    (finally (end-shader-mode))))
+
+;; SetShaderValue takes a POINTER to the value, so each setter stages its floats
+;; or ints in native memory for the length of the call. An undeclared uniform
+;; gives -1, which the nat-int? guards skip: an example whose shader drops an
+;; unused uniform keeps working rather than erroring.
+(defn- staged
+  [write-type values f]
+  (let [p (ffi/alloc (* 4 (count values)))]
+    (try
+      (dotimes [i (count values)]
+        (ffi/write p write-type (* 4 i)
+                   (if (= write-type :float)
+                     (double (nth values i))
+                     (int (nth values i)))))
+      (f p)
+      (finally (ffi/free p)))))
+
+(defn set-uniform-float!
+  [sh loc v]
+  (when (nat-int? loc)
+    (staged :float [v] (fn [p] (set-shader-value-raw sh loc p UNIFORM-FLOAT)))))
+
+(defn set-uniform-vec2!
+  [sh loc x y]
+  (when (nat-int? loc)
+    (staged :float [x y] (fn [p] (set-shader-value-raw sh loc p UNIFORM-VEC2)))))
+
+(defn set-uniform-vec3!
+  [sh loc x y z]
+  (when (nat-int? loc)
+    (staged :float [x y z] (fn [p] (set-shader-value-raw sh loc p UNIFORM-VEC3)))))
+
+(defn set-uniform-vec4!
+  [sh loc x y z w]
+  (when (nat-int? loc)
+    (staged :float [x y z w] (fn [p] (set-shader-value-raw sh loc p UNIFORM-VEC4)))))
+
+(defn set-uniform-int!
+  [sh loc v]
+  (when (nat-int? loc)
+    (staged :int [v] (fn [p] (set-shader-value-raw sh loc p UNIFORM-INT)))))
+
+(defn set-uniform-ivec3-array!
+  "An array of `n` ivec3s from a flat sequence of 3n ints - how a palette reaches
+  a shader as `uniform ivec3 palette[8]`."
+  [sh loc ints n]
+  (when (nat-int? loc)
+    (staged :int ints (fn [p] (set-shader-value-v-raw sh loc p UNIFORM-IVEC3 n)))))
