@@ -30,6 +30,15 @@
  ;;                              coefficient and reads exactly as the formula does.
  ;;   flow-field                 (* 0.5 (+ sin cos)) is "average the two waves back
  ;;                              to [-1,1]" before scaling by a full turn.
+ ;;   raymarching                the three camera-move lines are one vector
+ ;;                              equation written across three axes -
+ ;;                                px (+ px (* speed (+ (* f fwd-x) (* s rt-x))))
+ ;;                                py (+ py (* speed (* f fwd-y)))
+ ;;                                pz (+ pz (* speed (+ (* f fwd-z) (* s rt-z))))
+ ;;                              y has no strafe term because you cannot strafe
+ ;;                              vertically, so its (* f fwd-y) reads as the same
+ ;;                              shape minus that term. Flattening only the middle
+ ;;                              line is what breaks the parallel.
  ;;
  ;; Scoped per-namespace rather than switched off globally, so a genuinely
  ;; redundant nest anywhere else in the suite is still reported.
@@ -37,4 +46,5 @@
  {net.b12n.raylib-jlt.asteroids    {:linters {:redundant-nested-call {:level :off}}}
   net.b12n.raylib-jlt.kaleidoscope {:linters {:redundant-nested-call {:level :off}}}
   net.b12n.raylib-jlt.splines      {:linters {:redundant-nested-call {:level :off}}}
-  net.b12n.raylib-jlt.flow-field   {:linters {:redundant-nested-call {:level :off}}}}}
+  net.b12n.raylib-jlt.flow-field   {:linters {:redundant-nested-call {:level :off}}}
+  net.b12n.raylib-jlt.raymarching  {:linters {:redundant-nested-call {:level :off}}}}}
