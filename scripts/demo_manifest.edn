@@ -65,10 +65,13 @@
                                      [2.4 :click 420 190] [3.2 :click 500 260]
                                      [4.0 :click 560 330] [4.8 :click 460 360]
                                      [5.6 :click 350 330] [6.4 :click 270 270]]}
+  ;; Keys, not clicks: synthetic clicks never actuate in a raylib app (input is
+  ;; pid-routed and raylib ignores pid-routed BUTTON events). The example drives
+  ;; the same state from the arrow keys, which are delivered.
   "input-virtual-controls"  {:duration 8
-                             :input [[1.0 :click 174 320] [2.0 :click 130 276]
-                                     [3.0 :click 86 320] [4.0 :click 680 320]
-                                     [5.5 :click 130 364] [6.5 :click 680 320]]}
+                             :input [[1.0 :key "right"] [2.0 :key "up"]
+                                     [3.0 :key "left"] [4.0 :key "space"]
+                                     [5.5 :key "down"] [6.5 :key "space"]]}
   "yaw-pitch-roll"          {:duration 8
                              :input [[1.0 :key "a"] [2.0 :key "w"] [3.0 :key "q"]
                                      [4.5 :key "d"] [5.5 :key "e"]]}
