@@ -92,17 +92,19 @@
 
   ;; --- shaders (added with the 97-example suite) ---------------------------
   ;; The two fractal examples take the defaults and need a HUMAN at the mouse
-  ;; during the take. Everything that moves them is pointer-driven - julia's c
-  ;; follows the cursor; mandelbrot zooms on the wheel and pans on a drag - and
-  ;; none of it is reachable synthetically: pointer motion is not in the
-  ;; timeline vocabulary, and clicks never actuate (see input-virtual-controls
-  ;; above). Driven by hand they record richly: 24 and 30 frames. Left alone
-  ;; they record a correct picture that never moves - mandelbrot-set came out a
-  ;; single frame that way.
+  ;; during the take. Driven by hand they record richly (24 and 30 frames);
+  ;; left alone, mandelbrot-set records a correct picture that never moves.
   ;;
-  ;; A `:key "up"`/`"down"` timeline on the iteration cap was tried instead and
-  ;; is WORSE - it took julia-set from 4 frames to 1. `key-down?` does actuate
-  ;; (texture-tiling steers on it), but a tap only moves iter by 4-8 out of
-  ;; 240, too few pixels to survive the encoder's frame dedup, and the longer
-  ;; :duration it needed spent the take on a static image. Do not re-add it.
+  ;; Do NOT reach for a `:key` timeline instead. Synthetic input does not
+  ;; actuate a raylib/GLFW window AT ALL - not clicks, and not keys either
+  ;; (b12n-cgevent#1 and #6). Measured here, not assumed:
+  ;; orthographic-projection has no self-animation and prints its own state,
+  ;; and its committed 17-frame take reads "PERSPECTIVE (SPACE to toggle)" in
+  ;; BOTH the first and last frame despite a [[3.0 :key "space"]] timeline -
+  ;; the frames differ only by window jitter. Every example in this suite that
+  ;; records well while carrying a `:key` timeline turns out to self-animate
+  ;; (texture-tiling scrolls, input-virtual-controls has a Math/sin hop,
+  ;; basic-screen-manager auto-advances every 90 frames), which is why the
+  ;; timelines look like they work. game-2048 and minesweeper, which do not
+  ;; self-animate, are both single frames.
   }}
