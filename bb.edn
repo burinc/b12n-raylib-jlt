@@ -338,7 +338,7 @@
                 :group (nth row 2)
                 :desc (nth row 3)
                 :src (reg/src-path (nth row 1))
-                :run (str "joltc -M:" (nth row 1))})))}
+                :run (str jolt-cmd " -M:" (nth row 1))})))}
 
   docs-sync
   {:doc "Republish the docs: rebuild -> push site repo -> mirror to wiki -> S3 + CloudFront. Maintainer task (needs sibling repos, AWS_PROFILE=b12n). bb docs-sync [--no-push]"
