@@ -91,11 +91,11 @@
 ;; #region camera2d-by-value
 ;; --- Camera2D: a struct passed BY VALUE (the one non-Color by-value struct) ---
 ;; raylib's BeginMode2D(Camera2D) takes {Vector2 offset; Vector2 target; float
-;; rotation; float zoom} — 24 bytes — by value. On the AArch64 (Apple) ABI a
+;; rotation; float zoom}, 24 bytes, passed by value. On the AArch64 (Apple) ABI a
 ;; composite larger than 16 bytes is passed INDIRECTLY: the caller allocates a
 ;; copy and passes a POINTER to it, so the binding is [:pointer] and we build the
 ;; struct (six little-endian floats) in native memory. NOTE: this is AArch64-
-;; specific — on the x86-64 SysV ABI the 24 bytes are passed on the stack, which
+;; specific: on the x86-64 SysV ABI the 24 bytes are passed on the stack, which
 ;; a [:pointer] binding does NOT do (see README). For a portable alternative,
 ;; apply the same transform with the scalar rlgl matrix ops instead.
 (ffi/defcfn ^:private begin-mode-2d-ptr "BeginMode2D" [:pointer] :void)
