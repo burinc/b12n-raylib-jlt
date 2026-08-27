@@ -18,12 +18,14 @@
 ;; ("unresolved symbols are compile errors") a symbol must be defined before its
 ;; first use in the file — in a fn body and in an :or destructuring default just as
 ;; much as at top level. Keep this section above its first use.
+;; #region rgba
 (defn rgba
   "Pack an RGBA color into the little-endian uint32 that raylib's `Color` struct
   is (r | g<<8 | b<<16 | a<<24), so it can cross the FFI boundary as a :uint."
   [r g b a]
   (bit-or (int r) (bit-shift-left (int g) 8)
           (bit-shift-left (int b) 16) (bit-shift-left (int a) 24)))
+;; #endregion
 
 ;; raylib's named color palette (values from src/raylib.h).
 (def LIGHTGRAY (rgba 200 200 200 255))   (def GRAY       (rgba 130 130 130 255))
@@ -63,7 +65,9 @@
 (ffi/defcfn draw-rectangle       "DrawRectangle"       [:int :int :int :int :uint] :void)
 (ffi/defcfn draw-rectangle-lines "DrawRectangleLines"  [:int :int :int :int :uint] :void)
 (ffi/defcfn draw-rectangle-grad-v "DrawRectangleGradientV" [:int :int :int :int :uint :uint] :void)
+;; #region draw-circle-binding
 (ffi/defcfn draw-circle          "DrawCircle"          [:int :int :float :uint] :void)
+;; #endregion
 (ffi/defcfn draw-circle-lines    "DrawCircleLines"     [:int :int :float :uint] :void)
 (ffi/defcfn draw-ellipse         "DrawEllipse"         [:int :int :float :float :uint] :void)
 
@@ -84,6 +88,7 @@
                 (bit-and (bit-shift-right color 16) 0xff)
                 (bit-and (bit-shift-right color 24) 0xff)))
 
+;; #region camera2d-by-value
 ;; --- Camera2D: a struct passed BY VALUE (the one non-Color by-value struct) ---
 ;; raylib's BeginMode2D(Camera2D) takes {Vector2 offset; Vector2 target; float
 ;; rotation; float zoom} — 24 bytes — by value. On the AArch64 (Apple) ABI a
@@ -94,6 +99,7 @@
 ;; a [:pointer] binding does NOT do (see README). For a portable alternative,
 ;; apply the same transform with the scalar rlgl matrix ops instead.
 (ffi/defcfn ^:private begin-mode-2d-ptr "BeginMode2D" [:pointer] :void)
+;; #endregion
 (ffi/defcfn end-mode-2d "EndMode2D" [] :void)
 
 (defn with-camera-2d
