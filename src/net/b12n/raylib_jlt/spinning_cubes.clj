@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.spinning-cubes
-  "raylib [models] example — a row of cubes each spinning in place with a
+  "raylib [models] example - a row of cubes each spinning in place with a
   per-index phase offset (distinct from waving-cubes, which translates a grid).
   See docs/guide/rlgl-immediate-mode.md."
   (:require

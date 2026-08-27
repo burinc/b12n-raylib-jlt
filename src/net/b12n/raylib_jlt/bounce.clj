@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.bounce
-  "raylib [shapes] example — bouncing ball (`joltc -M:bounce`).
+  "raylib [shapes] example - bouncing ball (`joltc -M:bounce`).
 
   Ported from examples/shapes/shapes_bouncing_ball.c: a ball bounces around the
   window; SPACE pauses. Position/velocity are plain doubles and the ball is drawn

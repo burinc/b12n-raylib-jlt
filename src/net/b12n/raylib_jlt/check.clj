@@ -2,7 +2,7 @@
   "Headless compile-check (`joltc -M:check`).
 
   Requires every example namespace, which compiles each one (macro-expansion,
-  var resolution, arity checks) WITHOUT opening a window — so the whole suite can
+  var resolution, arity checks) WITHOUT opening a window, so the whole suite can
   be verified with no display attached. It does not exercise rendering; that needs
   a real window (each example's own `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT`
   smoke does that)."

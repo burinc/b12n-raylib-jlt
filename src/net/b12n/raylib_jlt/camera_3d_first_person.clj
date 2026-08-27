@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.camera-3d-first-person
-  "raylib [core] example — first-person 3D camera (`joltc -M:camera-3d-first-person`).
+  "raylib [core] example - first-person 3D camera (`joltc -M:camera-3d-first-person`).
 
   Walk a yard of random columns in first person: WASD moves, the mouse looks. Same
   3D path as camera-3d (Camera3D by value + rlgl cube!). The look direction is

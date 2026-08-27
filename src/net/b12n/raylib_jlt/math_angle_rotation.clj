@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.math-angle-rotation
-  "raylib [shapes] example — angle rotation (`joltc -M:math-angle-rotation`).
+  "raylib [shapes] example - angle rotation (`joltc -M:math-angle-rotation`).
 
   A ring of fixed-angle spokes plus one spoke that spins, showing angle-based line
   drawing with sin/cos."

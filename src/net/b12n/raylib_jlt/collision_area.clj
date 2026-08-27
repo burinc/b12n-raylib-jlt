@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.collision-area
-  "raylib [shapes] example — collision area (`joltc -M:collision-area`).
+  "raylib [shapes] example - collision area (`joltc -M:collision-area`).
 
   A blue box bounces horizontally; a gold box follows the mouse. When they
   overlap, the intersection rectangle is highlighted in red. AABB overlap is

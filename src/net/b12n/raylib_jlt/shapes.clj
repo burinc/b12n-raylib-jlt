@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.shapes
-  "raylib [shapes] example — basic shapes (`joltc -M:shapes`).
+  "raylib [shapes] example - basic shapes (`joltc -M:shapes`).
 
   A tour of the scalar shape primitives: filled and outlined rectangles and
   circles, an ellipse, a line, and a triangle drawn via rlgl immediate mode.

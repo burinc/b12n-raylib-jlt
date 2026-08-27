@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.writing-anim
-  "raylib [text] example — writing animation (`joltc -M:writing-anim`).
+  "raylib [text] example - writing animation (`joltc -M:writing-anim`).
 
   A message types itself out one character at a time, pauses at the end, then
   restarts. A growing substring of the full text driven by the frame counter."

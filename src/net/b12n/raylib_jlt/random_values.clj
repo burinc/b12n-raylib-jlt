@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.random-values
-  "raylib [core] example — random values (`joltc -M:random-values`).
+  "raylib [core] example - random values (`joltc -M:random-values`).
 
   A new random value (0-99) every two seconds via GetRandomValue, with a small
   history of recent rolls."

@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.flow-field
-  "raylib [generative] example — particles steered by a smooth sine-layered field,
+  "raylib [generative] example - particles steered by a smooth sine-layered field,
   each leaving a short trail. The field angle is a pure function of position + time;
   trails are per-particle position history (double-buffer-safe), redrawn each frame."
   (:require

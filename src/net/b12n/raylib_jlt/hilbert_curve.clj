@@ -13,8 +13,8 @@
 
 (defn- hilbert
   "Classic recursive Hilbert curve; appends midpoints to `pts` and returns it. The
-  geometry is grouped into vectors — origin `o` [x y] and the two basis vectors
-  `ei` [xi xj], `ej` [yi yj] — rather than eight loose scalars. (Left positional,
+  geometry is grouped into vectors, origin `o` [x y] and the two basis vectors
+  `ei` [xi xj], `ej` [yi yj], rather than eight loose scalars. (Left positional,
   not keyword args: a 4-way recursion reads more clearly with the vectors inline.)"
   [[x y :as o] [xi xj] [yi yj] n pts]
   (if (<= n 0)

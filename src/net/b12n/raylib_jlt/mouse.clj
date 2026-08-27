@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.mouse
-  "raylib [core] example — mouse input (`joltc -M:mouse`).
+  "raylib [core] example - mouse input (`joltc -M:mouse`).
 
   Ported from examples/core/core_input_mouse.c: a circle follows the cursor and
   turns LIME while the left button is held. Uses the scalar GetMouseX / GetMouseY

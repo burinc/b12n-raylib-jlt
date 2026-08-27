@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.fireworks
-  "raylib [generative] example — fireworks. Rockets rise and explode into particles
+  "raylib [generative] example - fireworks. Rockets rise and explode into particles
   that fall under gravity and fade out via the alpha channel."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

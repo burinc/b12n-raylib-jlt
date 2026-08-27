@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.lines-bezier
-  "raylib [shapes] example — a cubic Bézier curve whose end point follows the
+  "raylib [shapes] example - a cubic Bézier curve whose end point follows the
   mouse. DrawLineBezier takes Vector2 by value (unbindable), so the curve is
   sampled in Clojure and drawn as line! segments. See
   docs/guide/rlgl-immediate-mode.md."

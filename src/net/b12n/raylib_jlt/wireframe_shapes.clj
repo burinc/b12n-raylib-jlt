@@ -1,7 +1,7 @@
 (ns net.b12n.raylib-jlt.wireframe-shapes
   "Wireframe shapes (`joltc -M:wireframe-shapes`).
 
-  Four wireframe solids — a pyramid, an octahedron, a torus and a helix — each
+  Four wireframe solids, a pyramid, an octahedron, a torus and a helix, each
   tumbling under a 3D camera. Each shape is a list of 3D edges drawn with rlgl
   immediate mode in RL_LINES mode (rl-vertex-3f pairs); rotation/position come from
   the rlgl matrix stack, the same 3D path as camera-3d and rlgl-solar-system."

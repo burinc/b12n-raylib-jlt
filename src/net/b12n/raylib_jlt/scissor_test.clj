@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.scissor-test
-  "raylib [core] example — scissor test (`joltc -M:scissor-test`).
+  "raylib [core] example - scissor test (`joltc -M:scissor-test`).
 
   A colorful grid is drawn across the whole window, but a scissor rectangle clips
   drawing so only the part inside the box is visible. Uses the scalar

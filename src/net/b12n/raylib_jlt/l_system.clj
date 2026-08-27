@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.l-system
-  "raylib [generative] example — an L-system fractal plant. A string is rewritten by
+  "raylib [generative] example - an L-system fractal plant. A string is rewritten by
   production rules, then drawn with turtle graphics (F=forward, +/-=turn, []=branch);
   the plant reveals itself segment by segment, then regrows."
   (:require

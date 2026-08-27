@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.waving-cubes
-  "raylib [models] example — waving cubes (`joltc -M:waving-cubes`).
+  "raylib [models] example - waving cubes (`joltc -M:waving-cubes`).
 
   An N×N grid of cubes whose heights ripple like water via a sine wave of position
   + time, coloured by position, under a slowly orbiting 3D camera. Same 3D path as

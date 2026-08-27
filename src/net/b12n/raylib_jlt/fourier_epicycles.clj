@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.fourier-epicycles
-  "raylib [generative] example — a chain of rotating circles (a Fourier series for a
+  "raylib [generative] example - a chain of rotating circles (a Fourier series for a
   square wave) whose tip traces the wave. Classic 'drawing with epicycles'."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

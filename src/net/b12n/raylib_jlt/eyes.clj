@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.eyes
-  "raylib [shapes] example — following eyes (`joltc -M:eyes`).
+  "raylib [shapes] example - following eyes (`joltc -M:eyes`).
 
   Ported from examples/shapes/shapes_following_eyes.c: two eyes whose pupils track
   the mouse cursor, each pupil clamped to stay inside its eye. Uses scalar

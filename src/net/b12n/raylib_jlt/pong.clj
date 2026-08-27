@@ -2,7 +2,7 @@
   "Pong (`joltc -M:pong`).
 
   The classic, ported to jolt: your paddle is on the left (W / S); the right paddle
-  is a CPU that tracks the ball. The ball speeds up nothing fancy — it just takes
+  is a CPU that tracks the ball. The ball speeds up nothing fancy. It just takes
   english off where it hits a paddle. First to 7 wins; ENTER restarts.
 
   One immutable state map threaded through the loop; `step` reads input and returns

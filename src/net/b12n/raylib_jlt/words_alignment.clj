@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.words-alignment
-  "raylib [text] example — word alignment (`joltc -M:words-alignment`).
+  "raylib [text] example - word alignment (`joltc -M:words-alignment`).
 
   A word aligned left / centre / right inside a box using MeasureText to compute
   the horizontal offset. The alignment cycles over time."

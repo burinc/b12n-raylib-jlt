@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.bullet-hell
-  "raylib [shapes] example — bullet spiral (`joltc -M:bullet-hell`).
+  "raylib [shapes] example - bullet spiral (`joltc -M:bullet-hell`).
 
   A rotating emitter at the centre sprays bullets outward in a three-armed spiral;
   each bullet flies until it leaves the window. Pure math over draw-circle."

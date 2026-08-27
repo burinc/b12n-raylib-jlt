@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.snake
-  "raylib [games] example — the classic snake. Arrow keys steer; eat food to grow;
+  "raylib [games] example - the classic snake. Arrow keys steer; eat food to grow;
   hitting a wall or yourself ends it (SPACE restarts). Grid + frame-tick movement,
   all state threaded through the loop."
   (:require

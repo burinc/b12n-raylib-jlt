@@ -2,7 +2,7 @@
 ;;
 ;; jolt.ffi/defcfn defines a var per bound C symbol. clj-kondo cannot see through
 ;; the macro, so hooks/jolt_ffi.clj rewrites each call into an equivalent `defn`
-;; — see that file for why. Without it the suite reports ~500 false positives and
+;; See that file for why. Without it the suite reports ~500 false positives and
 ;; the linter is unusable as a gate.
 {:hooks {:analyze-call {jolt.ffi/defcfn hooks.jolt-ffi/defcfn}}
 
@@ -16,11 +16,11 @@
 
  ;; :redundant-nested-call flags (+ a (+ b c)) in favour of (+ a b c). That is
  ;; the right call for a plain accumulation, and those sites were flattened. In
- ;; the namespaces below the nesting is load-bearing *notation* — it mirrors the
+ ;; the namespaces below the nesting is load-bearing *notation*. It mirrors the
  ;; maths the code implements, and flattening would obscure it:
  ;;
  ;;   asteroids / kaleidoscope   a 2D rotation, written so the x and y lines are
- ;;                              visually parallel —
+ ;;                              visually parallel
  ;;                                x (+ cx (- (* ax ca) (* ay sa)))
  ;;                                y (+ cy (+ (* ax sa) (* ay ca)))
  ;;                              only the y line *can* flatten, so flattening it

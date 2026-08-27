@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.double-pendulum
-  "raylib [shapes] example — double pendulum (`joltc -M:double-pendulum`).
+  "raylib [shapes] example - double pendulum (`joltc -M:double-pendulum`).
 
   A chaotic double pendulum integrated with the standard equations of motion,
   with a fading trail of the lower bob. Pure math over lines + circles."

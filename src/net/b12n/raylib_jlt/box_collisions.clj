@@ -1,8 +1,8 @@
 (ns net.b12n.raylib-jlt.box-collisions
-  "raylib [models] example — box collisions (`joltc -M:box-collisions`).
+  "raylib [models] example - box collisions (`joltc -M:box-collisions`).
 
   A player cube moves with WASD across a grid; each static obstacle box turns red
-  when the player's box overlaps it (3D AABB overlap, computed in Clojure — no
+  when the player's box overlaps it (3D AABB overlap, computed in Clojure, no
   by-value Rectangle/BoundingBox needed). Reuses the 3D path (Camera3D by value +
   rl/cube!) under a fixed 3/4 camera. The player spawns already touching one box,
   so the collision highlight is visible from frame 0."
@@ -27,7 +27,7 @@
     :s 3.0}
    {:x  1.6
     :z  0.0
-    :s 2.0}     ; near the spawn — overlaps the player at frame 0
+    :s 2.0}     ; near the spawn, overlaps the player at frame 0
    {:x -6.0
     :z -3.0
     :s 2.2}])
@@ -38,7 +38,7 @@
 
 (defn- hit?
   "3D AABB overlap between the player (centre px,pz, size PS) and box b. Both sit on
-  the ground so the vertical axis always overlaps — only x/z are tested."
+  the ground so the vertical axis always overlaps, only x/z are tested."
   [px pz b]
   (let [ph (/ PS 2.0) bh (/ (:s b) 2.0)]
     (and (< (fabs (- px (:x b))) (+ ph bh))

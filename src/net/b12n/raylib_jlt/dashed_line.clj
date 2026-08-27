@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.dashed-line
-  "raylib [shapes] example — dashed line (`joltc -M:dashed-line`).
+  "raylib [shapes] example - dashed line (`joltc -M:dashed-line`).
 
   A dashed line from the screen centre to the mouse, drawn as a series of short
   segments with gaps (every other segment)."

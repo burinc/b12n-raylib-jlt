@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.basic-screen-manager
-  "raylib [core] example — screen manager (`joltc -M:basic-screen-manager`).
+  "raylib [core] example - screen manager (`joltc -M:basic-screen-manager`).
 
   A minimal screen/state machine: LOGO → TITLE → GAMEPLAY → ENDING. It advances on
   ENTER, and also auto-advances on a timer so the headless smoke test flows through

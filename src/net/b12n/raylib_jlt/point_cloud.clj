@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.point-cloud
-  "raylib [models] example — a cloud of ~1500 points, each a tiny rlgl cube,
+  "raylib [models] example - a cloud of ~1500 points, each a tiny rlgl cube,
   colored by position and slowly rotating via the matrix stack. (rlgl has no
   RL_POINTS mode, so points are drawn as small cubes.) See
   docs/guide/rlgl-immediate-mode.md."

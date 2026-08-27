@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.input-box
-  "raylib [text] example — a text input box. Type printable characters
+  "raylib [text] example - a text input box. Type printable characters
   (GetCharPressed), backspace deletes, a blinking cursor blinks, ENTER clears.
   Uses the get-char-pressed / get-key-pressed binds. See README.md."
   (:require

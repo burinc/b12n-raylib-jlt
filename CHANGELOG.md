@@ -72,9 +72,9 @@ Examples read at <https://raylib-jlt.b12n.app>.
   the catalog still described it as a `bb.edn` row; adding an example is
   five touchpoints, not four, and the guide now says which.
 
-- `bb docs-sync` says which kind of deploy failure it hit — unreachable
+- `bb docs-sync` says which kind of deploy failure it hit, unreachable
   AWS, missing or expired credentials, a 403, or a genuinely absent
-  bucket — instead of blaming missing infrastructure for all four and
+  bucket. Instead of blaming missing infrastructure for all four and
   recommending `tofu:apply`. On a restricted laptop `HTTPS_PROXY` is the
   usual cause, and it now detects that and prints the unset-and-retry
   line.
@@ -89,7 +89,7 @@ Examples read at <https://raylib-jlt.b12n.app>.
   it looked only at its own run's result, so a commit left behind by an
   earlier run stayed local forever.
 
-## 2026-08-20 — Public launch
+## 2026-08-20: Public launch
 
 Highlights:
 
@@ -97,7 +97,7 @@ Highlights:
   Clojure on Chez Scheme, with no JVM anywhere: 32 shapes, 12 in 3D, 10
   games, 9 core, 7 generative pieces and 5 text.
 - They call the real `libraylib` directly over its C ABI through
-  `jolt.ffi` — no wrapper library, no codegen, no C shim. The bindings
+  `jolt.ffi`, no wrapper library, no codegen, no C shim. The bindings
   and a keyword-argument drawing API live in one shared namespace,
   `net.b12n.raylib-jlt.raylib`, and each example is a small namespace on
   top of it.
@@ -136,10 +136,10 @@ Other changes:
 
 - Jolt 0.4.0 resolves strictly in definition order, so the `Color`
   section had to move above its first use. The requirement is noted
-  under Requirements in the README — it bites any example that grows a
+  under Requirements in the README. It bites any example that grows a
   forward reference.
 
-## 2026-07-18 — First cut
+## 2026-07-18: First cut
 
 - Grew from 42 examples to 75 in a day: 8 assorted, then 6 classic
   games, 7 generative pieces, and two rounds of 6 shapes examples.

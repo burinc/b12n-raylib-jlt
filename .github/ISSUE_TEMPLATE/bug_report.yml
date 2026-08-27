@@ -6,14 +6,14 @@ body:
     attributes:
       value: |
         Most failures here come down to three things: your CPU architecture, your
-        jolt version, and where `libraylib` came from. Please fill those in — they
+        jolt version, and where `libraylib` came from. Please fill those in. They
         turn a guess into a diagnosis.
 
         **Known issue, please check first:** the `camera2d` and `camera-3d`
         examples pass a struct by value using an AArch64-specific pointer trick.
         On **x86-64** they can crash with an invalid memory reference. That is
         [documented and expected](https://github.com/burinc/b12n-raylib-jlt/blob/main/docs/guide/struct-by-value-pointer-trick.md),
-        not a new bug — though a portable rlgl-matrix replacement is very welcome.
+        not a new bug, though a portable rlgl-matrix replacement is very welcome.
 
   - type: input
     id: example
@@ -40,13 +40,13 @@ body:
       value: |
         ```
         $ uname -sm
-        (paste here — OS and CPU architecture)
+        (paste here, OS and CPU architecture)
 
         $ jolt --version
         (paste here)
 
         $ bb lib:check
-        (paste here — tells us whether libraylib was found and where)
+        (paste here, tells us whether libraylib was found and where)
         ```
     validations:
       required: true
@@ -69,7 +69,7 @@ body:
       description: |
         `bb check` (or `joltc -M:check`) compiles every example without opening a
         window. If it fails, the problem is in the shared binding layer rather
-        than in one example — paste its output here.
+        than in one example. Paste its output here.
       value: |
         ```
         $ bb check

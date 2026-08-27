@@ -9,15 +9,15 @@
 ;;   bb lib:check       is the native libraylib installed for this OS/arch?
 ;;   bb lib:install     install libraylib via the platform package manager
 ;;
-;; ── Quality — lint/format/checks ──
+;; ── Quality: lint/format/checks ──
 ;;   bb lint                          clj-kondo over src (report only)
 ;;   bb lint:strict                   bb lint, but exit non-zero if any findings
 ;;   bb lsp:format                    reformat all Clojure files (clojure-lsp)
-;;   bb lsp:format-check              check formatting — dry run
+;;   bb lsp:format-check              check formatting, dry run
 ;;   bb lsp:clean-ns                  clean + organize ns forms (clojure-lsp)
-;;   bb lsp:clean-ns-check            check ns forms — dry run
+;;   bb lsp:clean-ns-check            check ns forms, dry run
 ;;   bb lsp:diagnostics               clojure-lsp diagnostics
-;;   bb lsp:check                     all LSP checks (format + clean-ns + diagnostics) — dry run
+;;   bb lsp:check                     all LSP checks (format + clean-ns + diagnostics), dry run
 ;;   bb lsp:fix                       auto-fix: format + clean-ns (mutating)
 ;;   bb check:positional-args         find fns with 3+ positional args (report only)
 ;;   bb check:positional-args:strict  bb check:positional-args, but exit non-zero if any found
@@ -33,10 +33,10 @@
 ;; Each `bb <name>` example task shells out to the example's joltc alias in
 ;; deps.edn. Formatting is owned by clojure-lsp, not cljfmt: the two disagree
 ;; on some compact literal tables (e.g. digital_clock.clj's segment map), so
-;; only one formatter may run against src — clojure-lsp was chosen so
+;; only one formatter may run against src, and clojure-lsp was chosen so
 ;; `lsp:clean-ns` (no cljfmt equivalent) and `lsp:format` share one tool.
 ;; NOTE: task bodies are read by babashka's EDN reader, which does NOT support
-;; #"regex", @deref, or #(...) reader macros — use (fn [x] ...) etc.
+;; #"regex", @deref, or #(...) reader macros. Use (fn [x] ...) etc.
 {:min-bb-version "1.3.0"
  :paths ["scripts"]
 
@@ -87,7 +87,7 @@
 
     ;; --- native-library (libraylib) detection + install ----------------------
     ;; jolt loads the shared libraylib over its C ABI (see deps.edn :jolt/native).
-    ;; These helpers report where that library lives — or how to install it — for
+    ;; These helpers report where that library lives, or how to install it, for
     ;; Linux, macOS/Intel (/usr/local) and macOS/Apple-Silicon (/opt/homebrew).
     (defn os-kind []
       (let [n (str/lower-case (or (System/getProperty "os.name") ""))]
@@ -101,7 +101,7 @@
               (or (= a "x86_64") (= a "amd64"))            :x86_64
               :else                                        (keyword a))))
 
-    ;; macOS: Homebrew's prefix differs by CPU — /opt/homebrew (Apple Silicon)
+    ;; macOS: Homebrew's prefix differs by CPU, /opt/homebrew (Apple Silicon)
     ;; vs /usr/local (Intel). List the arch's likely prefix first.
     (defn mac-lib-candidates []
       (let [prefixes (if (= :x86_64 (arch-kind))
@@ -322,7 +322,7 @@
              (println "bb record needs the `screen-grab` capture CLI on your PATH.")
              (println "That tool is internal and not publicly released yet, so this")
              (println "task is maintainer-only. You do not need it to view the demos:")
-             (println "every GIF is committed under docs/demos/ — see docs/demos/README.md.")
+             (println "every GIF is committed under docs/demos/. See docs/demos/README.md.")
              (System/exit 1))
            (let [{:keys [exit]} (apply shell {:continue true}
                                        "screen-grab" "record"
@@ -393,14 +393,14 @@
                              (let [st (:out (shell {:dir dir :out :string} "git" "status" "--short" "--branch"))]
                                (cond
                                  (str/includes? st "behind")
-                                 (do (println (str "  BEHIND origin — resolve manually (cd " dir " && git pull --rebase), not auto-pushing"))
+                                 (do (println (str "  BEHIND origin, resolve manually (cd " dir " && git pull --rebase), not auto-pushing"))
                                      :behind)
 
                                  ;; No upstream = no ahead/behind in the status line, so the check below
                                  ;; would silently read as "nothing to push". filter-repo drops the remote,
                                  ;; so a repo can land here after a history rewrite.
                                  (not (str/includes? st "..."))
-                                 (do (println (str "  NO UPSTREAM for main in " dir " — not pushing."))
+                                 (do (println (str "  NO UPSTREAM for main in " dir ", not pushing."))
                                      (println "  Fix with: git branch --set-upstream-to=origin/main main")
                                      :no-upstream)
 
@@ -558,7 +558,7 @@
    :task (shell jolt-cmd "-M:check")}
 
   ;; --- quality: lint (clj-kondo) --------------------------------------------
-  ;; Formatting lives under lsp:format below, not here — see the top-of-file
+  ;; Formatting lives under lsp:format below, not here. See the top-of-file
   ;; note on why clojure-lsp (not cljfmt) owns formatting in this project.
   lint
   {:doc "clj-kondo over src (report only, always exits 0); strict: bb lint:strict"
@@ -579,11 +579,11 @@
              (do (println "✗ format failed") (System/exit exit))))}
 
   lsp:format-check
-  {:doc "Check formatting — dry run"
+  {:doc "Check formatting, dry run"
    :task (let [{:keys [exit]} (shell {:continue true} "clojure-lsp" "format" "--dry")]
            (if (zero? exit)
              (println "✓ all files formatted")
-             (do (println "✗ files need formatting — run bb lsp:format") (System/exit exit))))}
+             (do (println "✗ files need formatting, run bb lsp:format") (System/exit exit))))}
 
   lsp:clean-ns
   {:doc "Clean + organize ns forms (clojure-lsp)"
@@ -593,11 +593,11 @@
              (do (println "✗ clean-ns failed") (System/exit exit))))}
 
   lsp:clean-ns-check
-  {:doc "Check ns forms — dry run"
+  {:doc "Check ns forms, dry run"
    :task (let [{:keys [exit]} (shell {:continue true} "clojure-lsp" "clean-ns" "--dry")]
            (if (zero? exit)
              (println "✓ all ns forms clean")
-             (do (println "✗ ns forms need cleaning — run bb lsp:clean-ns") (System/exit exit))))}
+             (do (println "✗ ns forms need cleaning, run bb lsp:clean-ns") (System/exit exit))))}
 
   ;; clojure-lsp's :diagnostics command runs clj-kondo under the hood too, so
   ;; this mostly mirrors `bb lint` plus any LSP-only diagnostics.
@@ -609,7 +609,7 @@
              (println "✗ diagnostics found (see above)")))}
 
   lsp:check
-  {:doc "All LSP checks (format + clean-ns + diagnostics) — dry run"
+  {:doc "All LSP checks (format + clean-ns + diagnostics), dry run"
    :task (do (println "-> LSP checks (dry run)")
              (println "-> format --dry")
              (shell {:continue true} "clojure-lsp" "format" "--dry")
@@ -626,7 +626,7 @@
              (shell {:continue true} "clojure-lsp" "format")
              (println "-> clean-ns")
              (shell {:continue true} "clojure-lsp" "clean-ns")
-             (println "✓ auto-fixes applied — run bb lsp:diagnostics + bb check to confirm"))}
+             (println "✓ auto-fixes applied, run bb lsp:diagnostics + bb check to confirm"))}
 
   ;; --- quality: positional-args check ---------------------------------------
   check:positional-args
@@ -696,16 +696,16 @@
   ;; --- git hooks --------------------------------------------------------------
   ;; FAST hook: lint (any finding blocks, matching `bb lint:strict`) + format +
   ;; clean-ns dry-run, ~2s. FULL adds `bb check` (headless compile of every
-  ;; example) — the project has no unit-test suite, so that's the closest
+  ;; example), the project has no unit-test suite, so that's the closest
   ;; equivalent pre-commit gate.
   hooks:install
   {:doc "Install FAST git pre-commit hook (lint + format + clean-ns, ~2s)"
    :task (let [hook ".git/hooks/pre-commit"]
            (spit hook (str "#!/bin/bash\n"
-                           "# net.b12n.raylib-jlt pre-commit (FAST — lint + format + clean-ns dry-run).\n"
+                           "# net.b12n.raylib-jlt pre-commit (FAST, lint + format + clean-ns dry-run).\n"
                            "# Full (+ headless compile-check): bb hooks:install:full\n"
                            "echo 'pre-commit 1/3: bb lint:strict (clj-kondo)'\n"
-                           "bb lint:strict || { echo 'pre-commit: lint findings — see above'; exit 1; }\n"
+                           "bb lint:strict || { echo 'pre-commit: lint findings. See above'; exit 1; }\n"
                            "echo 'pre-commit 2/3: clojure-lsp format --dry'\n"
                            "clojure-lsp format --dry || { echo 'run bb lsp:format'; exit 1; }\n"
                            "echo 'pre-commit 3/3: clojure-lsp clean-ns --dry'\n"
@@ -721,7 +721,7 @@
            (spit hook (str "#!/bin/bash\n"
                            "# net.b12n.raylib-jlt pre-commit (FULL). Fast: bb hooks:install\n"
                            "echo 'pre-commit 1/4: bb lint:strict (clj-kondo)'\n"
-                           "bb lint:strict || { echo 'pre-commit: lint findings — see above'; exit 1; }\n"
+                           "bb lint:strict || { echo 'pre-commit: lint findings. See above'; exit 1; }\n"
                            "echo 'pre-commit 2/4: clojure-lsp format --dry'\n"
                            "clojure-lsp format --dry || { echo 'run bb lsp:format'; exit 1; }\n"
                            "echo 'pre-commit 3/4: clojure-lsp clean-ns --dry'\n"

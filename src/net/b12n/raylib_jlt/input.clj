@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.input
-  "raylib [core] example — input keys (`joltc -M:input`).
+  "raylib [core] example - input keys (`joltc -M:input`).
 
   Ported from examples/core/core_input_keys.c: move a circle with the arrow keys.
   The C original uses a Vector2 + DrawCircleV; here the position is two doubles

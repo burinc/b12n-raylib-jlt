@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.orthographic-projection
-  "raylib [core] example — the same 3D scene under perspective vs orthographic
+  "raylib [core] example - the same 3D scene under perspective vs orthographic
   projection. Press SPACE to toggle with-camera-3d's :projection (0/1). For
   orthographic, fovy is the view height (raylib convention). See
   docs/guide/struct-by-value-pointer-trick.md."

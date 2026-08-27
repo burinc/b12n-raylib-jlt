@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.bouncing-spheres
-  "raylib [models] example — spheres bouncing inside a 3D box under gravity, with
+  "raylib [models] example - spheres bouncing inside a 3D box under gravity, with
   wall restitution. Uses the rlgl-tessellated rl/sphere! helper (DrawSphere takes
   Vector3 by value, so it's built from rlgl triangles). SPACE respawns. See
   docs/guide/rlgl-immediate-mode.md."

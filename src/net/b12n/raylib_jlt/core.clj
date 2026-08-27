@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.core
-  "raylib [core] example — basic window (the default: `joltc -M:run`).
+  "raylib [core] example - basic window (the default: `joltc -M:run`).
 
   Ported from raylib's examples/core/core_basic_window.c: an 800x450 window that
   clears to RAYWHITE and draws one line of text. The FFI bindings and the keyword-

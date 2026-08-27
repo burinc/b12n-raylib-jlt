@@ -1,7 +1,7 @@
 {:paths ["src"]
 
  ;; raylib is called directly over its C ABI via jolt.ffi (see src/net/b12n/raylib_jlt/core.clj).
- ;; The shared library is the system libraylib 6.0+ — install with `brew install raylib`
+ ;; The shared library is the system libraylib 6.0+, install with `brew install raylib`
  ;; on macOS, or your distro's raylib package on Linux. Chez's dlopen default search
  ;; path doesn't include Homebrew's lib dir, so the absolute path is listed first
  ;; (same reason glimmer-gl lists the OpenGL framework path first).

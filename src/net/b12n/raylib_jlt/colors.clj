@@ -1,7 +1,7 @@
 (ns net.b12n.raylib-jlt.colors
   "raylib named-colors showcase (`joltc -M:colors`).
 
-  Not a 1:1 port of one raylib example — a 5x5 grid that draws every named color
+  Not a 1:1 port of one raylib example, a 5x5 grid that draws every named color
   from net.b12n.raylib-jlt.raylib as a labelled swatch, exercising the `rgba` Color packing across
   the whole palette."
   (:require

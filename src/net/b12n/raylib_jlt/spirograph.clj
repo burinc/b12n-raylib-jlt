@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.spirograph
-  "raylib [generative] example — an animated hypotrochoid (spirograph). A pen offset d
+  "raylib [generative] example - an animated hypotrochoid (spirograph). A pen offset d
   on a wheel of radius r rolling inside a ring of radius R traces roulette curves;
   resets with new random r/d after a fixed number of points."
   (:require

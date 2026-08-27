@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.rlgl-solar-system
-  "raylib [models] example — rlgl solar system (`joltc -M:rlgl-solar-system`).
+  "raylib [models] example - rlgl solar system (`joltc -M:rlgl-solar-system`).
 
   Sun, Earth and Moon via the rlgl matrix stack: `rlPushMatrix` / `rlRotatef` /
   `rlTranslatef` nest the transforms so Earth orbits the Sun and the Moon orbits

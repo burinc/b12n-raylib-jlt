@@ -1,8 +1,8 @@
 (ns net.b12n.raylib-jlt.gradient
-  "raylib [shapes] example — rectangle gradient (`joltc -M:gradient`).
+  "raylib [shapes] example - rectangle gradient (`joltc -M:gradient`).
 
   A full-window vertical gradient via DrawRectangleGradientV, which takes TWO
-  Colors by value — a good check that more than one 4-byte by-value struct can be
+  Colors by value, a good check that more than one 4-byte by-value struct can be
   passed in a single call."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

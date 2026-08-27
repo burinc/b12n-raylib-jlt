@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.game-of-life
-  "raylib [generative] example — Conway's Game of Life. A random soup evolves by the
+  "raylib [generative] example - Conway's Game of Life. A random soup evolves by the
   classic B3/S23 rules on a toroidal grid; SPACE reseeds. State is the set of live
   cells."
   (:require

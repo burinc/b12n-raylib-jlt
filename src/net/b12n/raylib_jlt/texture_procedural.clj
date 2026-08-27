@@ -56,7 +56,7 @@
   (rl/window! :width W :height H :title "raylib [textures] example - procedural textures")
   (rl/set-target-fps 60)
   ;; Textures need the GL context, so they can only be built after the window
-  ;; exists — the same rule raylib documents for LoadTexture.
+  ;; exists, the same rule raylib documents for LoadTexture.
   (let [deadline (rl/auto-quit-deadline)
         ids (mapv (fn [[_ f]] (rl/texture-from-fn TEX TEX f)) panels)
         noise-id (nth ids 2)

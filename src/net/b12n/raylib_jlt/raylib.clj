@@ -1,12 +1,12 @@
 (ns net.b12n.raylib-jlt.raylib
-  "Shared jolt.ffi bindings for raylib — the surface used by the example programs
+  "Shared jolt.ffi bindings for raylib, the surface used by the example programs
   in this project (net.b12n.raylib-jlt.core, net.b12n.raylib-jlt.input, net.b12n.raylib-jlt.bounce, net.b12n.raylib-jlt.colors, net.b12n.raylib-jlt.mouse,
   net.b12n.raylib-jlt.wheel, net.b12n.raylib-jlt.shapes, net.b12n.raylib-jlt.text, net.b12n.raylib-jlt.logo, net.b12n.raylib-jlt.gradient, net.b12n.raylib-jlt.stars, net.b12n.raylib-jlt.camera2d).
 
   raylib is the upstream C game library (raysan5/raylib); jolt calls it directly
   over its C ABI. The system libraylib is declared as a :jolt/native lib in
   deps.edn. Almost every call here uses raylib's scalar-argument variants, so the
-  only by-value struct that crosses the FFI boundary is `Color` — a 4-byte
+  only by-value struct that crosses the FFI boundary is `Color`, a 4-byte
   {u8 r,g,b,a} packed into a :uint (see `rgba` and README.md). The one exception,
   Camera2D (24 bytes, passed by pointer), lives in net.b12n.raylib-jlt.camera2d, not here."
   (:require
@@ -16,7 +16,7 @@
 ;; Defined first: every drawing binding below takes a packed Color :uint, and
 ;; shade-color / cube! / sphere! reference `rgba` and the palette. Since jolt 0.4.0
 ;; ("unresolved symbols are compile errors") a symbol must be defined before its
-;; first use in the file — in a fn body and in an :or destructuring default just as
+;; first use in the file, in a fn body and in an :or destructuring default just as
 ;; much as at top level. Keep this section above its first use.
 ;; #region rgba
 (defn rgba
@@ -71,7 +71,7 @@
 (ffi/defcfn draw-circle-lines    "DrawCircleLines"     [:int :int :float :uint] :void)
 (ffi/defcfn draw-ellipse         "DrawEllipse"         [:int :int :float :float :uint] :void)
 
-;; --- rlgl immediate mode (all scalar) — for triangles / points ---------------
+;; --- rlgl immediate mode (all scalar), for triangles / points ---------------
 (ffi/defcfn rl-begin     "rlBegin"     [:int] :void)   ; RL-LINES / RL-TRIANGLES
 (ffi/defcfn rl-end       "rlEnd"       [] :void)
 (ffi/defcfn rl-vertex-2f "rlVertex2f"  [:float :float] :void)
@@ -128,7 +128,7 @@
 
 ;; --- Camera3D + 3D geometry --------------------------------------------------
 ;; Camera3D is 44 bytes (three Vector3 + a float + an int), passed BY VALUE to
-;; BeginMode3D — the same >16-byte-struct-by-pointer approach as Camera2D. 3D
+;; BeginMode3D, the same >16-byte-struct-by-pointer approach as Camera2D. 3D
 ;; shape helpers like DrawCube take a Vector3 BY VALUE (a 12-byte float struct
 ;; passed in FP registers, which the pointer trick does NOT cover), so draw 3D
 ;; geometry with rlgl immediate mode (rl-vertex-3f) instead. DrawGrid is scalar.
@@ -137,7 +137,7 @@
 (ffi/defcfn ^:private begin-mode-3d-ptr "BeginMode3D" [:pointer] :void)
 (ffi/defcfn end-mode-3d "EndMode3D" [] :void)
 
-;; rlgl matrix stack — nested transforms for immediate-mode geometry. rlgl applies
+;; rlgl matrix stack, nested transforms for immediate-mode geometry. rlgl applies
 ;; the current transform to each rlVertex* at submit time, so push/rotate/translate
 ;; around a cube! call moves it (used by rlgl-solar-system).
 (ffi/defcfn rl-push-matrix "rlPushMatrix" [] :void)
@@ -278,7 +278,7 @@
 ;; time()/localtime() live in libc (always loaded); jolt.ffi resolves them exactly
 ;; like raylib's symbols. localtime returns a pointer to a struct tm whose first
 ;; three ints are tm_sec, tm_min, tm_hour (offsets 0/4/8 on Darwin and glibc). This
-;; is the repo's only non-raylib FFI call — proof jolt binds any C ABI symbol.
+;; is the repo's only non-raylib FFI call, proof jolt binds any C ABI symbol.
 (ffi/defcfn ^:private c-time      "time"      [:pointer] :long)
 (ffi/defcfn ^:private c-localtime "localtime" [:pointer] :pointer)
 
@@ -329,7 +329,7 @@
 
 ;; --- ergonomic keyword-argument drawing API ----------------------------------
 ;; raylib's C functions are positional; these wrappers take keyword arguments so
-;; example code reads self-descriptively — e.g. (rl/text! "hi" :x 10 :y 20
+;; example code reads self-descriptively, e.g. (rl/text! "hi" :x 10 :y 20
 ;; :color rl/RED) instead of (draw-text "hi" 10 20 20 rl/RED). The raw bindings
 ;; above remain the FFI boundary; these just name the arguments.
 
@@ -441,7 +441,7 @@
   (draw-pixel x y color))
 
 (defn sector!
-  "A filled circular sector (pie slice / arc) drawn as an rlgl triangle fan — the
+  "A filled circular sector (pie slice / arc) drawn as an rlgl triangle fan, the
   immediate-mode stand-in for DrawCircleSector, whose Vector2 center is by-value and
   so unbindable (see rlgl-immediate-mode.md). The fan runs from the center across
   [start-deg, end-deg] in `segments` sub-triangles, a single packed `:color`.
@@ -479,7 +479,7 @@
 
 (defn ring!
   "A filled annulus (donut sector) as an rlgl quad strip between :inner and :outer
-  radius over [start-deg, end-deg] — the immediate-mode stand-in for DrawRing (Vector2
+  radius over [start-deg, end-deg], the immediate-mode stand-in for DrawRing (Vector2
   center by value). Same angle convention as sector! (0 deg up, clockwise, increasing).
   Each segment is two front-wound triangles.
     :cx :cy    center
@@ -517,7 +517,7 @@
     (rl-end)))
 
 (defn line-ex!
-  "A thick line (rlgl quad) from (x1,y1) to (x2,y2), :thick pixels wide — the
+  "A thick line (rlgl quad) from (x1,y1) to (x2,y2), :thick pixels wide, the
   immediate-mode stand-in for DrawLineEx (Vector2 endpoints by value). The quad is
   front-wound at every line direction (perpendicular = (dy,-dx)/len).
     :x1 :y1 :x2 :y2   endpoints
@@ -570,7 +570,7 @@
 (def ^:private shot-path (System/getenv "RAYLIB_APP_SHOT"))
 
 (defn maybe-screenshot!
-  "RAYLIB_APP_SHOT=/path dumps one PNG on frame `at` — headless visual proof a
+  "RAYLIB_APP_SHOT=/path dumps one PNG on frame `at`, headless visual proof a
   frame rendered. Flushes raylib's batched geometry first (DrawText etc. is
   deferred until EndDrawing, so a mid-frame TakeScreenshot would miss it). raylib
   writes the file's basename into the current working directory."
@@ -610,12 +610,12 @@
 (def ^:const FLAG-WINDOW-HIGHDPI     0x00002000)
 
 (defn window-state?
-  "IsWindowState — is this FLAG-* bit currently set?"
+  "IsWindowState, is this FLAG-* bit currently set?"
   [flag]
   (not (zero? (bit-and (window-state-raw flag) 0xff))))
 
 (defn window-resized?
-  "IsWindowResized — did the window change size on the last frame?"
+  "IsWindowResized, did the window change size on the last frame?"
   []
   (not (zero? (bit-and (window-resized-raw) 0xff))))
 
@@ -759,7 +759,7 @@
 ;; raylib's own texture API is unreachable from jolt: LoadTexture returns a
 ;; 20-byte Texture2D BY VALUE, which the AArch64 ABI hands back through the x8
 ;; indirect-result register, and Chez's foreign-procedure cannot express that.
-;; rlgl's layer underneath it is entirely scalar, though — rlLoadTexture takes a
+;; rlgl's layer underneath it is entirely scalar, though, rlLoadTexture takes a
 ;; raw pixel pointer and returns the GL texture id as an unsigned int, and
 ;; rlSetTexture/rlTexCoord2f draw with it in immediate mode. So a texture here is
 ;; just that id: an int, no struct anywhere. What is lost is raylib's file
@@ -829,7 +829,7 @@
       (finally (ffi/free buf)))))
 
 (defn unload-texture!
-  "rlUnloadTexture — release a texture id created by texture-from-fn."
+  "rlUnloadTexture, release a texture id created by texture-from-fn."
   [id]
   (rl-unload-texture id))
 
@@ -906,7 +906,7 @@
   nil if the driver reports the framebuffer incomplete. Pair with
   `unload-render-texture!`.
 
-  The color texture starts as an uninitialised buffer of the right size — rgba
+  The color texture starts as an uninitialised buffer of the right size, rgba
   black is written so a target that is drawn before it is first rendered into
   reads as transparent rather than as whatever was in that allocation."
   [w h]

@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.flappy-bird
-  "raylib [games] example — flappy bird. SPACE to flap; fly through the pipe gaps.
+  "raylib [games] example - flappy bird. SPACE to flap; fly through the pipe gaps.
   Gravity + scrolling pipes + AABB/circle collision, all in Clojure."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

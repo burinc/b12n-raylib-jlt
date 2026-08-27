@@ -7,7 +7,7 @@
 
   clj-kondo cannot see through the macro, so without this hook every bound name
   is an `Unresolved symbol` inside raylib.clj and an `Unresolved var: rl/…` at
-  each of the ~460 call sites in the examples — enough noise to make the linter
+  each of the ~460 call sites in the examples, enough noise to make the linter
   useless as a gate.
 
   The hook rewrites the form into a `defn` of the same name whose parameter count
@@ -15,7 +15,7 @@
   C return type. That buys three things clj-kondo could not otherwise know:
 
     * the var exists (kills the false positives),
-    * its arity — passing the wrong number of arguments to a binding is exactly
+    * its arity, passing the wrong number of arguments to a binding is exactly
       the FFI mistake that otherwise surfaces only as a native crash,
     * its return type, so `(+ 1 (rl/measure-text …))` type-checks.
 

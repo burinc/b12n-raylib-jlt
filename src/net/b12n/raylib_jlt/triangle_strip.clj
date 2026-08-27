@@ -1,8 +1,8 @@
 (ns net.b12n.raylib-jlt.triangle-strip
-  "raylib [shapes] example — triangle strip (`joltc -M:triangle-strip`).
+  "raylib [shapes] example - triangle strip (`joltc -M:triangle-strip`).
 
   A rainbow band across the window built vertex by vertex via rlgl immediate mode
-  (rlBegin RL_TRIANGLES + rlColor4ub + rlVertex2f) — the scalar path around
+  (rlBegin RL_TRIANGLES + rlColor4ub + rlVertex2f), the scalar path around
   raylib's by-value Vector2 shape APIs."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

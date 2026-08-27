@@ -3,7 +3,7 @@
 
   The classic vector game, ported to jolt: rotate with LEFT/RIGHT, thrust with UP,
   fire with SPACE. Everything wraps around the screen edges; shooting an asteroid
-  splits it into two smaller ones until it's gone. All 2D — the ship and asteroids
+  splits it into two smaller ones until it's gone. All 2D, the ship and asteroids
   are line outlines, bullets are dots.
 
   The game state is one immutable map threaded through the loop; `step` reads input

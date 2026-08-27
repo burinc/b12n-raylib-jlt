@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.camera2d
-  "raylib [core] example — 2D camera (`joltc -M:camera2d`).
+  "raylib [core] example - 2D camera (`joltc -M:camera2d`).
 
   Ported from examples/core/core_2d_camera.c: a row of buildings with a player
   box; the camera follows the player (arrow keys move), the mouse wheel zooms,
@@ -7,7 +7,7 @@
 
   This is the project's one struct-by-value example. raylib's BeginMode2D takes a
   24-byte `Camera2D` BY VALUE; net.b12n.raylib-jlt.raylib/with-camera-2d builds that struct in
-  native memory and passes a pointer (the AArch64 ABI for a >16-byte struct — see
+  native memory and passes a pointer (the AArch64 ABI for a >16-byte struct, see
   the note in net.b12n.raylib-jlt.raylib and README.md).
 
   Verified: the struct-by-value pointer approach renders correctly on AArch64
@@ -62,7 +62,7 @@
               rot    (if reset? 0.0 rot)]
           (rl/begin-drawing)
           (rl/clear-background rl/RAYWHITE)
-          ;; world space — the camera follows the player horizontally
+          ;; world space, the camera follows the player horizontally
           (rl/with-camera-2d {:offset-x (/ W 2.0)
                               :offset-y (/ H 2.0)
                               :target-x px
@@ -70,7 +70,7 @@
                               :rotation rot
                               :zoom zoom}
             (fn [] (draw-world px)))
-          ;; screen space — HUD + a center reference line
+          ;; screen space, HUD + a center reference line
           (rl/line! :x1 (int (/ W 2)) :y1 0 :x2 (int (/ W 2)) :y2 H :color rl/LIGHTGRAY)
           (rl/text! "arrows move - wheel zooms - A/D rotate - R resets"
                     :x 10 :y 10 :size 18 :color rl/DARKGRAY)

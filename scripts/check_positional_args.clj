@@ -1,12 +1,12 @@
 #!/usr/bin/env bb
 ;; Find functions with 3+ positional arguments.
-;; A leading 1-2 "subject" args before a {:keys [...]} map are allowed —
+;; A leading 1-2 "subject" args before a {:keys [...]} map are allowed 
 ;; only genuinely-positional 3+ arg lists are flagged.
 ;;
 ;; Usage: bb scripts/check_positional_args.clj [--strict]
 ;;        --strict: exit non-zero if any functions are found
 ;;
-;; Adapted from glitter's scripts/check_positional_args.clj — same script,
+;; Adapted from glitter's scripts/check_positional_args.clj, same script,
 ;; source-dirs pointed at this project's flat src/net/b12n/raylib_jlt layout.
 
 (ns check-positional-args

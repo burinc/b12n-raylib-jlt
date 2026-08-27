@@ -1,8 +1,8 @@
 (ns net.b12n.raylib-jlt.logo
   "raylib logo (`joltc -M:logo`).
 
-  A static render of raylib's signature logo — a thick black square border with
-  'raylib' tucked into the bottom-right corner — built from two rectangles and a
+  A static render of raylib's signature logo, a thick black square border with
+  'raylib' tucked into the bottom-right corner, built from two rectangles and a
   text label positioned with MeasureText."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

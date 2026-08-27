@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.mouse-trail
-  "raylib [shapes] example — mouse trail (`joltc -M:mouse-trail`).
+  "raylib [shapes] example - mouse trail (`joltc -M:mouse-trail`).
 
   A fading trail of circles follows the cursor: each frame the newest mouse
   position is pushed onto a bounded history, and the whole history is drawn with

@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.format-text
-  "raylib [text] example — formatted text (`joltc -M:format-text`).
+  "raylib [text] example - formatted text (`joltc -M:format-text`).
 
   A zero-padded score and an MM:SS timer counting up, built with
   clojure.core/format and drawn each frame."

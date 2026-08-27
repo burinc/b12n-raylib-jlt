@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.game-2048
-  "raylib [games] example — 2048. Arrow keys slide + merge tiles on a 4x4 board;
+  "raylib [games] example - 2048. Arrow keys slide + merge tiles on a 4x4 board;
   reach 2048. Slide/merge is one pure function reused for all four directions via
   row reversal / transpose. (Handle is game-2048; bb can't name a task '2048'.)"
   (:require

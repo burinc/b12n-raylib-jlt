@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.recursive-tree
-  "raylib [shapes] example — recursive tree (`joltc -M:recursive-tree`).
+  "raylib [shapes] example - recursive tree (`joltc -M:recursive-tree`).
 
   A binary fractal tree drawn with lines: each branch spawns two shorter branches
   at ±angle until a depth limit, brown trunk fading to green tips. Pure trig over

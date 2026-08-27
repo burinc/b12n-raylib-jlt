@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.ball-physics
-  "raylib [shapes] example — 2D balls under gravity, bouncing off the window
+  "raylib [shapes] example - 2D balls under gravity, bouncing off the window
   edges with restitution. SPACE respawns a fresh set. Pure scalar math + circle!."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

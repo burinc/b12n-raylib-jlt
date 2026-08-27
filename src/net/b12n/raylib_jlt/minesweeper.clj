@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.minesweeper
-  "raylib [games] example — minesweeper. Left-click reveals (0-cells flood-fill),
+  "raylib [games] example - minesweeper. Left-click reveals (0-cells flood-fill),
   right-click flags; find every safe cell without hitting a mine (SPACE restarts).
   Exercises the mouse-pressed? / MOUSE-RIGHT toolkit binds."
   (:require

@@ -114,7 +114,7 @@
 
 ;; deps.edn's :aliases, read once at namespace load. src-path resolves each
 ;; joltc alias's ACTUAL launched namespace from here rather than guessing
-;; from the alias string — see the file-header note on the :run -> core
+;; from the alias string. See the file-header note on the :run -> core
 ;; exception.
 (def ^:private deps-aliases
   (:aliases (edn/read-string (slurp "deps.edn"))))
@@ -124,7 +124,7 @@
 
 (defn src-path
   "The example's source file path, derived from deps.edn's :main-opts for
-   this joltc alias (NOT from the alias string — most aliases equal the
+   this joltc alias (NOT from the alias string, most aliases equal the
    launched namespace's last segment, but \"run\" -> net.b12n.raylib-jlt.core is
    a verified exception). E.g. \"bounce\" -> \"src/net/b12n/raylib_jlt/bounce.clj\"."
   [alias]

@@ -4,7 +4,7 @@ name: CI
 # Runs on pull requests and pushes to main, plus manual dispatch.
 #
 # Actions is free for standard runners on public repositories, which this repo
-# now is — so the PR gate costs nothing. It was authored dormant while the repo
+# now is, so the PR gate costs nothing. It was authored dormant while the repo
 # was private, where minutes bill against the account's included quota.
 #
 # The gate that matters most is "Compile every example": it is the only check
@@ -37,7 +37,7 @@ jobs:
 
       # raylib's availability in Ubuntu's archive varies by release, so this
       # tries the distro package first and falls back to a source build.
-      # The fallback is not a workaround for a broken package name — the
+      # The fallback is not a workaround for a broken package name. The
       # README documents source builds as a supported path, and it pins what
       # gets linked instead of inheriting whatever the runner image ships.
       #
@@ -58,7 +58,7 @@ jobs:
           if sudo apt-get install -y libraylib-dev; then
             echo "installed libraylib-dev from apt"
           else
-            echo "libraylib-dev unavailable — building raylib from source"
+            echo "libraylib-dev unavailable, building raylib from source"
             # raylib's own documented Linux build dependencies
             sudo apt-get install -y --no-install-recommends \
               build-essential cmake git \
@@ -116,8 +116,8 @@ jobs:
       # This also gates the VERSION, which is what makes the apt-first install
       # above safe. The pin only governs the source-build fallback; when apt
       # succeeds we get whatever the archive carries. Since DrawCircleGradient
-      # takes a by-value Vector2 in 6.0 and two ints before it — same symbol
-      # name — an older library links fine and draws in the wrong place. So
+      # takes a by-value Vector2 in 6.0 and two ints before it, same symbol
+      # name. An older library links fine and draws in the wrong place. So
       # lib:check refuses anything that does not export a 6.0-only symbol, and
       # this job goes red here rather than green at `bb check`.
       - name: libraylib is discoverable, and is 6.0+
@@ -125,7 +125,7 @@ jobs:
 
       # The gate that matters most: compiles all 91 example namespaces
       # headlessly. It is the only check that catches a new example missing
-      # its `check.clj` require — the easiest of the four touchpoints to skip.
+      # its `check.clj` require, the easiest of the four touchpoints to skip.
       #
       # Failure output is echoed normally AND re-emitted as a ::error::
       # annotation plus a job summary. Annotations and summaries are readable
@@ -149,7 +149,7 @@ jobs:
       - name: clj-kondo
         run: bb lint:strict
 
-      # Formatting is owned by clojure-lsp, not cljfmt — see the note at the
+      # Formatting is owned by clojure-lsp, not cljfmt. See the note at the
       # top of bb.edn for why only one formatter runs against src.
       - name: Formatting
         run: bb lsp:format-check
@@ -158,7 +158,7 @@ jobs:
         run: bb lsp:clean-ns-check
 
       # Runs only when something above failed. `bb lib:check` proves the .so
-      # FILE exists; it never dlopens it — so a library that is present but
+      # FILE exists; it never dlopens it, so a library that is present but
       # unloadable (a missing runtime GL/X11 dependency on a headless runner)
       # passes that check and fails at compile time. This reports the linkage
       # facts that distinguish the two, as an annotation so it is readable
@@ -172,7 +172,7 @@ jobs:
             echo "resolved libraylib: ${lib:-<not in ldconfig cache>}"
             echo
             echo "ldd:"
-            if [ -n "$lib" ]; then ldd "$lib" 2>&1; else echo "  (skipped — no library to inspect)"; fi
+            if [ -n "$lib" ]; then ldd "$lib" 2>&1; else echo "  (skipped, no library to inspect)"; fi
             echo
             echo "unresolved above (if any) are the missing runtime deps."
             echo

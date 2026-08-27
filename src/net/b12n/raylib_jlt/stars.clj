@@ -1,7 +1,7 @@
 (ns net.b12n.raylib-jlt.stars
   "A twinkling starfield (`joltc -M:stars`).
 
-  Not a raylib example port — a small demo that scatters stars with GetRandomValue
+  Not a raylib example port, a small demo that scatters stars with GetRandomValue
   (once, at startup) and redraws them each frame with a per-star twinkle. Shows
   bulk scalar drawing and a computed (non-palette) Color per star."
   (:require

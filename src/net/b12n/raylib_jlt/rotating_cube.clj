@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.rotating-cube
-  "raylib [models] example — a single cube rotating in place via the rlgl matrix
+  "raylib [models] example - a single cube rotating in place via the rlgl matrix
   stack. Fixed 3D camera; the cube spins on X and Y with a frame-driven angle.
   See docs/guide/rlgl-immediate-mode.md."
   (:require

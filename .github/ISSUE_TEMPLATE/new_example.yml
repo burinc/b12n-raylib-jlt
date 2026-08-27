@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Adding an example touches four places and is deliberately mechanical — see
+        Adding an example touches four places and is deliberately mechanical. See
         [the four touchpoints](https://github.com/burinc/b12n-raylib-jlt/blob/main/docs/guide/example-catalog.md#adding-an-example--the-four-touchpoints).
         You're welcome to open a PR directly instead of an issue.
 
@@ -13,7 +13,7 @@ body:
     id: name
     attributes:
       label: Proposed name
-      description: The `bb` name, e.g. `shapes-easings` — lowercase, hyphenated.
+      description: The `bb` name, e.g. `shapes-easings`, lowercase, hyphenated.
     validations:
       required: true
 
@@ -28,7 +28,7 @@ body:
     attributes:
       label: What would it demonstrate?
       description: |
-        Ideally something the existing 75 don't already cover — a raylib call, an
+        Ideally something the existing 75 don't already cover, a raylib call, an
         FFI shape, or a drawing technique.
     validations:
       required: true
@@ -38,8 +38,8 @@ body:
     attributes:
       label: Does it need any new FFI bindings?
       description: |
-        If it needs a raylib function nothing else here binds — especially one
-        taking or returning a struct **by value** — say which. Those are the cases
+        If it needs a raylib function nothing else here binds, especially one
+        taking or returning a struct **by value**, say which. Those are the cases
         that need design thought rather than a mechanical port.
 
   - type: checkboxes

@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.delta-time
-  "raylib [core] example — delta time (`joltc -M:delta-time`).
+  "raylib [core] example - delta time (`joltc -M:delta-time`).
 
   Two boxes cross the screen: the top one moves a fixed amount PER FRAME (so its
   speed depends on the frame rate), the bottom one moves by GetFrameTime * speed

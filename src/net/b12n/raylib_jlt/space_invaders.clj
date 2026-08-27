@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.space-invaders
-  "raylib [games] example — space invaders. ←/→ move, SPACE shoots; clear the
+  "raylib [games] example - space invaders. ←/→ move, SPACE shoots; clear the
   marching alien grid before it reaches you. Formation march + AABB hits, all in
   Clojure."
   (:require

@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.breakout
-  "raylib [games] example — breakout. The paddle follows the mouse; bounce the ball
+  "raylib [games] example - breakout. The paddle follows the mouse; bounce the ball
   to clear every brick. Ball/wall/paddle/brick collisions computed in Clojure."
   (:require
    [net.b12n.raylib-jlt.raylib :as rl]))

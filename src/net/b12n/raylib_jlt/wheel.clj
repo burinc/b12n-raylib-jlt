@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.wheel
-  "raylib [core] example — mouse wheel (`joltc -M:wheel`).
+  "raylib [core] example - mouse wheel (`joltc -M:wheel`).
 
   Ported from examples/core/core_input_mouse_wheel.c: scroll the mouse wheel to
   move a box up and down. Exercises a float-returning binding (GetMouseWheelMove)."

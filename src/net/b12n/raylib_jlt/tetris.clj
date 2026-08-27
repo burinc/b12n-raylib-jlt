@@ -4,7 +4,7 @@
   A full Tetris in a 10x20 well: the seven tetrominoes fall, LEFT/RIGHT move,
   UP rotates, DOWN soft-drops, SPACE hard-drops. Full rows clear and score; speed
   rises with level; ENTER restarts after GAME OVER. (Moves are one cell per key
-  press — tap to nudge.)
+  press, tap to nudge.)
 
   The whole game is one immutable state map threaded through the loop; `step` reads
   input and returns the next state. The board is a vector of ROWS rows, each a

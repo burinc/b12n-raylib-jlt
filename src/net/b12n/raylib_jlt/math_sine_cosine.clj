@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.math-sine-cosine
-  "raylib [shapes] example — sine & cosine (`joltc -M:math-sine-cosine`).
+  "raylib [shapes] example - sine & cosine (`joltc -M:math-sine-cosine`).
 
   A live unit-circle visualization: a radius rotates around a circle, and its
   vertical (sine, blue) and horizontal (cosine, green) projections are drawn as it

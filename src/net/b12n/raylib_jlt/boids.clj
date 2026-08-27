@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.boids
-  "raylib [generative] example — Reynolds boids. ~70 agents flock via separation,
+  "raylib [generative] example - Reynolds boids. ~70 agents flock via separation,
   alignment, and cohesion; each drawn as a dot with a heading line along its velocity.
   Pure vector math."
   (:require

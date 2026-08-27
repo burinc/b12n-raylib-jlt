@@ -1,5 +1,5 @@
 (ns net.b12n.raylib-jlt.text
-  "raylib [text] example — font sizes & centering (`joltc -M:text`).
+  "raylib [text] example - font sizes & centering (`joltc -M:text`).
 
   Draws lines at several font sizes and colors, and uses MeasureText to
   horizontally center two lines (the built-in bitmap font; no external font
