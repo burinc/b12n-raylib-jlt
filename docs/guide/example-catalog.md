@@ -197,6 +197,16 @@ The suite is deliberately mechanical to grow. One new example touches five place
 5. **`bb.edn` task**: add a matching `<name> {:doc "..." :task (run-example "<name>")}`
    row, so `bb <name>` works alongside `bb info` / `bb examples` / `bb run-all`.
 
+`bb check:registration` verifies all five without needing jolt or libraylib, and
+CI runs it before the compile gate. Touchpoint 3 is why it exists: `bb check`
+compiles what `check.clj` requires, so an example missing from that list is
+never compiled and the run still reports success.
+
+Note that the alias is not always the display name, and the namespace is
+derivable from neither. `["basic-window" "run" ...]` reaches
+`net.b12n.raylib-jlt.core` through the `:run` alias, and twelve rows differ this
+way, so `deps.edn` is the source of truth for which namespace a row means.
+
 A new group needs two more edits: the group list in `bb.edn`'s `info` task and the
 `:groups` vector in `scripts/demo_manifest.edn`.
 

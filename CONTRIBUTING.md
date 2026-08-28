@@ -44,14 +44,20 @@ pre-commit hook (~2s). It's never committed, so each clone opts in.
 
 ## Adding an example
 
-One new example touches exactly four places. The full recipe (with the source
+One new example touches exactly five places. The full recipe (with the source
 layout, the naming rules, and a diagram) lives in the example catalog:
 
-**[docs/guide/example-catalog.md § Adding an example: the four touchpoints](docs/guide/example-catalog.md#adding-an-example-the-four-touchpoints)**
+**[docs/guide/example-catalog.md § Adding an example: the five touchpoints](docs/guide/example-catalog.md#adding-an-example-the-five-touchpoints)**
 
-In short: the source namespace, a `deps.edn` alias, a `check.clj` require, and a
-`bb.edn` registry row. If you skip the `check.clj` require, `bb check` won't cover
-your example and CI-by-hand won't catch a compile break in it.
+In short: the source namespace, a `deps.edn` alias, a `check.clj` require, a row
+in `scripts/examples_registry.clj`, and a `bb.edn` task.
+
+`bb check:registration` checks all five and CI runs it. It exists because
+`bb check` cannot check the third one: `bb check` compiles what `check.clj`
+requires, so an example missing from that list is never compiled and the run
+still prints success. Measured, rather than assumed: a namespace carrying a
+deliberate unresolved symbol fails `bb check` with its require present and
+passes with it removed.
 
 Two rules worth knowing before you write any code:
 

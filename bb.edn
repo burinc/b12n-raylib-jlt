@@ -62,6 +62,7 @@
         ["clojure" "-Sdeps" kondo-dep "-M" "-m" "clj-kondo.main"]))
 
     (require '[examples-registry :as reg])
+    (require '[registration :as regi])
 
     ;; jolt's launcher was renamed `joltc` -> `jolt` in 0.5.0, and the current
     ;; installer ships ONLY `jolt`. Machines that have used jolt since before
@@ -557,6 +558,35 @@
   {:doc "Headless compile-check of every example (no window)"
    :task (shell jolt-cmd "-M:check")}
 
+  check:registration
+  {:doc "Source, deps.edn alias, check.clj require and bb.edn task all agree"
+   ;; The gate `check` cannot be for itself.
+   ;;
+   ;; `bb check` compiles what check.clj requires, so an example left out of
+   ;; that list is never compiled and the run still prints "all example
+   ;; namespaces compiled OK" and exits 0. Measured 2026-08-29: a namespace
+   ;; carrying a deliberate unresolved symbol fails `bb check` with its
+   ;; require present and passes with it removed. CONTRIBUTING.md has warned
+   ;; about this in prose for a while; this is the gate for it.
+   ;;
+   ;; Note the registry's alias is NOT the display name, and the namespace is
+   ;; derivable from neither: ["basic-window" "run" ...] reaches
+   ;; net.b12n.raylib-jlt.core through deps.edn's :run alias, and 12 rows
+   ;; differ this way. deps.edn is the source of truth for which namespace a
+   ;; row means.
+   ;;
+   ;; Needs no jolt and no libraylib, so it runs on a bare checkout.
+   :task
+   (let [root (str (fs/parent (fs/absolutize "bb.edn")))
+         probs (regi/problems root reg/examples)]
+     (if (seq probs)
+       (binding [*out* *err*]
+         (println "registration gaps:")
+         (doseq [[n what] probs] (println (str "  " n ": " what)))
+         (System/exit 1))
+       (println (str "registration ok, " (count reg/examples)
+                     " examples across source, alias, check.clj and bb.edn"))))}
+
   ;; --- quality: lint (clj-kondo) --------------------------------------------
   ;; Formatting lives under lsp:format below, not here. See the top-of-file
   ;; note on why clojure-lsp (not cljfmt) owns formatting in this project.
@@ -704,6 +734,8 @@
            (spit hook (str "#!/bin/bash\n"
                            "# net.b12n.raylib-jlt pre-commit (FAST, lint + format + clean-ns dry-run).\n"
                            "# Full (+ headless compile-check): bb hooks:install:full\n"
+                           "echo 'pre-commit 0/3: bb check:registration'\n"
+                           "bb check:registration || { echo 'pre-commit: registration gaps. See above'; exit 1; }\n"
                            "echo 'pre-commit 1/3: bb lint:strict (clj-kondo)'\n"
                            "bb lint:strict || { echo 'pre-commit: lint findings. See above'; exit 1; }\n"
                            "echo 'pre-commit 2/3: clojure-lsp format --dry'\n"

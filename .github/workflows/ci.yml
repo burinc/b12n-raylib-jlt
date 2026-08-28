@@ -131,6 +131,13 @@ jobs:
       # annotation plus a job summary. Annotations and summaries are readable
       # without downloading the log archive, which some networks block; a bare
       # `run: bb check` leaves a reader with nothing but "exit code 1".
+      # Guards what the compile step below cannot see. `bb check` compiles
+      # what check.clj requires, so an example missing from that list is never
+      # compiled and the run still reports success. Needs no jolt and no
+      # libraylib, so it is the cheapest gate here and runs first.
+      - name: Registration touchpoints
+        run: bb check:registration
+
       - name: Compile every example (headless)
         run: |
           set +e
