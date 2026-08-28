@@ -1,5 +1,7 @@
 # b12n-raylib-jlt: raylib examples in Jolt
 
+[![CI](https://github.com/burinc/b12n-raylib-jlt/actions/workflows/ci.yml/badge.svg)](https://github.com/burinc/b12n-raylib-jlt/actions/workflows/ci.yml)
+
 A community suite of [raylib](https://github.com/raysan5/raylib) examples written in
 **jolt** (native Clojure, no JVM). These call a **real external C library**: raylib is
 the upstream C game library (raysan5/raylib), and jolt binds it directly over its C ABI
