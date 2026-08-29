@@ -353,7 +353,7 @@
              y 0
              size 20
              color BLACK}}]
-  (draw-text s x y size color))
+  (draw-text s (int x) (int y) (int size) color))
 
 (defn text-width
   "MeasureText. :size."
@@ -366,8 +366,15 @@
   [& {:keys [x y]
       :or {x 10
            y 10}}]
-  (draw-fps x y))
+  (draw-fps (int x) (int y)))
 
+;; --- keyword-argument drawing API --------------------------------------------
+;; The C functions behind these take their positions and sizes as int. A double
+;; reaching one throws "invalid foreign-procedure argument 0.0" on the first
+;; draw, which compiling, linting and formatting all miss: it surfaces only when
+;; a frame actually renders. Callers compute positions in floating point all the
+;; time (mouse deltas, interpolation, trigonometry), so the coercion lives here
+;; rather than at every call site.
 (defn rect!
   "DrawRectangle. :x :y :width :height :color."
   [& {:keys [x y width height color]
@@ -376,7 +383,7 @@
            width 10
            height 10
            color BLACK}}]
-  (draw-rectangle x y width height color))
+  (draw-rectangle (int x) (int y) (int width) (int height) color))
 
 (defn rect-lines!
   "DrawRectangleLines. :x :y :width :height :color."
@@ -386,7 +393,7 @@
            width 10
            height 10
            color BLACK}}]
-  (draw-rectangle-lines x y width height color))
+  (draw-rectangle-lines (int x) (int y) (int width) (int height) color))
 
 (defn rect-gradient!
   "DrawRectangleGradientV (top->bottom). :x :y :width :height :top :bottom."
@@ -406,7 +413,7 @@
            y 0
            radius 10
            color BLACK}}]
-  (draw-circle x y (double radius) color))
+  (draw-circle (int x) (int y) (double radius) color))
 
 (defn circle-lines!
   "DrawCircleLines. :x :y :radius :color."
@@ -415,7 +422,7 @@
            y 0
            radius 10
            color BLACK}}]
-  (draw-circle-lines x y (double radius) color))
+  (draw-circle-lines (int x) (int y) (double radius) color))
 
 (defn ellipse!
   "DrawEllipse. :x :y :rx :ry :color."
@@ -425,7 +432,7 @@
            rx 10
            ry 6
            color BLACK}}]
-  (draw-ellipse x y (double rx) (double ry) color))
+  (draw-ellipse (int x) (int y) (double rx) (double ry) color))
 
 (defn line!
   "DrawLine. :x1 :y1 :x2 :y2 :color."
@@ -435,7 +442,7 @@
            x2 0
            y2 0
            color BLACK}}]
-  (draw-line x1 y1 x2 y2 color))
+  (draw-line (int x1) (int y1) (int x2) (int y2) color))
 
 (defn pixel!
   "DrawPixel. :x :y :color."
@@ -443,7 +450,7 @@
       :or {x 0
            y 0
            color BLACK}}]
-  (draw-pixel x y color))
+  (draw-pixel (int x) (int y) color))
 
 (defn sector!
   "A filled circular sector (pie slice / arc) drawn as an rlgl triangle fan, the

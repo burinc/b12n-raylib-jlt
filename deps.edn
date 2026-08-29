@@ -100,6 +100,7 @@
            :dna-helix {:main-opts ["-m" "net.b12n.raylib-jlt.dna-helix"]} ; a turning double helix with coloured base pairs
            :yaw-pitch-roll {:main-opts ["-m" "net.b12n.raylib-jlt.yaw-pitch-roll"]} ; the three aircraft rotations on the rlgl matrix stack
            :first-person-maze {:main-opts ["-m" "net.b12n.raylib-jlt.first-person-maze"]} ; walk a grid maze in first person, with a minimap
+  :camera-2d-mouse-zoom {:main-opts ["-m" "net.b12n.raylib-jlt.camera-2d-mouse-zoom"]}
            :cellular-automata {:main-opts ["-m" "net.b12n.raylib-jlt.cellular-automata"]}
   :ellipse-collision {:main-opts ["-m" "net.b12n.raylib-jlt.ellipse-collision"]}
   :input-gestures {:main-opts ["-m" "net.b12n.raylib-jlt.input-gestures"]}

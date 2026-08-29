@@ -18,6 +18,7 @@
    [net.b12n.raylib-jlt.breakout]
    [net.b12n.raylib-jlt.bullet-hell]
    [net.b12n.raylib-jlt.bunnymark]
+   [net.b12n.raylib-jlt.camera-2d-mouse-zoom]
    [net.b12n.raylib-jlt.camera-3d]
    [net.b12n.raylib-jlt.camera-3d-first-person]
    [net.b12n.raylib-jlt.camera2d]

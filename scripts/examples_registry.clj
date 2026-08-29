@@ -35,6 +35,7 @@
    ["double-pendulum"   "double-pendulum" "shapes" "chaotic double-pendulum motion + trail"]
    ["kaleidoscope"      "kaleidoscope" "shapes" "strokes mirrored with 6-fold symmetry"]
    ["hilbert-curve"     "hilbert-curve" "shapes" "a rainbow Hilbert space-filling curve"]
+   ["camera-2d-mouse-zoom" "camera-2d-mouse-zoom" "core" "zoom toward the cursor, pinning the point under it"]
    ["ellipse-collision" "ellipse-collision" "shapes" "two ellipses that redden when they overlap"]
    ["input-gestures" "input-gestures" "core" "tap, hold, drag and swipe, named as they happen"]
    ["math-angle-rotation" "math-angle-rotation" "shapes" "fixed spokes + a spinning line"]

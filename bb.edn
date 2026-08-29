@@ -321,6 +321,10 @@
   monitor-detector  {:doc "▶ every attached display, current one lit"           :task (run-example "monitor-detector")}
   clipboard-text    {:doc "▶ type, C copies, V pastes"                          :task (run-example "clipboard-text")}
 
+  camera-2d-mouse-zoom
+  {:doc "▶ zoom toward the cursor, pinning the point under it"
+   :task (run-example "camera-2d-mouse-zoom")}
+
   clock-of-clocks
   {:doc "▶ six digits spelled by a grid of clock hands"
    :task (run-example "clock-of-clocks")}
