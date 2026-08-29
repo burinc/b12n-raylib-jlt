@@ -78,7 +78,17 @@
 ;; --- rlgl immediate mode (all scalar), for triangles / points ---------------
 (ffi/defcfn rl-begin     "rlBegin"     [:int] :void)   ; RL-LINES / RL-TRIANGLES
 (ffi/defcfn rl-end       "rlEnd"       [] :void)
-(ffi/defcfn rl-vertex-2f "rlVertex2f"  [:float :float] :void)
+(ffi/defcfn ^:private rl-vertex-2f-raw "rlVertex2f"  [:float :float] :void)
+
+(defn rl-vertex-2f
+  "One vertex, in whatever space the current matrix defines.
+
+  Coerces to double, because the C takes floats and an integer argument
+  aborts the process on the first draw. The mirror of the int coercion
+  the kwarg drawing API does."
+  [a0 a1]
+  (rl-vertex-2f-raw (double a0) (double a1)))
+
 (ffi/defcfn rl-color-4ub "rlColor4ub"  [:int :int :int :int] :void)  ; u8 args
 (def ^:const RL-LINES 1)
 (def ^:const RL-TRIANGLES 4)
@@ -137,7 +147,17 @@
 ;; passed in FP registers, which the pointer trick does NOT cover), so draw 3D
 ;; geometry with rlgl immediate mode (rl-vertex-3f) instead. DrawGrid is scalar.
 (ffi/defcfn draw-grid    "DrawGrid"    [:int :float] :void)
-(ffi/defcfn rl-vertex-3f "rlVertex3f"  [:float :float :float] :void)
+(ffi/defcfn ^:private rl-vertex-3f-raw "rlVertex3f"  [:float :float :float] :void)
+
+(defn rl-vertex-3f
+  "One vertex in 3D.
+
+  Coerces to double, because the C takes floats and an integer argument
+  aborts the process on the first draw. The mirror of the int coercion
+  the kwarg drawing API does."
+  [a0 a1 a2]
+  (rl-vertex-3f-raw (double a0) (double a1) (double a2)))
+
 (ffi/defcfn ^:private begin-mode-3d-ptr "BeginMode3D" [:pointer] :void)
 (ffi/defcfn end-mode-3d "EndMode3D" [] :void)
 
@@ -146,9 +166,38 @@
 ;; around a cube! call moves it (used by rlgl-solar-system).
 (ffi/defcfn rl-push-matrix "rlPushMatrix" [] :void)
 (ffi/defcfn rl-pop-matrix  "rlPopMatrix"  [] :void)
-(ffi/defcfn rl-translatef  "rlTranslatef" [:float :float :float] :void)
-(ffi/defcfn rl-rotatef     "rlRotatef"    [:float :float :float :float] :void)
-(ffi/defcfn rl-scalef      "rlScalef"     [:float :float :float] :void)
+(ffi/defcfn ^:private rl-translatef-raw  "rlTranslatef" [:float :float :float] :void)
+
+(defn rl-translatef
+  "Translate the current matrix.
+
+  Coerces to double, because the C takes floats and an integer argument
+  aborts the process on the first draw. The mirror of the int coercion
+  the kwarg drawing API does."
+  [a0 a1 a2]
+  (rl-translatef-raw (double a0) (double a1) (double a2)))
+
+(ffi/defcfn ^:private rl-rotatef-raw     "rlRotatef"    [:float :float :float :float] :void)
+
+(defn rl-rotatef
+  "Rotate the current matrix, angle first.
+
+  Coerces to double, because the C takes floats and an integer argument
+  aborts the process on the first draw. The mirror of the int coercion
+  the kwarg drawing API does."
+  [a0 a1 a2 a3]
+  (rl-rotatef-raw (double a0) (double a1) (double a2) (double a3)))
+
+(ffi/defcfn ^:private rl-scalef-raw      "rlScalef"     [:float :float :float] :void)
+
+(defn rl-scalef
+  "Scale the current matrix.
+
+  Coerces to double, because the C takes floats and an integer argument
+  aborts the process on the first draw. The mirror of the int coercion
+  the kwarg drawing API does."
+  [a0 a1 a2]
+  (rl-scalef-raw (double a0) (double a1) (double a2)))
 
 (defn with-camera-3d
   "Run (f) with a Camera3D active (BeginMode3D → f → EndMode3D). Builds the
@@ -821,8 +870,27 @@
 (ffi/defcfn rl-update-texture     "rlUpdateTexture"     [:uint :int :int :int :int :int :pointer] :void)
 (ffi/defcfn rl-texture-parameters "rlTextureParameters" [:uint :int :int] :void)
 (ffi/defcfn rl-set-texture        "rlSetTexture"        [:uint] :void)
-(ffi/defcfn rl-tex-coord-2f       "rlTexCoord2f"        [:float :float] :void)
-(ffi/defcfn rl-normal-3f          "rlNormal3f"          [:float :float :float] :void)
+(ffi/defcfn ^:private rl-tex-coord-2f-raw       "rlTexCoord2f"        [:float :float] :void)
+
+(defn rl-tex-coord-2f
+  "Texture coordinate for the next vertex.
+
+  Coerces to double, because the C takes floats and an integer argument
+  aborts the process on the first draw. The mirror of the int coercion
+  the kwarg drawing API does."
+  [a0 a1]
+  (rl-tex-coord-2f-raw (double a0) (double a1)))
+
+(ffi/defcfn ^:private rl-normal-3f-raw          "rlNormal3f"          [:float :float :float] :void)
+
+(defn rl-normal-3f
+  "Normal for the next vertex.
+
+  Coerces to double, because the C takes floats and an integer argument
+  aborts the process on the first draw. The mirror of the int coercion
+  the kwarg drawing API does."
+  [a0 a1 a2]
+  (rl-normal-3f-raw (double a0) (double a1) (double a2)))
 
 (def ^:const RL-QUADS 7)
 (def ^:const PIXELFORMAT-R8G8B8A8 7)          ; rlPixelFormat, 32bpp RGBA

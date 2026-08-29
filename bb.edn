@@ -325,6 +325,10 @@
   {:doc "▶ zoom toward the cursor, pinning the point under it"
    :task (run-example "camera-2d-mouse-zoom")}
 
+  camera-2d-platformer
+  {:doc "▶ five ways a camera can follow a jumping player"
+   :task (run-example "camera-2d-platformer")}
+
   circle-sector-drawing
   {:doc "▶ a sector whose segment count you can starve"
    :task (run-example "circle-sector-drawing")}
@@ -344,6 +348,10 @@
   easings-rectangles
   {:doc "▶ a grid easing out in size and rotation at once"
    :task (run-example "easings-rectangles")}
+
+  easings-testbed
+  {:doc "▶ one curve at a time, plotted and run"
+   :task (run-example "easings-testbed")}
 
   ellipse-collision
   {:doc "▶ two ellipses that redden when they overlap"

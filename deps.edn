@@ -101,11 +101,13 @@
            :yaw-pitch-roll {:main-opts ["-m" "net.b12n.raylib-jlt.yaw-pitch-roll"]} ; the three aircraft rotations on the rlgl matrix stack
            :first-person-maze {:main-opts ["-m" "net.b12n.raylib-jlt.first-person-maze"]} ; walk a grid maze in first person, with a minimap
   :camera-2d-mouse-zoom {:main-opts ["-m" "net.b12n.raylib-jlt.camera-2d-mouse-zoom"]}
+  :camera-2d-platformer {:main-opts ["-m" "net.b12n.raylib-jlt.camera-2d-platformer"]}
            :cellular-automata {:main-opts ["-m" "net.b12n.raylib-jlt.cellular-automata"]}
   :circle-sector-drawing {:main-opts ["-m" "net.b12n.raylib-jlt.circle-sector-drawing"]}
   :easings-ball {:main-opts ["-m" "net.b12n.raylib-jlt.easings-ball"]}
   :easings-box {:main-opts ["-m" "net.b12n.raylib-jlt.easings-box"]}
   :easings-rectangles {:main-opts ["-m" "net.b12n.raylib-jlt.easings-rectangles"]}
+  :easings-testbed {:main-opts ["-m" "net.b12n.raylib-jlt.easings-testbed"]}
   :ellipse-collision {:main-opts ["-m" "net.b12n.raylib-jlt.ellipse-collision"]}
   :input-gestures {:main-opts ["-m" "net.b12n.raylib-jlt.input-gestures"]}
   :logo-anim {:main-opts ["-m" "net.b12n.raylib-jlt.logo-anim"]}
