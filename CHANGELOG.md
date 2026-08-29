@@ -12,7 +12,7 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
-- **Fifteen more examples, taking the suite to 112.** `clock-of-clocks`,
+- **Sixteen more examples, taking the suite to 113.** `clock-of-clocks`,
   `undo-redo`, `window-should-close`, `ellipse-collision`, `input-gestures`,
   `rlgl-triangle`, `random-sequence`, `camera-2d-mouse-zoom`,
   `rlgl-color-wheel`, `circle-sector-drawing` and `easings-rectangles`, each a
@@ -26,7 +26,7 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
   `invalid foreign-procedure argument`. Callers compute positions in floating
   point constantly, so the coercion belongs at the boundary. Nothing that
   worked before behaves differently.
-- **The gallery carries still frames for the new fifteen.** They have no animated
+- **The gallery carries still frames for the new sixteen.** They have no animated
   GIFs yet, so both galleries show a captured frame instead and say so. That
   keeps the catalog a complete list, with `bb record` left an obvious gap to
   fill.

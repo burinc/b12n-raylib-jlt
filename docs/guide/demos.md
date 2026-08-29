@@ -3,7 +3,7 @@
 Every example at full size, linked from [the example catalog](example-catalog.md)'s
 preview thumbnails.
 
-Most are animated GIFs. The newest fifteen are still frames, captured from a real
+Most are animated GIFs. The newest sixteen are still frames, captured from a real
 run but not yet recorded as animations, so they show what an example draws rather
 than how it moves.
 
@@ -203,7 +203,7 @@ values that survive a restart, via a file
 
 ![storage-values](../demos/storage-values.png)
 
-## shapes (40)
+## shapes (41)
 
 ### bouncing-ball
 
@@ -444,6 +444,12 @@ drop, flatten, spin, grow, fade: five curves
 the raylib logo assembling itself, unsmoothed
 
 ![logo-anim](../demos/logo-anim.png)
+
+### rectangle-advanced
+
+per-side roundness with a horizontal gradient
+
+![rectangle-advanced](../demos/rectangle-advanced.png)
 
 ## text (5)
 

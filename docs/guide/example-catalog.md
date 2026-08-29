@@ -1,4 +1,4 @@
-# The example catalog: 112 raylib demos in jolt
+# The example catalog: 113 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -56,7 +56,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/camera-2d-mouse-zoom.png" width="80">](demos.md#camera-2d-mouse-zoom) | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
 | [<img src="../demos/storage-values.png" width="80">](demos.md#storage-values) | `storage-values` | values that survive a restart, via a file |
 
-## shapes (40)
+## shapes (41)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -100,6 +100,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/easings-ball.png" width="80">](demos.md#easings-ball) | `easings-ball` | slide, swell and fade, one curve each |
 | [<img src="../demos/easings-box.png" width="80">](demos.md#easings-box) | `easings-box` | drop, flatten, spin, grow, fade: five curves |
 | [<img src="../demos/logo-anim.png" width="80">](demos.md#logo-anim) | `logo-anim` | the raylib logo assembling itself, unsmoothed |
+| [<img src="../demos/rectangle-advanced.png" width="80">](demos.md#rectangle-advanced) | `rectangle-advanced` | per-side roundness with a horizontal gradient |
 
 ## text (5)
 

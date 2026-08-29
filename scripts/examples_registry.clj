@@ -54,6 +54,7 @@
    ["tesseract-view"    "tesseract-view" "3d" "a rotating 4D hypercube projected to 2D"]
    ["wireframe-shapes"  "wireframe-shapes" "3d" "pyramid/octahedron/torus/helix in 3D lines"]
    ["random-sequence" "random-sequence" "core" "bars in a shuffled order, each height used once"]
+   ["rectangle-advanced" "rectangle-advanced" "shapes" "per-side roundness with a horizontal gradient"]
    ["rlgl-color-wheel" "rlgl-color-wheel" "shapes" "a hue wheel as a triangle fan, per-vertex colour"]
    ["rlgl-solar-system" "rlgl-solar-system" "3d" "Sun/Earth/Moon via the rlgl matrix stack"]
    ["box-collisions"    "box-collisions" "3d" "a player cube colliding with 3D boxes"]

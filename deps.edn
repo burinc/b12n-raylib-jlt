@@ -110,6 +110,7 @@
   :input-gestures {:main-opts ["-m" "net.b12n.raylib-jlt.input-gestures"]}
   :logo-anim {:main-opts ["-m" "net.b12n.raylib-jlt.logo-anim"]}
   :random-sequence {:main-opts ["-m" "net.b12n.raylib-jlt.random-sequence"]}
+  :rectangle-advanced {:main-opts ["-m" "net.b12n.raylib-jlt.rectangle-advanced"]}
   :rlgl-color-wheel {:main-opts ["-m" "net.b12n.raylib-jlt.rlgl-color-wheel"]}
   :rlgl-triangle {:main-opts ["-m" "net.b12n.raylib-jlt.rlgl-triangle"]}
   :storage-values {:main-opts ["-m" "net.b12n.raylib-jlt.storage-values"]}

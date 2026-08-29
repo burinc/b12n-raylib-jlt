@@ -83,6 +83,7 @@
    [net.b12n.raylib-jlt.raylib]
    [net.b12n.raylib-jlt.raymarching]
    [net.b12n.raylib-jlt.reasings]
+   [net.b12n.raylib-jlt.rectangle-advanced]
    [net.b12n.raylib-jlt.rectangle-scaling]
    [net.b12n.raylib-jlt.recursive-tree]
    [net.b12n.raylib-jlt.render-texture]

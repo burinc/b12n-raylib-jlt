@@ -361,6 +361,10 @@
   {:doc "▶ bars in a shuffled order, each height used once"
    :task (run-example "random-sequence")}
 
+  rectangle-advanced
+  {:doc "▶ per-side roundness with a horizontal gradient"
+   :task (run-example "rectangle-advanced")}
+
   rlgl-color-wheel
   {:doc "▶ a hue wheel as a triangle fan, per-vertex colour"
    :task (run-example "rlgl-color-wheel")}
