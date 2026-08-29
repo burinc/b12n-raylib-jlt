@@ -1,0 +1,22 @@
+;; Configuration for the documentation site, read by the jlt-commons
+;; docs-engine (https://github.com/jlt-commons/docs-engine).
+;;
+;; Build it locally with `bb site:serve`. CI builds and publishes it from
+;; .github/workflows/site.yml.
+{;; :base-path is what makes this a project site rather than an org one.
+ ;; The site is served at https://jlt-commons.github.io/raylib-jlt/, so
+ ;; every URL the engine emits needs that prefix. Leave it out and the
+ ;; pages still render, but each one loads the ORGANIZATION site's
+ ;; stylesheet and every image 404s.
+ :base-path   "/raylib-jlt"
+
+ :title       "raylib-jlt"
+ :description "97 raylib examples in Jolt: native Clojure on Chez Scheme, calling libraylib directly over its C ABI through jolt.ffi. No wrapper library, no codegen, no C shim."
+
+ ;; docs/demos holds 97 recorded GIFs, referenced by the gallery page as
+ ;; ../demos/*.gif. Without this the pages render with every image broken.
+ :asset-dirs  ["demos"]
+
+ ;; Relative to docs/templates/. Drop this line and the engine renders a
+ ;; generic homepage from docs/guide/index.md instead.
+ :home-template "home.html"}

@@ -1,6 +1,6 @@
 # Changelog
 
-Notable changes to b12n-raylib-jlt, newest first. The format follows
+Notable changes to raylib-jlt, newest first. The format follows
 [babashka's changelog](https://github.com/babashka/babashka/blob/master/CHANGELOG.md):
 one bullet per user-visible change, written as what a reader would
 notice rather than what a commit did.
@@ -8,10 +8,33 @@ notice rather than what a commit did.
 Sections are dated, not numbered. This is an example suite rather than a
 released library, so "what changed, and when" is the useful question.
 
-Examples read at <https://raylib-jlt.b12n.app>.
+Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
+- **The project moved to the jlt-commons organization**, from `burinc/b12n-raylib-jlt`
+  to `jlt-commons/raylib-jlt`. GitHub redirects the old URLs, so existing clones and
+  links keep working.
+- **The documentation site moved with it**, to
+  <https://jlt-commons.github.io/raylib-jlt/>. The old address,
+  `raylib-jlt.b12n.app`, ran on a private engine, a personal site repository and a
+  personal AWS account, none of which the organization could take over. Nothing was
+  lost in the move: the same guide, the same catalog, the same bespoke homepage.
+- **Publishing is no longer a maintainer task.** `bb docs-sync` is gone, along with
+  the S3 upload, the CloudFront invalidation and the wiki mirror it drove. In its
+  place `.github/workflows/site.yml` builds the site on every pull request and
+  deploys it from `main`, so a docs change is live on merge and a contributor can
+  see their own change rendered before it lands.
+- **The site generator is now a shared organization tool**,
+  [jlt-commons/docs-engine](https://github.com/jlt-commons/docs-engine), pinned by
+  tag. This repository keeps what belongs to it: `docs/site.edn` for configuration
+  and `docs/templates/home.html` for the homepage, which used to live inside the
+  private engine where nobody maintaining this project could reach it. Preview
+  locally with `bb site:serve`.
+- **The full-size gallery was missing the whole shaders group.**
+  `docs/guide/demos.md` showed 91 of 97 demos while claiming to show every one, so
+  `julia-set`, `mandelbrot-set`, `raymarching`, `rounded-rect-shader`,
+  `palette-switch` and `shader-hot-reload` never appeared. All 97 are there now.
 - **The suite tracks raylib 6.0**, up from 5.5, and `bb lib:check` now refuses
   anything older. macOS is `brew upgrade raylib`; Linux keeps the apt-or-source
   path with the CI pin moved to the 6.0 tag.
