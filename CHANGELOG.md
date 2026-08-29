@@ -25,10 +25,10 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
   `invalid foreign-procedure argument`. Callers compute positions in floating
   point constantly, so the coercion belongs at the boundary. Nothing that
   worked before behaves differently.
-- **The demo gallery still shows 97.** The seven new examples have no recorded
-  GIFs, so `docs/demos/` and both galleries are unchanged until `bb record`
-  runs. The catalog lists them with the preview column marked rather than
-  omitting them.
+- **The gallery carries still frames for the new eleven.** They have no animated
+  GIFs yet, so both galleries show a captured frame instead and say so. That
+  keeps the catalog a complete list, with `bb record` left an obvious gap to
+  fill.
 
 - **The project moved to the jlt-commons organization**, from `burinc/b12n-raylib-jlt`
   to `jlt-commons/raylib-jlt`. GitHub redirects the old URLs, so existing clones and

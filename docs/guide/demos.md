@@ -1,6 +1,11 @@
 # Full-size demo gallery
 
-Every example at full size, linked from [the example catalog](example-catalog.md)'s preview thumbnails.
+Every example at full size, linked from [the example catalog](example-catalog.md)'s
+preview thumbnails.
+
+Most are animated GIFs. The newest eleven are still frames, captured from a real
+run but not yet recorded as animations, so they show what an example draws rather
+than how it moves.
 
 ## games (10)
 
@@ -64,7 +69,7 @@ reveal/flag grid (mouse L reveal, R flag)
 
 ![minesweeper](../demos/minesweeper.gif)
 
-## core (16)
+## core (21)
 
 ### basic-window
 
@@ -162,7 +167,37 @@ an on-screen D-pad and action button
 
 ![input-virtual-controls](../demos/input-virtual-controls.gif)
 
-## shapes (32)
+### undo-redo
+
+a bounded history, CTRL-Z and CTRL-Y walking it
+
+![undo-redo](../demos/undo-redo.png)
+
+### window-should-close
+
+`SetExitKey` so a close request can be answered
+
+![window-should-close](../demos/window-should-close.png)
+
+### input-gestures
+
+`GetGestureDetected`, named as they happen
+
+![input-gestures](../demos/input-gestures.png)
+
+### random-sequence
+
+a shuffled sequence, each height used once
+
+![random-sequence](../demos/random-sequence.png)
+
+### camera-2d-mouse-zoom
+
+zoom pinned to the point under the cursor
+
+![camera-2d-mouse-zoom](../demos/camera-2d-mouse-zoom.png)
+
+## shapes (37)
 
 ### bouncing-ball
 
@@ -356,6 +391,36 @@ a rotating fan of thick lines (line-ex!)
 
 ![lines-drawing](../demos/lines-drawing.gif)
 
+### ellipse-collision
+
+two ellipses reddening when they overlap
+
+![ellipse-collision](../demos/ellipse-collision.png)
+
+### rlgl-triangle
+
+per-vertex colour interpolated across a face
+
+![rlgl-triangle](../demos/rlgl-triangle.png)
+
+### rlgl-color-wheel
+
+a hue wheel as a triangle fan
+
+![rlgl-color-wheel](../demos/rlgl-color-wheel.png)
+
+### circle-sector-drawing
+
+a sector starved of segments
+
+![circle-sector-drawing](../demos/circle-sector-drawing.png)
+
+### easings-rectangles
+
+size and rotation on one easing curve
+
+![easings-rectangles](../demos/easings-rectangles.png)
+
 ## text (5)
 
 ### font-sizes
@@ -486,7 +551,7 @@ walk a grid maze, with a minimap
 
 ![first-person-maze](../demos/first-person-maze.gif)
 
-## generative (8)
+## generative (9)
 
 ### game-of-life
 
@@ -535,6 +600,12 @@ particles steered by a flow field (trails)
 Wolfram's elementary automata
 
 ![cellular-automata](../demos/cellular-automata.gif)
+
+### clock-of-clocks
+
+six digits spelled by a grid of clock hands
+
+![clock-of-clocks](../demos/clock-of-clocks.png)
 
 ## textures (4)
 

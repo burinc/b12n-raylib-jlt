@@ -49,11 +49,11 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/input-gamepad.gif" width="80">](demos.md#input-gamepad) | `input-gamepad` | live sticks, triggers and buttons for gamepad 0 |
 | [<img src="../demos/input-multitouch.gif" width="80">](demos.md#input-multitouch) | `input-multitouch` | touch points (the mouse is point 0) |
 | [<img src="../demos/input-virtual-controls.gif" width="80">](demos.md#input-virtual-controls) | `input-virtual-controls` | an on-screen D-pad and action button |
-| _no demo yet_ | `undo-redo` | a bounded history, CTRL-Z and CTRL-Y walking it |
-| _no demo yet_ | `window-should-close` | `SetExitKey` so a close request can be answered |
-| _no demo yet_ | `input-gestures` | `GetGestureDetected`, named as they happen |
-| _no demo yet_ | `random-sequence` | a shuffled sequence, each height used once |
-| _no demo yet_ | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
+| [<img src="../demos/undo-redo.png" width="80">](demos.md#undo-redo) | `undo-redo` | a bounded history, CTRL-Z and CTRL-Y walking it |
+| [<img src="../demos/window-should-close.png" width="80">](demos.md#window-should-close) | `window-should-close` | `SetExitKey` so a close request can be answered |
+| [<img src="../demos/input-gestures.png" width="80">](demos.md#input-gestures) | `input-gestures` | `GetGestureDetected`, named as they happen |
+| [<img src="../demos/random-sequence.png" width="80">](demos.md#random-sequence) | `random-sequence` | a shuffled sequence, each height used once |
+| [<img src="../demos/camera-2d-mouse-zoom.png" width="80">](demos.md#camera-2d-mouse-zoom) | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
 
 ## shapes (37)
 
@@ -91,11 +91,11 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/rounded-rectangle.gif" width="80">](demos.md#rounded-rectangle) | `rounded-rectangle` | rounded rects from `sector!` corners |
 | [<img src="../demos/rectangle-scaling.gif" width="80">](demos.md#rectangle-scaling) | `rectangle-scaling` | drag the corner handle to resize a rect |
 | [<img src="../demos/lines-drawing.gif" width="80">](demos.md#lines-drawing) | `lines-drawing` | a rotating fan of thick `rl/line-ex!` lines |
-| _no demo yet_ | `ellipse-collision` | two ellipses reddening when they overlap |
-| _no demo yet_ | `rlgl-triangle` | per-vertex colour interpolated across a face |
-| _no demo yet_ | `rlgl-color-wheel` | a hue wheel as a triangle fan |
-| _no demo yet_ | `circle-sector-drawing` | a sector starved of segments |
-| _no demo yet_ | `easings-rectangles` | size and rotation on one easing curve |
+| [<img src="../demos/ellipse-collision.png" width="80">](demos.md#ellipse-collision) | `ellipse-collision` | two ellipses reddening when they overlap |
+| [<img src="../demos/rlgl-triangle.png" width="80">](demos.md#rlgl-triangle) | `rlgl-triangle` | per-vertex colour interpolated across a face |
+| [<img src="../demos/rlgl-color-wheel.png" width="80">](demos.md#rlgl-color-wheel) | `rlgl-color-wheel` | a hue wheel as a triangle fan |
+| [<img src="../demos/circle-sector-drawing.png" width="80">](demos.md#circle-sector-drawing) | `circle-sector-drawing` | a sector starved of segments |
+| [<img src="../demos/easings-rectangles.png" width="80">](demos.md#easings-rectangles) | `easings-rectangles` | size and rotation on one easing curve |
 
 ## text (5)
 
@@ -145,7 +145,7 @@ The 3D set stands entirely on two building blocks from
 | [<img src="../demos/l-system.gif" width="80">](demos.md#l-system) | `l-system` | an L-system fractal plant (grows + regrows) |
 | [<img src="../demos/flow-field.gif" width="80">](demos.md#flow-field) | `flow-field` | particles steered by a flow field (trails) |
 | [<img src="../demos/cellular-automata.gif" width="80">](demos.md#cellular-automata) | `cellular-automata` | Wolfram's elementary automata |
-| _no demo yet_ | `clock-of-clocks` | six digits spelled by a grid of clock hands |
+| [<img src="../demos/clock-of-clocks.png" width="80">](demos.md#clock-of-clocks) | `clock-of-clocks` | six digits spelled by a grid of clock hands |
 
 All eight are pure math + the drawing API, no new bindings. They showcase the
 suite as a generative-art canvas: cellular automata, agent flocking, particle
