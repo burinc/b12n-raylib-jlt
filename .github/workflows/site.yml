@@ -26,7 +26,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 env:
-  DOCS_ENGINE_REF: v0.1.0
+  DOCS_ENGINE_REF: v0.2.0
   BASE_PATH: /raylib-jlt
 
 jobs:
@@ -76,6 +76,15 @@ jobs:
 
           grep -q 'pre class="mermaid"' "$out/guide/color-by-value.html" \
             || { echo "mermaid fences were not rewritten"; exit 1; }
+
+          # Since engine v0.2.0 the 3.4 MB bundle loads only where a diagram
+          # exists. Both directions matter: a page with a diagram that does not
+          # load it renders unstyled source text, and a page without one that
+          # does costs every reader 3.4 MB for nothing.
+          grep -q 'mermaid.min.js' "$out/guide/color-by-value.html" \
+            || { echo "a page with a diagram is not loading mermaid"; exit 1; }
+          ! grep -q 'mermaid.min.js' "$out/guide/demos.html" \
+            || { echo "a page with no diagram is loading mermaid"; exit 1; }
 
           # The failure mode this site's base path exists to prevent. Served at
           # jlt-commons.github.io/raylib-jlt/, a root-absolute URL loads the
