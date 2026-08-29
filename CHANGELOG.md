@@ -12,7 +12,7 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
-- **Sixteen more examples, taking the suite to 113.** `clock-of-clocks`,
+- **Eighteen more examples, taking the suite to 115.** `clock-of-clocks`,
   `undo-redo`, `window-should-close`, `ellipse-collision`, `input-gestures`,
   `rlgl-triangle`, `random-sequence`, `camera-2d-mouse-zoom`,
   `rlgl-color-wheel`, `circle-sector-drawing` and `easings-rectangles`, each a
@@ -20,13 +20,15 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
   are newly bound, and `rect-pro!` draws a rotated rectangle as an rlgl quad,
   standing in for DrawRectanglePro. `reasings` is the shared counterpart of
   raylib's `reasings.h`, keeping its `(t, b, c, d)` signature.
-- **The drawing API coerces its int parameters.** `rect!`, `line!`, `circle!`,
+- **The drawing API coerces its numeric parameters, both ways.** `rect!`, `line!`, `circle!`,
   `ellipse!`, `text!` and the rest forward to C functions whose positions are
   int, and a double reaching one aborted the process on the first frame with
-  `invalid foreign-procedure argument`. Callers compute positions in floating
-  point constantly, so the coercion belongs at the boundary. Nothing that
-  worked before behaves differently.
-- **The gallery carries still frames for the new sixteen.** They have no animated
+  `invalid foreign-procedure argument`. The rlgl vertex and matrix calls have
+  the same hazard in reverse, taking floats and aborting on an integer. Both
+  directions are now coerced at the boundary, because callers compute
+  coordinates in floating point constantly and pixel indices in integers just
+  as often. Nothing that worked before behaves differently.
+- **The gallery carries still frames for the new eighteen.** They have no animated
   GIFs yet, so both galleries show a captured frame instead and say so. That
   keeps the catalog a complete list, with `bb record` left an obvious gap to
   fill.

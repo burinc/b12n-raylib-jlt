@@ -3,7 +3,7 @@
 Every example at full size, linked from [the example catalog](example-catalog.md)'s
 preview thumbnails.
 
-Most are animated GIFs. The newest sixteen are still frames, captured from a real
+Most are animated GIFs. The newest eighteen are still frames, captured from a real
 run but not yet recorded as animations, so they show what an example draws rather
 than how it moves.
 
@@ -69,7 +69,7 @@ reveal/flag grid (mouse L reveal, R flag)
 
 ![minesweeper](../demos/minesweeper.gif)
 
-## core (22)
+## core (23)
 
 ### basic-window
 
@@ -203,7 +203,13 @@ values that survive a restart, via a file
 
 ![storage-values](../demos/storage-values.png)
 
-## shapes (41)
+### camera-2d-platformer
+
+five ways a camera can follow a jumping player
+
+![camera-2d-platformer](../demos/camera-2d-platformer.png)
+
+## shapes (42)
 
 ### bouncing-ball
 
@@ -450,6 +456,12 @@ the raylib logo assembling itself, unsmoothed
 per-side roundness with a horizontal gradient
 
 ![rectangle-advanced](../demos/rectangle-advanced.png)
+
+### easings-testbed
+
+one curve at a time, plotted and run
+
+![easings-testbed](../demos/easings-testbed.png)
 
 ## text (5)
 

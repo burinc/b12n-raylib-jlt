@@ -1,4 +1,4 @@
-# The example catalog: 113 raylib demos in jolt
+# The example catalog: 115 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -29,7 +29,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/game-2048.gif" width="80">](demos.md#game-2048) | `game-2048` | 2048: 4x4 tile-merge puzzle (arrow keys) |
 | [<img src="../demos/minesweeper.gif" width="80">](demos.md#minesweeper) | `minesweeper` | reveal/flag grid (mouse L reveal, R flag) |
 
-## core (22)
+## core (23)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -55,8 +55,9 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/random-sequence.png" width="80">](demos.md#random-sequence) | `random-sequence` | a shuffled sequence, each height used once |
 | [<img src="../demos/camera-2d-mouse-zoom.png" width="80">](demos.md#camera-2d-mouse-zoom) | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
 | [<img src="../demos/storage-values.png" width="80">](demos.md#storage-values) | `storage-values` | values that survive a restart, via a file |
+| [<img src="../demos/camera-2d-platformer.png" width="80">](demos.md#camera-2d-platformer) | `camera-2d-platformer` | five ways a camera can follow a jumping player |
 
-## shapes (41)
+## shapes (42)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -101,6 +102,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/easings-box.png" width="80">](demos.md#easings-box) | `easings-box` | drop, flatten, spin, grow, fade: five curves |
 | [<img src="../demos/logo-anim.png" width="80">](demos.md#logo-anim) | `logo-anim` | the raylib logo assembling itself, unsmoothed |
 | [<img src="../demos/rectangle-advanced.png" width="80">](demos.md#rectangle-advanced) | `rectangle-advanced` | per-side roundness with a horizontal gradient |
+| [<img src="../demos/easings-testbed.png" width="80">](demos.md#easings-testbed) | `easings-testbed` | one curve at a time, plotted and run |
 
 ## text (5)
 
