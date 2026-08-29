@@ -12,7 +12,7 @@ body:
         **Known issue, please check first:** the `camera2d` and `camera-3d`
         examples pass a struct by value using an AArch64-specific pointer trick.
         On **x86-64** they can crash with an invalid memory reference. That is
-        [documented and expected](https://github.com/burinc/b12n-raylib-jlt/blob/main/docs/guide/struct-by-value-pointer-trick.md),
+        [documented and expected](https://github.com/jlt-commons/raylib-jlt/blob/main/docs/guide/struct-by-value-pointer-trick.md),
         not a new bug, though a portable rlgl-matrix replacement is very welcome.
 
   - type: input

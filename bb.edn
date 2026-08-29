@@ -71,6 +71,41 @@
     ;; exactly that in CI: `Cannot run program "joltc"`). Prefer the modern
     ;; name, fall back to the shim.
     (def jolt-cmd (if (fs/which "jolt") "jolt" "joltc"))
+
+    ;; --- documentation site -------------------------------------------------
+    ;; The generator lives in jlt-commons/docs-engine, not here. The site is
+    ;; built in CI (.github/workflows/site.yml, which pins an engine tag), so
+    ;; these tasks exist only for local preview and are the one place that
+    ;; needs a checkout of the engine on disk.
+    (def docs-engine-repo "https://github.com/jlt-commons/docs-engine")
+
+    (defn docs-engine-dir
+      "Where the engine is checked out: $JLT_DOCS_ENGINE, else a sibling
+       directory, else the usual spot. nil when none of them exist."
+      []
+      (let [home (System/getProperty "user.home")]
+        (->> [(System/getenv "JLT_DOCS_ENGINE")
+              "../docs-engine"
+              (str home "/dev/jlt-commons/docs-engine")]
+             (remove nil?)
+             (filter (fn [d] (fs/exists? (fs/file d "bb.edn"))))
+             first)))
+
+    (defn site-task
+      "Runs one of the engine's tasks against this project."
+      [task & args]
+      (if-let [engine (docs-engine-dir)]
+        (let [argv (into ["bb" task (str (fs/cwd))] (remove nil? args))
+              res  (apply shell {:dir (str engine) :continue true} argv)]
+          (when-not (zero? (:exit res)) (System/exit (:exit res))))
+        (do
+          (println "The docs engine is not checked out anywhere I looked:")
+          (println "  $JLT_DOCS_ENGINE, ../docs-engine, ~/dev/jlt-commons/docs-engine")
+          (println)
+          (println "  git clone" docs-engine-repo "../docs-engine")
+          (println)
+          (println "CI does not need this — it checks the engine out itself.")
+          (System/exit 1))))
     (def examples reg/examples)
     (def by-name reg/by-name)
 
@@ -341,200 +376,18 @@
                 :src (reg/src-path (nth row 1))
                 :run (str jolt-cmd " -M:" (nth row 1))})))}
 
-  docs-sync
-  {:doc "Republish the docs: rebuild -> push site repo -> mirror to wiki -> S3 + CloudFront. Maintainer task (needs sibling repos, AWS_PROFILE=b12n). bb docs-sync [--no-push]"
-   ;; Never force-pushes or auto-rebases: if a target is behind, it says so
-   ;; and stops. --no-push commits locally and publishes nothing.
-   ;;
-   ;; Do NOT place docs/CNAME by hand - the b12n-docs engine writes it from
-   ;; :cname, and `bb site:build` wipes the output dir first, so a hand-placed
-   ;; one survives exactly one build. It is inert either way: CNAME is a
-   ;; GitHub Pages mechanism, Pages is not enabled, and the live site is
-   ;; served from S3 behind CloudFront. site-host below plus the CloudFront
-   ;; alias are what determine the URL - which is why a :cname of .b12n.net
-   ;; can coexist with a site served at .b12n.app.
-   :task
-   (let [push?     (not (some (fn [a] (= a "--no-push")) *command-line-args*))
-         home      (System/getProperty "user.home")
-         proj-dir  (System/getProperty "user.dir")
-         docs-repo (str home "/dev/b12n-docs")
-         site-repo (str home "/dev/b12n-raylib-jlt.github.io")
-         wiki-repo (str home "/dev/b12n-wikis")
-         wiki-dir  (str wiki-repo "/b12n-raylib-jlt")
-         guide-dir (str proj-dir "/docs/guide")
-         bucket    "b12n-site-raylib-jlt"
-         site-host "raylib-jlt.b12n.app"
-         hdr       (fn [label] (println (str "\n── " label " ──")))
-         dirty?    (fn [dir path]
-                     (let [res (shell {:dir dir :out :string} "git" "status" "--short" "--" path)]
-                       (not (str/blank? (:out res)))))
-         ;; Returns a keyword rather than exiting, so one repo's failure does not
-         ;; block the other. `git add`/`git commit` are scoped to `path` - never
-         ;; -A/. - because b12n-wikis is shared across many projects and a stray
-         ;; staged file must not ride along. Commit and push are checked separately,
-         ;; so a commit left unpushed by an earlier run is still pushable later.
-         sync!     (fn [opts]
-                     (let [label (:label opts) dir (:dir opts)
-                           path (:path opts) msg (:msg opts)]
-                       (hdr label)
-                       (let [committed? (if (dirty? dir path)
-                                          (do (shell {:dir dir} "git" "add" "--" path)
-                                              (shell {:dir dir} "git" "commit" "-m" msg "--" path)
-                                              true)
-                                          false)]
-                         (if-not push?
-                           (do (println (if committed?
-                                          "  committed locally (--no-push)"
-                                          "  nothing to commit (--no-push)"))
-                               :ok)
-                           (do
-                             (shell {:dir dir :continue true} "git" "fetch" "origin")
-                             ;; One status read, used for both checks, so a
-                             ;; diverged branch cannot slip between them.
-                             (let [st (:out (shell {:dir dir :out :string} "git" "status" "--short" "--branch"))]
-                               (cond
-                                 (str/includes? st "behind")
-                                 (do (println (str "  BEHIND origin, resolve manually (cd " dir " && git pull --rebase), not auto-pushing"))
-                                     :behind)
+  site:build
+  {:doc "Build the documentation site into _site/ (needs a docs-engine checkout)"
+   :task (site-task "build")}
 
-                                 ;; No upstream = no ahead/behind in the status line, so the check below
-                                 ;; would silently read as "nothing to push". filter-repo drops the remote,
-                                 ;; so a repo can land here after a history rewrite.
-                                 (not (str/includes? st "..."))
-                                 (do (println (str "  NO UPSTREAM for main in " dir ", not pushing."))
-                                     (println "  Fix with: git branch --set-upstream-to=origin/main main")
-                                     :no-upstream)
+  site:serve
+  {:doc "Build the docs site and serve it at http://localhost:3000 (bb site:serve [port])"
+   :task (site-task "serve" (first *command-line-args*))}
 
-                                 (not (str/includes? st "ahead"))
-                                 (do (println "  up to date, nothing to push") :skipped)
+  site:clean
+  {:doc "Delete the _site/ build output"
+   :task (site-task "clean")}
 
-                                 :else
-                                 (let [pr (shell {:dir dir :continue true} "git" "push" "origin" "main")]
-                                   (if (zero? (:exit pr))
-                                     (do (println (if committed?
-                                                    "  committed + pushed"
-                                                    "  pushed (commit was already local)"))
-                                         :ok)
-                                     (do (println "  PUSH FAILED") :push-failed))))))))))
-         ;; Publishes the BUILT site to the S3 origin behind CloudFront, then
-         ;; invalidates the edge. Infra lives in ~/dev/b12n-infra
-         ;; (resources/static-site/raylib-jlt.edn); this skips with an explanation if
-         ;; the aws CLI or the bucket is not there yet.
-         ;;
-         ;; The distribution id is looked up by alias, never hardcoded - tofu owns
-         ;; it, and a stale id would invalidate someone else's site.
-         deploy!   (fn []
-                     (hdr "4/4 Deploy to S3 + CloudFront")
-                     (cond
-                       (not push?)
-                       (do (println "  skipped (--no-push publishes nothing outward)") :deploy-disabled)
-
-                       (not (fs/which "aws"))
-                       (do (println "  DEPLOY SKIPPED - aws CLI not on PATH.") :aws-missing)
-
-                       :else
-                       (let [probe (shell {:continue true :out :string :err :string}
-                                          "aws" "s3api" "head-bucket"
-                                          "--bucket" bucket "--profile" "b12n")]
-                         (if-not (zero? (:exit probe))
-                           ;; head-bucket failing does NOT by itself mean the bucket is missing.
-                           ;; It fails identically when the CLI cannot reach AWS at all - and on a
-                           ;; restricted laptop HTTPS_PROXY is set, which the AWS CLI honours, so
-                           ;; every call dies at the proxy while DNS and git keep working. Sending
-                           ;; someone to tofu:apply for that means creating infrastructure that
-                           ;; already exists. So classify the failure before advising anything.
-                           (let [err   (str/lower-case (str (:err probe) " " (:out probe)))
-                                 said  (first (str/split-lines (str/trim (str (:err probe) (:out probe)))))
-                                 hit?  (fn [ss] (some (fn [s] (str/includes? err s)) ss))
-                                 proxy (or (System/getenv "HTTPS_PROXY") (System/getenv "https_proxy"))]
-                             (cond
-                               (hit? ["proxy" "could not connect" "connect timeout" "endpoint url"
-                                      "name resolution" "network is unreachable" "connection refused"
-                                      "timed out" "connection was closed"])
-                               (do (println "  DEPLOY SKIPPED - could not reach AWS at all.")
-                                   (println (str "    " said))
-                                   (println "  This is a network problem on THIS MACHINE. It is NOT evidence")
-                                   (println "  about whether the bucket exists - do NOT run tofu:apply for it.")
-                                   (when proxy
-                                     (println (str "  HTTPS_PROXY is set (" proxy ") and the AWS CLI honours it.")))
-                                   (println "  On a restricted laptop that proxy is the usual cause. Retry with:")
-                                   (println "    unset HTTPS_PROXY HTTP_PROXY https_proxy http_proxy && bb docs-sync")
-                                   :unreachable)
-
-                               (hit? ["unable to locate credentials" "no credentials" "expiredtoken"
-                                      "expired" "invalidclienttokenid" "signaturedoesnotmatch"
-                                      "sso session" "token has expired"])
-                               (do (println "  DEPLOY SKIPPED - AWS credentials for profile b12n are missing or expired.")
-                                   (println (str "    " said))
-                                   (println "  Refresh them and re-run. The infrastructure is unaffected.")
-                                   :credentials)
-
-                               (hit? ["403" "forbidden" "accessdenied"])
-                               (do (println (str "  DEPLOY SKIPPED - s3://" bucket " EXISTS but profile b12n cannot read it (403)."))
-                                   (println (str "    " said))
-                                   (println "  That is a permissions problem, not missing infrastructure.")
-                                   :forbidden)
-
-                               (hit? ["404" "not found" "nosuchbucket"])
-                               (do (println (str "  DEPLOY SKIPPED - s3://" bucket " does not exist."))
-                                   (println "  THIS is the one that needs infrastructure. Run once in ~/dev/b12n-infra:")
-                                   (println "    bb render lock tofu:init tofu:plan tofu:apply -- static-site raylib-jlt")
-                                   :missing-bucket)
-
-                               :else
-                               (do (println (str "  DEPLOY SKIPPED - head-bucket on s3://" bucket " failed for an unrecognized reason."))
-                                   (println (str "    " said))
-                                   (println "  Check by hand before assuming anything:")
-                                   (println (str "    aws s3api head-bucket --bucket " bucket " --profile b12n"))
-                                   :probe-failed)))
-                           (let [sync-res (shell {:continue true}
-                                                 "aws" "s3" "sync" (str site-repo "/docs/")
-                                                 (str "s3://" bucket "/")
-                                                 "--profile" "b12n" "--delete")]
-                             (if-not (zero? (:exit sync-res))
-                               (do (println "  S3 SYNC FAILED") :sync-failed)
-                               (let [q (str "DistributionList.Items[?contains(Aliases.Items, `" site-host "`)].Id | [0]")
-                                     dist (shell {:continue true :out :string}
-                                                 "aws" "cloudfront" "list-distributions"
-                                                 "--profile" "b12n" "--query" q "--output" "text")
-                                     id (str/trim (or (:out dist) ""))]
-                                 (if (or (str/blank? id) (= id "None"))
-                                   (do (println (str "  synced, but no CloudFront distribution found for " site-host))
-                                       (println "  (cache not invalidated \u2014 edge may serve stale files for a while)")
-                                       :no-distribution)
-                                   (let [inv (shell {:continue true}
-                                                    "aws" "cloudfront" "create-invalidation"
-                                                    "--profile" "b12n" "--distribution-id" id
-                                                    "--paths" "/*")]
-                                     (if (zero? (:exit inv))
-                                       (do (println (str "  synced + invalidated (" id ") \u2014 https://" site-host)) :ok)
-                                       (do (println "  synced, but INVALIDATION FAILED") :invalidation-failed)))))))))))]
-     (hdr "1/4 Rebuild site")
-     (let [res       (shell {:dir docs-repo :continue true} "bb" "site:build" "b12n-raylib-jlt")
-           build-ok? (zero? (:exit res))]
-       (when-not build-ok? (println "  bb site:build FAILED"))
-       (let [site-result (if build-ok?
-                           (sync! {:label "2/4 b12n-raylib-jlt.github.io" :dir site-repo :path "docs"
-                                   :msg "chore: rebuild docs (bb docs-sync)"})
-                           :build-failed)]
-         (fs/create-dirs wiki-dir)
-         (doseq [f (fs/glob guide-dir "*.md")]
-           (fs/copy f (str wiki-dir "/" (fs/file-name f)) {:replace-existing true}))
-         (let [wiki-result (sync! {:label "3/4 b12n-wikis" :dir wiki-repo :path "b12n-raylib-jlt"
-                                   :msg "b12n-raylib-jlt: mirror docs/guide (bb docs-sync)"})]
-           (let [deploy-result (deploy!)]
-             (hdr "Summary")
-             (println (str "  site:   " site-result))
-             (println (str "  wiki:   " wiki-result))
-             (println (str "  deploy: " deploy-result))
-             ;; Allowlist, not denylist. The successes are :ok, :skipped (sync!'s
-             ;; "up to date, nothing to push") and :deploy-disabled (--no-push).
-             ;; Everything else exits non-zero. Stated as an allowlist so a failure
-             ;; mode added later fails loudly by default instead of slipping through
-             ;; as a silent success - which is exactly how a skipped deploy exited 0.
-             (when-not (every? (fn [r] (contains? #{:ok :skipped :deploy-disabled} r))
-                               [site-result wiki-result deploy-result])
-               (System/exit 1)))))))}
 
   examples
   {:doc "List every runnable example with its description"

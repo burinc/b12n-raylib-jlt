@@ -6,7 +6,7 @@ calling the real `libraylib` over its C ABI through `jolt.ffi`.
 
 New examples are very welcome; the suite is deliberately mechanical to grow.
 
-The documentation is published at <https://raylib-jlt.b12n.app>. It's generated from
+The documentation is published at <https://jlt-commons.github.io/raylib-jlt/>. It's generated from
 this repo's `docs/guide/`; edit the Markdown here, never the site.
 
 ## Setting up
@@ -110,8 +110,12 @@ example would benefit from a specific input sequence in its demo, add an
 `:overrides` entry for it in the manifest and mention it in your PR; a maintainer
 will record it.
 
-Publishing the site is likewise a maintainer task (`bb docs-sync`), so a docs change
-in your PR goes live when a maintainer next syncs; you don't need to do anything.
+Publishing the site is automatic. `.github/workflows/site.yml` builds it on every
+pull request and deploys it when your change lands on `main`, so a docs change goes
+live on merge without anyone running anything. You can preview it locally with
+`bb site:serve` if you clone
+[jlt-commons/docs-engine](https://github.com/jlt-commons/docs-engine) alongside this
+repo, but the pull request build is the authority.
 
 ## Licensing
 

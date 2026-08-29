@@ -1,6 +1,6 @@
-# b12n-raylib-jlt Guide
+# raylib-jlt Guide
 
-User-facing documentation for `b12n-raylib-jlt`: a suite of **[raylib](https://github.com/raysan5/raylib)
+User-facing documentation for `raylib-jlt`: a suite of **[raylib](https://github.com/raysan5/raylib)
 examples written in [jolt](https://github.com/jolt-lang)** (native Clojure on Chez
 Scheme, no JVM) over `jolt.ffi`. Each page below covers one FFI pattern or drawing
 convention, with citations to the source files that implement it.
@@ -14,7 +14,7 @@ crosses the FFI boundary), and the answer differs per struct. Read these when yo
 want to bind a C library from Jolt yourself, or when an example does something that
 looks needlessly indirect and you want the ABI reason behind it.
 
-## What b12n-raylib-jlt is
+## What raylib-jlt is
 
 A community suite of 97 raylib examples: the classic core/shapes/text demos, a
 handful of games (asteroids, tetris, pong, vampire-survivors), and a 3D set

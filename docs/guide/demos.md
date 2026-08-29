@@ -561,3 +561,41 @@ a scene drawn off-screen, then reused
 the sprite-count benchmark (click to add)
 
 ![bunnymark](../demos/bunnymark.gif)
+
+## shaders (6)
+
+### julia-set
+
+the Julia set, mouse-steered, in a shader
+
+![julia-set](../demos/julia-set.gif)
+
+### mandelbrot-set
+
+the Mandelbrot set, zoomable, in a shader
+
+![mandelbrot-set](../demos/mandelbrot-set.gif)
+
+### raymarching
+
+a raymarched SDF scene in a shader
+
+![raymarching](../demos/raymarching.gif)
+
+### rounded-rect-shader
+
+SDF rounded rects: fill, border, shadow
+
+![rounded-rect-shader](../demos/rounded-rect-shader.gif)
+
+### palette-switch
+
+bands recolored by an ivec3 palette
+
+![palette-switch](../demos/palette-switch.gif)
+
+### shader-hot-reload
+
+swap and recompile the GLSL at runtime
+
+![shader-hot-reload](../demos/shader-hot-reload.gif)

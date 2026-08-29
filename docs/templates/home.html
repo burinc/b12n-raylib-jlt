@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}b12n-raylib-jlt: raylib examples in Jolt{% endblock %}
+{% block title %}raylib-jlt: raylib examples in Jolt{% endblock %}
 {% block body-class %}home{% endblock %}
 
-{# Page-scoped styles. Deliberately NOT added to the shared screen.css:
-   the demo grid is specific to this project (it's the only one whose
-   subject matter is 97 animated GIFs), and screen.css is shared by every
-   b12n site. Uses only the engine's own theme tokens, so it follows
+{# Page-scoped styles, deliberately not added to the engine's shared
+   screen.css: the demo grid exists because this project's subject matter
+   is 97 animated GIFs, and screen.css is shared by every jlt-commons
+   site. Uses only the engine's own theme tokens, so it follows
    light/dark exactly like the rest of the page. #}
 {% block head %}
 <style>
@@ -66,8 +66,8 @@
       <code>jolt.ffi</code>: no wrapper library, no codegen, no C shim.
     </p>
     <div class="hero-actions">
-      <a class="btn btn-primary" href="/guide/example-catalog.html">Browse all 97</a>
-      <a class="btn" href="/guide/index.html">Read the guide</a>
+      <a class="btn btn-primary" href="{{site-base}}/guide/example-catalog.html">Browse all 97</a>
+      <a class="btn" href="{{site-base}}/guide/index.html">Read the guide</a>
     </div>
   </div>
 </header>
@@ -76,42 +76,42 @@
   <div class="inner">
     <h2>A few of them</h2>
     <div class="demo-grid">
-      <a class="demo" href="/guide/demos.html#tetris">
-         <img src="/demos/tetris.gif" alt="Tetris: falling tetrominoes stacking in a well" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#tetris">
+         <img src="{{site-base}}/demos/tetris.gif" alt="Tetris: falling tetrominoes stacking in a well" loading="lazy" width="480">
         <figcaption>bb tetris</figcaption>
       </a>
-      <a class="demo" href="/guide/demos.html#boids">
-         <img src="/demos/boids.gif" alt="Boids: a flock steering by separation, alignment and cohesion" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#boids">
+         <img src="{{site-base}}/demos/boids.gif" alt="Boids: a flock steering by separation, alignment and cohesion" loading="lazy" width="480">
         <figcaption>bb boids</figcaption>
       </a>
-      <a class="demo" href="/guide/demos.html#rlgl-solar-system">
-        <img src="/demos/rlgl-solar-system.gif" alt="A Sun, Earth and Moon orbiting via the rlgl matrix stack" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#rlgl-solar-system">
+        <img src="{{site-base}}/demos/rlgl-solar-system.gif" alt="A Sun, Earth and Moon orbiting via the rlgl matrix stack" loading="lazy" width="480">
         <figcaption>bb rlgl-solar-system</figcaption>
       </a>
-      <a class="demo" href="/guide/demos.html#fourier-epicycles">
-        <img src="/demos/fourier-epicycles.gif" alt="A chain of rotating circles tracing a square wave" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#fourier-epicycles">
+        <img src="{{site-base}}/demos/fourier-epicycles.gif" alt="A chain of rotating circles tracing a square wave" loading="lazy" width="480">
         <figcaption>bb fourier-epicycles</figcaption>
       </a>
-      <a class="demo" href="/guide/demos.html#double-pendulum">
-        <img src="/demos/double-pendulum.gif" alt="A chaotic double pendulum drawing a trail" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#double-pendulum">
+        <img src="{{site-base}}/demos/double-pendulum.gif" alt="A chaotic double pendulum drawing a trail" loading="lazy" width="480">
         <figcaption>bb double-pendulum</figcaption>
       </a>
-      <a class="demo" href="/guide/demos.html#penrose-tiling">
-        <img src="/demos/penrose-tiling.gif" alt="A P3 Penrose rhombus tiling built by golden-ratio deflation" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#penrose-tiling">
+        <img src="{{site-base}}/demos/penrose-tiling.gif" alt="A P3 Penrose rhombus tiling built by golden-ratio deflation" loading="lazy" width="480">
         <figcaption>bb penrose-tiling</figcaption>
       </a>
-      <a class="demo" href="/guide/demos.html#spinning-cubes">
-        <img src="/demos/spinning-cubes.gif" alt="A row of 3D cubes each spinning with a phase offset" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#spinning-cubes">
+        <img src="{{site-base}}/demos/spinning-cubes.gif" alt="A row of 3D cubes each spinning with a phase offset" loading="lazy" width="480">
         <figcaption>bb spinning-cubes</figcaption>
       </a>
-      <a class="demo" href="/guide/demos.html#asteroids">
-         <img src="/demos/asteroids.gif" alt="Asteroids: a ship rotating, thrusting and splitting asteroids" loading="lazy" width="480">
+      <a class="demo" href="{{site-base}}/guide/demos.html#asteroids">
+         <img src="{{site-base}}/demos/asteroids.gif" alt="Asteroids: a ship rotating, thrusting and splitting asteroids" loading="lazy" width="480">
         <figcaption>bb asteroids</figcaption>
       </a>
     </div>
     <p class="group-counts">
       games 10 · core 16 · shapes 32 · text 5 · 3d 16 · generative 8 · textures 4 · shaders 6.
-      <a href="/guide/demos.html">See every one of them, full size</a>.
+      <a href="{{site-base}}/guide/demos.html">See every one of them, full size</a>.
     </p>
   </div>
 </section>
