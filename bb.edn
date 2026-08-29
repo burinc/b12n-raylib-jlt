@@ -325,6 +325,10 @@
   {:doc "▶ zoom toward the cursor, pinning the point under it"
    :task (run-example "camera-2d-mouse-zoom")}
 
+  circle-sector-drawing
+  {:doc "▶ a sector whose segment count you can starve"
+   :task (run-example "circle-sector-drawing")}
+
   clock-of-clocks
   {:doc "▶ six digits spelled by a grid of clock hands"
    :task (run-example "clock-of-clocks")}
@@ -340,6 +344,10 @@
   random-sequence
   {:doc "▶ bars in a shuffled order, each height used once"
    :task (run-example "random-sequence")}
+
+  rlgl-color-wheel
+  {:doc "▶ a hue wheel as a triangle fan, per-vertex colour"
+   :task (run-example "rlgl-color-wheel")}
 
   rlgl-triangle
   {:doc "▶ a Gouraud triangle with draggable corners"
