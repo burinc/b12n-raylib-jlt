@@ -35,6 +35,7 @@
    ["double-pendulum"   "double-pendulum" "shapes" "chaotic double-pendulum motion + trail"]
    ["kaleidoscope"      "kaleidoscope" "shapes" "strokes mirrored with 6-fold symmetry"]
    ["hilbert-curve"     "hilbert-curve" "shapes" "a rainbow Hilbert space-filling curve"]
+   ["ellipse-collision" "ellipse-collision" "shapes" "two ellipses that redden when they overlap"]
    ["math-angle-rotation" "math-angle-rotation" "shapes" "fixed spokes + a spinning line"]
    ["font-sizes"        "text"     "text"   "font sizes + MeasureText centering"]
    ["writing-anim"      "writing-anim" "text" "a message types itself out"]
@@ -106,6 +107,7 @@
    ["mandelbrot-set"      "mandelbrot-set" "shaders" "the Mandelbrot set, zoomable, in a shader"]
    ["raymarching"         "raymarching" "shaders" "a raymarched SDF scene in a shader"]
    ["rounded-rect-shader" "rounded-rect-shader" "shaders" "SDF rounded rects: fill, border, shadow"]
+   ["window-should-close" "window-should-close" "core" "close is a question: ESC asks before it exits"]
    ["palette-switch"      "palette-switch" "shaders" "bands recolored by an ivec3 palette"]
    ["shader-hot-reload"   "shader-hot-reload" "shaders" "swap and recompile the GLSL at runtime"]])
 

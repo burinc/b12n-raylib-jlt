@@ -45,6 +45,10 @@
 ;; --- window / lifecycle ------------------------------------------------------
 (ffi/defcfn init-window    "InitWindow"   [:int :int :string] :void)
 (ffi/defcfn set-target-fps "SetTargetFPS" [:int] :void)
+;; Reassigns the key that closes the window. Passing KEY-NULL takes ESC away, so
+;; an example can put its own confirmation in front of a close request rather
+;; than being closed out from under it. See window-should-close.
+(ffi/defcfn set-exit-key   "SetExitKey"   [:int] :void)
 (ffi/defcfn close-window   "CloseWindow"  [] :void)
 (ffi/defcfn ^:private should-close-raw "WindowShouldClose" [] :int)
 
@@ -318,6 +322,7 @@
   (not (zero? (bit-and (mouse-pressed-raw b) 0xff))))
 
 ;; --- constants (raylib KeyboardKey / MouseButton) ----------------------------
+(def ^:const KEY-NULL  0)   ; not a key: "nothing closes the window"
 (def ^:const KEY-SPACE 32)  (def ^:const KEY-R     82)
 (def ^:const KEY-W     87)  (def ^:const KEY-A     65)
 (def ^:const KEY-S     83)  (def ^:const KEY-D     68)
@@ -707,7 +712,8 @@
 (def ^:const KEY-THREE 51) (def ^:const KEY-FOUR 52) (def ^:const KEY-FIVE  53)
 (def ^:const KEY-SIX  54) (def ^:const KEY-SEVEN 55) (def ^:const KEY-EIGHT 56)
 (def ^:const KEY-NINE 57)
-(def ^:const KEY-C 67) (def ^:const KEY-E 69) (def ^:const KEY-F 70)
+(def ^:const KEY-B 66) (def ^:const KEY-C 67) (def ^:const KEY-E 69)
+(def ^:const KEY-F 70)
 (def ^:const KEY-G 71) (def ^:const KEY-H 72) (def ^:const KEY-M 77)
 (def ^:const KEY-N 78) (def ^:const KEY-P 80) (def ^:const KEY-Q 81)
 (def ^:const KEY-T 84) (def ^:const KEY-V 86) (def ^:const KEY-X 88)
