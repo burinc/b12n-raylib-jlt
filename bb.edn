@@ -333,6 +333,10 @@
   {:doc "▶ tap, hold, drag and swipe, named as they happen"
    :task (run-example "input-gestures")}
 
+  random-sequence
+  {:doc "▶ bars in a shuffled order, each height used once"
+   :task (run-example "random-sequence")}
+
   rlgl-triangle
   {:doc "▶ a Gouraud triangle with draggable corners"
    :task (run-example "rlgl-triangle")}

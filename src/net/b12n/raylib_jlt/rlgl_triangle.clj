@@ -103,7 +103,7 @@
           ;; Handles last, so they sit over the triangle.
           (dotimes [i 3]
             (let [[x y] (nth pts i)]
-              (rl/circle! :x x :y y :radius HANDLE
+              (rl/circle! :x (int x) :y (int y) :radius HANDLE
                           :color (if (= dragging i) rl/DARKGRAY rl/GRAY))))
           (rl/text! "drag a corner - [SPACE] lines/filled - [R] reset"
                     :x 10 :y 10 :size 20 :color rl/DARKGRAY)
