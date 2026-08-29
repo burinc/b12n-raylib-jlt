@@ -11,7 +11,7 @@
  :base-path   "/raylib-jlt"
 
  :title       "raylib-jlt"
- :description "97 raylib examples in Jolt: native Clojure on Chez Scheme, calling libraylib directly over its C ABI through jolt.ffi. No wrapper library, no codegen, no C shim."
+ :description "104 raylib examples in Jolt: native Clojure on Chez Scheme, calling libraylib directly over its C ABI through jolt.ffi. No wrapper library, no codegen, no C shim."
 
  ;; docs/demos holds 97 recorded GIFs, referenced by the gallery page as
  ;; ../demos/*.gif. Without this the pages render with every image broken.

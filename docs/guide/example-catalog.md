@@ -1,4 +1,4 @@
-# The example catalog: 97 raylib demos in jolt
+# The example catalog: 104 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -29,7 +29,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/game-2048.gif" width="80">](demos.md#game-2048) | `game-2048` | 2048: 4x4 tile-merge puzzle (arrow keys) |
 | [<img src="../demos/minesweeper.gif" width="80">](demos.md#minesweeper) | `minesweeper` | reveal/flag grid (mouse L reveal, R flag) |
 
-## core (16)
+## core (20)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -49,8 +49,12 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/input-gamepad.gif" width="80">](demos.md#input-gamepad) | `input-gamepad` | live sticks, triggers and buttons for gamepad 0 |
 | [<img src="../demos/input-multitouch.gif" width="80">](demos.md#input-multitouch) | `input-multitouch` | touch points (the mouse is point 0) |
 | [<img src="../demos/input-virtual-controls.gif" width="80">](demos.md#input-virtual-controls) | `input-virtual-controls` | an on-screen D-pad and action button |
+| _no demo yet_ | `undo-redo` | a bounded history, CTRL-Z and CTRL-Y walking it |
+| _no demo yet_ | `window-should-close` | `SetExitKey` so a close request can be answered |
+| _no demo yet_ | `input-gestures` | `GetGestureDetected`, named as they happen |
+| _no demo yet_ | `random-sequence` | a shuffled sequence, each height used once |
 
-## shapes (32)
+## shapes (34)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -86,6 +90,8 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/rounded-rectangle.gif" width="80">](demos.md#rounded-rectangle) | `rounded-rectangle` | rounded rects from `sector!` corners |
 | [<img src="../demos/rectangle-scaling.gif" width="80">](demos.md#rectangle-scaling) | `rectangle-scaling` | drag the corner handle to resize a rect |
 | [<img src="../demos/lines-drawing.gif" width="80">](demos.md#lines-drawing) | `lines-drawing` | a rotating fan of thick `rl/line-ex!` lines |
+| _no demo yet_ | `ellipse-collision` | two ellipses reddening when they overlap |
+| _no demo yet_ | `rlgl-triangle` | per-vertex colour interpolated across a face |
 
 ## text (5)
 
@@ -123,7 +129,7 @@ The 3D set stands entirely on two building blocks from
 [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md): `with-camera-3d`
 (the camera, by pointer) and `cube!` (the geometry, by rlgl vertices).
 
-## generative (8)
+## generative (9)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -135,6 +141,7 @@ The 3D set stands entirely on two building blocks from
 | [<img src="../demos/l-system.gif" width="80">](demos.md#l-system) | `l-system` | an L-system fractal plant (grows + regrows) |
 | [<img src="../demos/flow-field.gif" width="80">](demos.md#flow-field) | `flow-field` | particles steered by a flow field (trails) |
 | [<img src="../demos/cellular-automata.gif" width="80">](demos.md#cellular-automata) | `cellular-automata` | Wolfram's elementary automata |
+| _no demo yet_ | `clock-of-clocks` | six digits spelled by a grid of clock hands |
 
 All eight are pure math + the drawing API, no new bindings. They showcase the
 suite as a generative-art canvas: cellular automata, agent flocking, particle
