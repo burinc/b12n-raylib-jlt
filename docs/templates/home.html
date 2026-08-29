@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% block title %}b12n-raylib-jlt: raylib examples in Jolt{% endblock %}
+{% block body-class %}home{% endblock %}
+
+{# Page-scoped styles. Deliberately NOT added to the shared screen.css:
+   the demo grid is specific to this project (it's the only one whose
+   subject matter is 97 animated GIFs), and screen.css is shared by every
+   b12n site. Uses only the engine's own theme tokens, so it follows
+   light/dark exactly like the rest of the page. #}
+{% block head %}
+<style>
+  .demo-grid {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+  .demo {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-raised);
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .demo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--border);
+  }
+  .demo figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    padding: 0.5rem 0.7rem;
+  }
+  .demo:hover { border-color: var(--accent); }
+  .demo:hover figcaption { color: var(--accent); }
+
+  .abi-list { list-style: none; padding: 0; }
+  .abi-list > li {
+    border-left: 2px solid var(--border);
+    padding: 0 0 0 1rem;
+    margin: 0 0 1.25rem;
+  }
+  .abi-list > li:last-child { margin-bottom: 0; }
+  .abi-list h4 { margin: 0 0 0.35rem; font-family: var(--font-mono); }
+
+  .group-counts {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="hero">
+  <div class="hero-inner">
+    <h1>raylib examples in Jolt</h1>
+    <p class="tagline">
+      97 <strong>raylib</strong> examples written in <strong>Jolt</strong>,
+      native Clojure on Chez Scheme, no JVM. They call the real
+      <code>libraylib</code> directly over its C ABI through
+      <code>jolt.ffi</code>: no wrapper library, no codegen, no C shim.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/guide/example-catalog.html">Browse all 97</a>
+      <a class="btn" href="/guide/index.html">Read the guide</a>
+    </div>
+  </div>
+</header>
+
+<section id="demos">
+  <div class="inner">
+    <h2>A few of them</h2>
+    <div class="demo-grid">
+      <a class="demo" href="/guide/demos.html#tetris">
+         <img src="/demos/tetris.gif" alt="Tetris: falling tetrominoes stacking in a well" loading="lazy" width="480">
+        <figcaption>bb tetris</figcaption>
+      </a>
+      <a class="demo" href="/guide/demos.html#boids">
+         <img src="/demos/boids.gif" alt="Boids: a flock steering by separation, alignment and cohesion" loading="lazy" width="480">
+        <figcaption>bb boids</figcaption>
+      </a>
+      <a class="demo" href="/guide/demos.html#rlgl-solar-system">
+        <img src="/demos/rlgl-solar-system.gif" alt="A Sun, Earth and Moon orbiting via the rlgl matrix stack" loading="lazy" width="480">
+        <figcaption>bb rlgl-solar-system</figcaption>
+      </a>
+      <a class="demo" href="/guide/demos.html#fourier-epicycles">
+        <img src="/demos/fourier-epicycles.gif" alt="A chain of rotating circles tracing a square wave" loading="lazy" width="480">
+        <figcaption>bb fourier-epicycles</figcaption>
+      </a>
+      <a class="demo" href="/guide/demos.html#double-pendulum">
+        <img src="/demos/double-pendulum.gif" alt="A chaotic double pendulum drawing a trail" loading="lazy" width="480">
+        <figcaption>bb double-pendulum</figcaption>
+      </a>
+      <a class="demo" href="/guide/demos.html#penrose-tiling">
+        <img src="/demos/penrose-tiling.gif" alt="A P3 Penrose rhombus tiling built by golden-ratio deflation" loading="lazy" width="480">
+        <figcaption>bb penrose-tiling</figcaption>
+      </a>
+      <a class="demo" href="/guide/demos.html#spinning-cubes">
+        <img src="/demos/spinning-cubes.gif" alt="A row of 3D cubes each spinning with a phase offset" loading="lazy" width="480">
+        <figcaption>bb spinning-cubes</figcaption>
+      </a>
+      <a class="demo" href="/guide/demos.html#asteroids">
+         <img src="/demos/asteroids.gif" alt="Asteroids: a ship rotating, thrusting and splitting asteroids" loading="lazy" width="480">
+        <figcaption>bb asteroids</figcaption>
+      </a>
+    </div>
+    <p class="group-counts">
+      games 10 · core 16 · shapes 32 · text 5 · 3d 16 · generative 8 · textures 4 · shaders 6.
+      <a href="/guide/demos.html">See every one of them, full size</a>.
+    </p>
+  </div>
+</section>
+
+<section id="why" class="surface">
+  <div class="inner">
+    <h2>Why this is interesting</h2>
+    <p>
+      raylib passes structs <em>by value</em> everywhere, and Chez's
+      <code>foreign-procedure</code> cannot. Nothing here works around that
+      with a C shim; instead each struct gets the treatment its size and
+      contents actually earn on the ABI. Three facts drive every distinctive
+      decision in the binding layer:
+    </p>
+    <ul class="abi-list">
+      <li>
+        <h4>Color → a packed :uint</h4>
+        <p>
+          <code>Color</code> is 4 bytes of <code>u8</code>, and a 4-byte
+          all-integer struct travels in one general-purpose register, exactly
+          like a <code>uint32</code>. So every draw call passes color as an
+          int, and no struct marshaling happens at all.
+        </p>
+      </li>
+      <li>
+        <h4>Camera2D / Camera3D → by pointer</h4>
+        <p>
+          A composite larger than 16 bytes is passed <em>indirectly</em> on
+          AArch64: the caller allocates a copy and passes its address. So the
+          24-byte <code>Camera2D</code> and 44-byte <code>Camera3D</code> are
+          built in native memory and bound as <code>[:pointer]</code>.
+          <strong>This one is AArch64-specific</strong>, and the guide says so
+          plainly rather than pretending it ports.
+        </p>
+      </li>
+      <li>
+        <h4>Vector2 / Vector3 → rlgl immediate mode</h4>
+        <p>
+          Small <em>float</em> structs go in floating-point registers, which
+          the pointer trick does not cover. So geometry that takes a
+          <code>Vector2</code> or <code>Vector3</code> by value is drawn with
+          rlgl's scalar immediate mode instead: <code>rlVertex3f</code>,
+          <code>rlColor4ub</code>, and the matrix stack for nested transforms.
+        </p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="inner">
+    <h2>How it fits together</h2>
+    <pre class="mermaid">
+flowchart LR
+  subgraph ex["97 example namespaces"]
+    e["pong · boids · tetris<br/>camera-3d · penrose-tiling · …"]
+  end
+  subgraph shared["net.b12n.raylib-jlt.raylib: one shared layer"]
+    kw["keyword-argument drawing API<br/>text! · rect! · circle! · cube!"]
+    fb["jolt.ffi/defcfn binds<br/>positional, mirroring C"]
+    kw --> fb
+  end
+  lib["system libraylib<br/>dlopened at runtime, C ABI"]
+  e --> kw
+  fb -->|"Color as a packed :uint"| lib
+  fb -->|"Camera2D/3D by pointer"| lib
+  fb -->|"rlgl scalar immediate mode"| lib
+    </pre>
+    <p>
+      Every example is a small namespace over that one shared layer. Adding
+      one touches exactly four places: the source namespace, a
+      <code>deps.edn</code> alias, a <code>check.clj</code> require, and a
+      <code>bb.edn</code> registry row.
+    </p>
+  </div>
+</section>
+
+<section id="features" class="surface">
+  <div class="inner">
+    <h2>What's here</h2>
+    <div class="feature-grid">
+      <div class="feat">
+        <h4>One binding layer</h4>
+        <p>All the FFI binds, the keyword-argument drawing API, and the named color palette live in a single namespace. Examples stay small enough to read in one sitting.</p>
+      </div>
+      <div class="feat">
+        <h4>Reads like Clojure, not like C</h4>
+        <p><code>(rl/circle! :x 400 :y 225 :radius 50 :color rl/MAROON)</code>: positional binds at the boundary, keyword wrappers on top.</p>
+      </div>
+      <div class="feat">
+        <h4>Provable without a display</h4>
+        <p><code>RAYLIB_APP_AUTO_QUIT_MS</code> closes the window on a timer and <code>RAYLIB_APP_SHOT</code> dumps a frame to PNG, so a windowed example can prove itself unattended.</p>
+      </div>
+      <div class="feat">
+        <h4>A compile gate over all 97</h4>
+        <p><code>bb check</code> requires every example namespace headlessly. No window, no JVM, and it catches a broken binding across the whole suite at once.</p>
+      </div>
+      <div class="feat">
+        <h4>clj-kondo taught the FFI</h4>
+        <p>A hook rewrites each <code>defcfn</code> into an equivalent <code>defn</code>, so call sites get arity- and return-type-checked instead of producing ~500 false positives.</p>
+      </div>
+      <div class="feat">
+        <h4>Not only raylib</h4>
+        <p>The two clock examples call plain <b>libc</b> <code>time()</code> / <code>localtime()</code>, reading <code>struct tm</code> straight out of native memory. Nothing about <code>jolt.ffi</code> is raylib-specific.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quickstart">
+  <div class="inner">
+    <h2>Quickstart</h2>
+    <pre><code class="sh">bb lib:check       # is the native libraylib installed for this OS/arch?
+bb lib:install     # …install it via brew / pacman / apt / dnf / zypper / apk
+
+bb info            # grouped cheat-sheet of every example
+bb tetris          # run one (opens a window)
+bb run-all 10      # demo reel: every example, 10s each
+bb check           # headless compile-check of all 97, no window</code></pre>
+    <p>
+      Needs <code>jolt</code> (tested against v0.7.16) and a system
+      <code>libraylib</code>.
+      <a href="https://babashka.org" target="_blank" rel="noopener">babashka</a>
+      is optional but gives every example a friendly task; without it each one
+      is a <code>joltc -M:&lt;alias&gt;</code> away.
+      Released under the zlib/libpng license, the same one raylib itself uses.
+    </p>
+  </div>
+</section>
+{% endblock %}
