@@ -12,20 +12,21 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
-- **Eleven more examples, taking the suite to 108.** `clock-of-clocks`,
+- **Fifteen more examples, taking the suite to 112.** `clock-of-clocks`,
   `undo-redo`, `window-should-close`, `ellipse-collision`, `input-gestures`,
   `rlgl-triangle`, `random-sequence`, `camera-2d-mouse-zoom`,
   `rlgl-color-wheel`, `circle-sector-drawing` and `easings-rectangles`, each a
   port of its upstream raylib counterpart. `SetExitKey`, `KEY-NULL` and `KEY-B`
   are newly bound, and `rect-pro!` draws a rotated rectangle as an rlgl quad,
-  standing in for DrawRectanglePro.
+  standing in for DrawRectanglePro. `reasings` is the shared counterpart of
+  raylib's `reasings.h`, keeping its `(t, b, c, d)` signature.
 - **The drawing API coerces its int parameters.** `rect!`, `line!`, `circle!`,
   `ellipse!`, `text!` and the rest forward to C functions whose positions are
   int, and a double reaching one aborted the process on the first frame with
   `invalid foreign-procedure argument`. Callers compute positions in floating
   point constantly, so the coercion belongs at the boundary. Nothing that
   worked before behaves differently.
-- **The gallery carries still frames for the new eleven.** They have no animated
+- **The gallery carries still frames for the new fifteen.** They have no animated
   GIFs yet, so both galleries show a captured frame instead and say so. That
   keeps the catalog a complete list, with `bb record` left an obvious gap to
   fill.

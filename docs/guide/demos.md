@@ -3,7 +3,7 @@
 Every example at full size, linked from [the example catalog](example-catalog.md)'s
 preview thumbnails.
 
-Most are animated GIFs. The newest eleven are still frames, captured from a real
+Most are animated GIFs. The newest fifteen are still frames, captured from a real
 run but not yet recorded as animations, so they show what an example draws rather
 than how it moves.
 
@@ -69,7 +69,7 @@ reveal/flag grid (mouse L reveal, R flag)
 
 ![minesweeper](../demos/minesweeper.gif)
 
-## core (21)
+## core (22)
 
 ### basic-window
 
@@ -197,7 +197,13 @@ zoom pinned to the point under the cursor
 
 ![camera-2d-mouse-zoom](../demos/camera-2d-mouse-zoom.png)
 
-## shapes (37)
+### storage-values
+
+values that survive a restart, via a file
+
+![storage-values](../demos/storage-values.png)
+
+## shapes (40)
 
 ### bouncing-ball
 
@@ -420,6 +426,24 @@ a sector starved of segments
 size and rotation on one easing curve
 
 ![easings-rectangles](../demos/easings-rectangles.png)
+
+### easings-ball
+
+slide, swell and fade, one curve each
+
+![easings-ball](../demos/easings-ball.png)
+
+### easings-box
+
+drop, flatten, spin, grow, fade: five curves
+
+![easings-box](../demos/easings-box.png)
+
+### logo-anim
+
+the raylib logo assembling itself, unsmoothed
+
+![logo-anim](../demos/logo-anim.png)
 
 ## text (5)
 

@@ -1,4 +1,4 @@
-# The example catalog: 108 raylib demos in jolt
+# The example catalog: 112 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -29,7 +29,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/game-2048.gif" width="80">](demos.md#game-2048) | `game-2048` | 2048: 4x4 tile-merge puzzle (arrow keys) |
 | [<img src="../demos/minesweeper.gif" width="80">](demos.md#minesweeper) | `minesweeper` | reveal/flag grid (mouse L reveal, R flag) |
 
-## core (21)
+## core (22)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -54,8 +54,9 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/input-gestures.png" width="80">](demos.md#input-gestures) | `input-gestures` | `GetGestureDetected`, named as they happen |
 | [<img src="../demos/random-sequence.png" width="80">](demos.md#random-sequence) | `random-sequence` | a shuffled sequence, each height used once |
 | [<img src="../demos/camera-2d-mouse-zoom.png" width="80">](demos.md#camera-2d-mouse-zoom) | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
+| [<img src="../demos/storage-values.png" width="80">](demos.md#storage-values) | `storage-values` | values that survive a restart, via a file |
 
-## shapes (37)
+## shapes (40)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -96,6 +97,9 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/rlgl-color-wheel.png" width="80">](demos.md#rlgl-color-wheel) | `rlgl-color-wheel` | a hue wheel as a triangle fan |
 | [<img src="../demos/circle-sector-drawing.png" width="80">](demos.md#circle-sector-drawing) | `circle-sector-drawing` | a sector starved of segments |
 | [<img src="../demos/easings-rectangles.png" width="80">](demos.md#easings-rectangles) | `easings-rectangles` | size and rotation on one easing curve |
+| [<img src="../demos/easings-ball.png" width="80">](demos.md#easings-ball) | `easings-ball` | slide, swell and fade, one curve each |
+| [<img src="../demos/easings-box.png" width="80">](demos.md#easings-box) | `easings-box` | drop, flatten, spin, grow, fade: five curves |
+| [<img src="../demos/logo-anim.png" width="80">](demos.md#logo-anim) | `logo-anim` | the raylib logo assembling itself, unsmoothed |
 
 ## text (5)
 
