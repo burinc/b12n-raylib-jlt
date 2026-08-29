@@ -35,3 +35,6 @@ _site/
 # A local checkout of jlt-commons/docs-engine, if you clone it here rather
 # than as a sibling. CI checks it out itself.
 .docs-engine/
+
+# storage-values writes here, matching where raylib puts storage.data
+storage.edn

@@ -353,6 +353,10 @@
   {:doc "▶ tap, hold, drag and swipe, named as they happen"
    :task (run-example "input-gestures")}
 
+  logo-anim
+  {:doc "▶ the raylib logo assembling itself, unsmoothed"
+   :task (run-example "logo-anim")}
+
   random-sequence
   {:doc "▶ bars in a shuffled order, each height used once"
    :task (run-example "random-sequence")}
@@ -364,6 +368,10 @@
   rlgl-triangle
   {:doc "▶ a Gouraud triangle with draggable corners"
    :task (run-example "rlgl-triangle")}
+
+  storage-values
+  {:doc "▶ values that survive a restart, via a file"
+   :task (run-example "storage-values")}
 
   undo-redo
   {:doc "▶ move a square, then step back through the history"

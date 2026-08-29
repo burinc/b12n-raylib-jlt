@@ -108,9 +108,11 @@
   :easings-rectangles {:main-opts ["-m" "net.b12n.raylib-jlt.easings-rectangles"]}
   :ellipse-collision {:main-opts ["-m" "net.b12n.raylib-jlt.ellipse-collision"]}
   :input-gestures {:main-opts ["-m" "net.b12n.raylib-jlt.input-gestures"]}
+  :logo-anim {:main-opts ["-m" "net.b12n.raylib-jlt.logo-anim"]}
   :random-sequence {:main-opts ["-m" "net.b12n.raylib-jlt.random-sequence"]}
   :rlgl-color-wheel {:main-opts ["-m" "net.b12n.raylib-jlt.rlgl-color-wheel"]}
   :rlgl-triangle {:main-opts ["-m" "net.b12n.raylib-jlt.rlgl-triangle"]}
+  :storage-values {:main-opts ["-m" "net.b12n.raylib-jlt.storage-values"]}
   :undo-redo {:main-opts ["-m" "net.b12n.raylib-jlt.undo-redo"]}
   :window-should-close {:main-opts ["-m" "net.b12n.raylib-jlt.window-should-close"]}
            :clock-of-clocks {:main-opts ["-m" "net.b12n.raylib-jlt.clock-of-clocks"]} ; Wolfram's elementary automata (LEFT/RIGHT change rule)
