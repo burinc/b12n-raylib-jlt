@@ -37,6 +37,8 @@
    ["hilbert-curve"     "hilbert-curve" "shapes" "a rainbow Hilbert space-filling curve"]
    ["camera-2d-mouse-zoom" "camera-2d-mouse-zoom" "core" "zoom toward the cursor, pinning the point under it"]
    ["circle-sector-drawing" "circle-sector-drawing" "shapes" "a sector whose segment count you can starve"]
+   ["easings-ball" "easings-ball" "shapes" "slide, swell and fade, one curve each"]
+   ["easings-box" "easings-box" "shapes" "drop, flatten, spin, grow, fade: five curves"]
    ["easings-rectangles" "easings-rectangles" "shapes" "a grid easing out in size and rotation at once"]
    ["ellipse-collision" "ellipse-collision" "shapes" "two ellipses that redden when they overlap"]
    ["input-gestures" "input-gestures" "core" "tap, hold, drag and swipe, named as they happen"]

@@ -333,6 +333,14 @@
   {:doc "▶ six digits spelled by a grid of clock hands"
    :task (run-example "clock-of-clocks")}
 
+  easings-ball
+  {:doc "▶ slide, swell and fade, one curve each"
+   :task (run-example "easings-ball")}
+
+  easings-box
+  {:doc "▶ drop, flatten, spin, grow, fade: five curves"
+   :task (run-example "easings-box")}
+
   easings-rectangles
   {:doc "▶ a grid easing out in size and rotation at once"
    :task (run-example "easings-rectangles")}

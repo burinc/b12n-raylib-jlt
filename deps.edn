@@ -103,6 +103,8 @@
   :camera-2d-mouse-zoom {:main-opts ["-m" "net.b12n.raylib-jlt.camera-2d-mouse-zoom"]}
            :cellular-automata {:main-opts ["-m" "net.b12n.raylib-jlt.cellular-automata"]}
   :circle-sector-drawing {:main-opts ["-m" "net.b12n.raylib-jlt.circle-sector-drawing"]}
+  :easings-ball {:main-opts ["-m" "net.b12n.raylib-jlt.easings-ball"]}
+  :easings-box {:main-opts ["-m" "net.b12n.raylib-jlt.easings-box"]}
   :easings-rectangles {:main-opts ["-m" "net.b12n.raylib-jlt.easings-rectangles"]}
   :ellipse-collision {:main-opts ["-m" "net.b12n.raylib-jlt.ellipse-collision"]}
   :input-gestures {:main-opts ["-m" "net.b12n.raylib-jlt.input-gestures"]}
