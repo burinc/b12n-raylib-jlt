@@ -50,6 +50,7 @@
    ["asteroids"         "asteroids" "games" "the classic vector shooter (rotate/thrust/fire)"]
    ["tetris"            "tetris" "games" "the block-stacking puzzle (move/rotate/drop)"]
    ["pong"              "pong" "games" "two-paddle classic, you (W/S) vs a CPU"]
+   ["undo-redo" "undo-redo" "core" "move a square, then step back through the history"]
    ["vampire-survivors" "vampire-survivors" "games" "auto-fire survival: move, waves chase you"]
    ["rotating-cube"     "rotating-cube" "3d" "a single cube spinning via the rlgl matrix stack"]
    ["spinning-cubes"    "spinning-cubes" "3d" "a row of cubes each spinning with a phase offset"]

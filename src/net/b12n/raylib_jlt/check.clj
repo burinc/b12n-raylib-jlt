@@ -96,6 +96,7 @@
    [net.b12n.raylib-jlt.texture-procedural]
    [net.b12n.raylib-jlt.texture-tiling]
    [net.b12n.raylib-jlt.triangle-strip]
+   [net.b12n.raylib-jlt.undo-redo]
    [net.b12n.raylib-jlt.vampire-survivors]
    [net.b12n.raylib-jlt.vector-angle]
    [net.b12n.raylib-jlt.waving-cubes]

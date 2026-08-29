@@ -101,6 +101,7 @@
            :yaw-pitch-roll {:main-opts ["-m" "net.b12n.raylib-jlt.yaw-pitch-roll"]} ; the three aircraft rotations on the rlgl matrix stack
            :first-person-maze {:main-opts ["-m" "net.b12n.raylib-jlt.first-person-maze"]} ; walk a grid maze in first person, with a minimap
            :cellular-automata {:main-opts ["-m" "net.b12n.raylib-jlt.cellular-automata"]}
+  :undo-redo {:main-opts ["-m" "net.b12n.raylib-jlt.undo-redo"]}
            :clock-of-clocks {:main-opts ["-m" "net.b12n.raylib-jlt.clock-of-clocks"]} ; Wolfram's elementary automata (LEFT/RIGHT change rule)
            :julia-set {:main-opts ["-m" "net.b12n.raylib-jlt.julia-set"]} ; the Julia set, mouse-steered, in a shader
            :mandelbrot-set {:main-opts ["-m" "net.b12n.raylib-jlt.mandelbrot-set"]} ; the Mandelbrot set, zoomable, in a shader

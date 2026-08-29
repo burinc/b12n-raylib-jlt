@@ -324,6 +324,10 @@
   clock-of-clocks
   {:doc "▶ six digits spelled by a grid of clock hands"
    :task (run-example "clock-of-clocks")}
+
+  undo-redo
+  {:doc "▶ move a square, then step back through the history"
+   :task (run-example "undo-redo")}
   input-gamepad     {:doc "▶ sticks, triggers and buttons for pad 0"            :task (run-example "input-gamepad")}
   input-multitouch  {:doc "▶ touch points (the mouse is point 0)"               :task (run-example "input-multitouch")}
   input-virtual-controls {:doc "▶ an on-screen D-pad and action button" :task (run-example "input-virtual-controls")}
