@@ -329,6 +329,14 @@
   {:doc "▶ two ellipses that redden when they overlap"
    :task (run-example "ellipse-collision")}
 
+  input-gestures
+  {:doc "▶ tap, hold, drag and swipe, named as they happen"
+   :task (run-example "input-gestures")}
+
+  rlgl-triangle
+  {:doc "▶ a Gouraud triangle with draggable corners"
+   :task (run-example "rlgl-triangle")}
+
   undo-redo
   {:doc "▶ move a square, then step back through the history"
    :task (run-example "undo-redo")}

@@ -102,6 +102,8 @@
            :first-person-maze {:main-opts ["-m" "net.b12n.raylib-jlt.first-person-maze"]} ; walk a grid maze in first person, with a minimap
            :cellular-automata {:main-opts ["-m" "net.b12n.raylib-jlt.cellular-automata"]}
   :ellipse-collision {:main-opts ["-m" "net.b12n.raylib-jlt.ellipse-collision"]}
+  :input-gestures {:main-opts ["-m" "net.b12n.raylib-jlt.input-gestures"]}
+  :rlgl-triangle {:main-opts ["-m" "net.b12n.raylib-jlt.rlgl-triangle"]}
   :undo-redo {:main-opts ["-m" "net.b12n.raylib-jlt.undo-redo"]}
   :window-should-close {:main-opts ["-m" "net.b12n.raylib-jlt.window-should-close"]}
            :clock-of-clocks {:main-opts ["-m" "net.b12n.raylib-jlt.clock-of-clocks"]} ; Wolfram's elementary automata (LEFT/RIGHT change rule)
