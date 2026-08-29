@@ -92,6 +92,7 @@
    ["window-flags"        "window-flags" "core" "toggle vsync/resizable/topmost live"]
    ["monitor-detector"    "monitor-detector" "core" "every attached display, current one lit"]
    ["clipboard-text"      "clipboard-text" "core" "type, C copies, V pastes"]
+   ["clock-of-clocks" "clock-of-clocks" "generative" "six digits spelled by a grid of clock hands"]
    ["input-gamepad"       "input-gamepad" "core" "sticks, triggers and buttons for pad 0"]
    ["input-multitouch"    "input-multitouch" "core" "touch points (the mouse is point 0)"]
    ["input-virtual-controls" "input-virtual-controls" "core" "an on-screen D-pad and action button"]
