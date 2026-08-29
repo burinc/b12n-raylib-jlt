@@ -36,6 +36,7 @@
    [net.b12n.raylib-jlt.dna-helix]
    [net.b12n.raylib-jlt.double-pendulum]
    [net.b12n.raylib-jlt.easings]
+   [net.b12n.raylib-jlt.easings-rectangles]
    [net.b12n.raylib-jlt.ellipse-collision]
    [net.b12n.raylib-jlt.eyes]
    [net.b12n.raylib-jlt.fireworks]

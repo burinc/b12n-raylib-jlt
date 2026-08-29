@@ -1,4 +1,4 @@
-# The example catalog: 104 raylib demos in jolt
+# The example catalog: 108 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -29,7 +29,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/game-2048.gif" width="80">](demos.md#game-2048) | `game-2048` | 2048: 4x4 tile-merge puzzle (arrow keys) |
 | [<img src="../demos/minesweeper.gif" width="80">](demos.md#minesweeper) | `minesweeper` | reveal/flag grid (mouse L reveal, R flag) |
 
-## core (20)
+## core (21)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -53,8 +53,9 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | _no demo yet_ | `window-should-close` | `SetExitKey` so a close request can be answered |
 | _no demo yet_ | `input-gestures` | `GetGestureDetected`, named as they happen |
 | _no demo yet_ | `random-sequence` | a shuffled sequence, each height used once |
+| _no demo yet_ | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
 
-## shapes (34)
+## shapes (37)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -92,6 +93,9 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/lines-drawing.gif" width="80">](demos.md#lines-drawing) | `lines-drawing` | a rotating fan of thick `rl/line-ex!` lines |
 | _no demo yet_ | `ellipse-collision` | two ellipses reddening when they overlap |
 | _no demo yet_ | `rlgl-triangle` | per-vertex colour interpolated across a face |
+| _no demo yet_ | `rlgl-color-wheel` | a hue wheel as a triangle fan |
+| _no demo yet_ | `circle-sector-drawing` | a sector starved of segments |
+| _no demo yet_ | `easings-rectangles` | size and rotation on one easing curve |
 
 ## text (5)
 

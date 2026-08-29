@@ -12,11 +12,19 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
-- **Seven more examples, taking the suite to 104.** `clock-of-clocks`,
+- **Eleven more examples, taking the suite to 108.** `clock-of-clocks`,
   `undo-redo`, `window-should-close`, `ellipse-collision`, `input-gestures`,
-  `rlgl-triangle` and `random-sequence`, each a port of its upstream raylib
-  counterpart. `SetExitKey`, `KEY-NULL` and `KEY-B` are newly bound; nothing
-  else in the binding layer changed.
+  `rlgl-triangle`, `random-sequence`, `camera-2d-mouse-zoom`,
+  `rlgl-color-wheel`, `circle-sector-drawing` and `easings-rectangles`, each a
+  port of its upstream raylib counterpart. `SetExitKey`, `KEY-NULL` and `KEY-B`
+  are newly bound, and `rect-pro!` draws a rotated rectangle as an rlgl quad,
+  standing in for DrawRectanglePro.
+- **The drawing API coerces its int parameters.** `rect!`, `line!`, `circle!`,
+  `ellipse!`, `text!` and the rest forward to C functions whose positions are
+  int, and a double reaching one aborted the process on the first frame with
+  `invalid foreign-procedure argument`. Callers compute positions in floating
+  point constantly, so the coercion belongs at the boundary. Nothing that
+  worked before behaves differently.
 - **The demo gallery still shows 97.** The seven new examples have no recorded
   GIFs, so `docs/demos/` and both galleries are unchanged until `bb record`
   runs. The catalog lists them with the preview column marked rather than

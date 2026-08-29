@@ -333,6 +333,10 @@
   {:doc "▶ six digits spelled by a grid of clock hands"
    :task (run-example "clock-of-clocks")}
 
+  easings-rectangles
+  {:doc "▶ a grid easing out in size and rotation at once"
+   :task (run-example "easings-rectangles")}
+
   ellipse-collision
   {:doc "▶ two ellipses that redden when they overlap"
    :task (run-example "ellipse-collision")}
