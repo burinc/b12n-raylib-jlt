@@ -72,18 +72,29 @@ void main() {
             loc-mix (rl/uniform-loc sh "uMix")]
         (try
           (loop [frame 0
-                 keyed 0.5]
+                 keyed 0.5
+                 touched? false]
             (when (rl/keep-running? deadline)
               ;; The pointer can sit outside the window and GetMouseX reports that
-              ;; faithfully, so an unattended capture would otherwise pin the mix
-              ;; to an edge. Off-window falls back to the keyboard-held value.
+              ;; faithfully. Neither texture animates, so an off-window pointer with
+              ;; a held value would render a completely static frame - and an
+              ;; unattended demo capture is exactly that case. So off-window sweeps
+              ;; the mix with time instead, unless a key has been used, which is
+              ;; what makes the recorded GIF show the blend rather than one frame
+              ;; of it.
               (let [mx (rl/get-mouse-x)
                     over? (<= 0 mx W)
+                    touched? (or touched?
+                                 (rl/key-down? rl/KEY-RIGHT)
+                                 (rl/key-down? rl/KEY-LEFT))
                     keyed (cond
                             (rl/key-down? rl/KEY-RIGHT) (min 1.0 (+ keyed 0.01))
                             (rl/key-down? rl/KEY-LEFT) (max 0.0 (- keyed 0.01))
                             :else keyed)
-                    mix (if over? (/ (double mx) W) keyed)]
+                    swept (* 0.5 (+ 1.0 (Math/sin (* 0.9 (rl/get-time)))))
+                    mix (cond over? (/ (double mx) W)
+                              touched? keyed
+                              :else swept)]
                 (rl/set-uniform-float! sh loc-mix mix)
                 (rl/begin-drawing)
                 (rl/clear-background rl/BLACK)
@@ -112,11 +123,13 @@ void main() {
                           :x 14 :y 12 :size 18 :color rl/RAYWHITE)
                 (rl/text! (if over?
                             "move the mouse to blend   ·   SetShaderValueTexture feeds the second sampler"
-                            "pointer is off-window - LEFT/RIGHT blend")
+                            (if touched?
+                              "pointer is off-window - LEFT/RIGHT blend"
+                              "pointer is off-window - sweeping the mix   ·   LEFT/RIGHT to take over"))
                           :x 14 :y 38 :size 14 :color rl/LIGHTGRAY)
                 (rl/maybe-screenshot! frame 5)
                 (rl/end-drawing)
-                (recur (inc frame) keyed))))
+                (recur (inc frame) keyed touched?))))
           (finally
             (rl/unload-texture! tex-a)
             (rl/unload-texture! tex-b)
