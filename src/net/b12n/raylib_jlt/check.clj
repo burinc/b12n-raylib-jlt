@@ -70,6 +70,7 @@
    [net.b12n.raylib-jlt.pie-chart]
    [net.b12n.raylib-jlt.point-cloud]
    [net.b12n.raylib-jlt.pong]
+   [net.b12n.raylib-jlt.postprocessing]
    [net.b12n.raylib-jlt.random-values]
    [net.b12n.raylib-jlt.raylib]
    [net.b12n.raylib-jlt.raymarching]

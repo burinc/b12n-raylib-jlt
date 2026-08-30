@@ -107,6 +107,7 @@
            :rounded-rect-shader {:main-opts ["-m" "net.b12n.raylib-jlt.rounded-rect-shader"]} ; SDF rounded rects: fill, border, shadow
            :palette-switch {:main-opts ["-m" "net.b12n.raylib-jlt.palette-switch"]} ; bands recolored by an ivec3 palette
            :shader-hot-reload {:main-opts ["-m" "net.b12n.raylib-jlt.shader-hot-reload"]} ; swap and recompile the GLSL at runtime
-           :multi-sampler {:main-opts ["-m" "net.b12n.raylib-jlt.multi-sampler"]}} ; two textures blended by a second sampler
+           :multi-sampler {:main-opts ["-m" "net.b12n.raylib-jlt.multi-sampler"]} ; two textures blended by a second sampler
+           :postprocessing {:main-opts ["-m" "net.b12n.raylib-jlt.postprocessing"]}} ; post-process shaders cycled over a scene
 
  :tasks {run "joltc -M:run"}}

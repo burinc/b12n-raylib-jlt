@@ -335,6 +335,7 @@
   palette-switch    {:doc "▶ bands recolored by an ivec3 palette" :task (run-example "palette-switch")}
   shader-hot-reload {:doc "▶ swap and recompile the GLSL at runtime" :task (run-example "shader-hot-reload")}
   multi-sampler     {:doc "▶ two textures blended by a second sampler" :task (run-example "multi-sampler")}
+  postprocessing    {:doc "▶ post-process shaders cycled over a scene" :task (run-example "postprocessing")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run
