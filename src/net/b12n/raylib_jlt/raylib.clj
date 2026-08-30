@@ -630,13 +630,25 @@
 
 (def ^:private shot-path (System/getenv "RAYLIB_APP_SHOT"))
 
+;; Which frame to dump. Each example picks a frame that shows it at its best, and
+;; that is the right default. Overriding it is how you ask a different question:
+;; capture the same example at two distant frames and compare, and an identical
+;; pair means the example does not animate unattended. That matters before
+;; recording a GIF, because a static example records as a technically valid
+;; animation of one repeated image, which no frame-count check can tell from a
+;; real one.
+(def ^:private shot-at
+  (when-let [v (System/getenv "RAYLIB_APP_SHOT_AT")]
+    (try (Integer/parseInt v) (catch Exception _ nil))))
+
 (defn maybe-screenshot!
-  "RAYLIB_APP_SHOT=/path dumps one PNG on frame `at`, headless visual proof a
+  "RAYLIB_APP_SHOT=/path dumps one PNG on frame `at`, or on RAYLIB_APP_SHOT_AT
+  when that is set. Headless visual proof a
   frame rendered. Flushes raylib's batched geometry first (DrawText etc. is
   deferred until EndDrawing, so a mid-frame TakeScreenshot would miss it). raylib
   writes the file's basename into the current working directory."
   [frame at]
-  (when (and shot-path (= frame at))
+  (when (and shot-path (= frame (or shot-at at)))
     (flush-batch)
     (take-screenshot shot-path)
     (binding [*out* *err*] (println "[net.b12n.raylib-jlt] SHOT" shot-path))))
@@ -840,7 +852,11 @@
         [a b c d] (vec pts)]
     (rl-begin RL-TRIANGLES)
     (rl-color! color)
-    (doseq [[px py] [a b c a c d]]
+    ;; a-d-c then a-c-b, not a-b-c then a-c-d. raylib culls back faces, and the
+    ;; clockwise order reads as a back face in screen coordinates where y grows
+    ;; downward, so the quad is discarded and draws nothing at all. Same trap
+    ;; rlgl-triangle documents, and the winding triangle-strip already uses.
+    (doseq [[px py] [a d c a c b]]
       (rl-vertex-2f px py))
     (rl-end)))
 
