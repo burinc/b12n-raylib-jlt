@@ -397,6 +397,7 @@ inline.
 
 - [`docs/guide/`](docs/guide/index.md): patterns & pitfalls, each with source
   citations:
+  - [`structs-by-value.md`](docs/guide/structs-by-value.md): `[:by-value [:struct ...]]` in both directions, and the jolt 0.7.23 floor
   - [`color-by-value.md`](docs/guide/color-by-value.md): why `Color` crosses the FFI as a packed `:uint`
   - [`struct-by-value-pointer-trick.md`](docs/guide/struct-by-value-pointer-trick.md): `Camera2D`/`Camera3D` by pointer on AArch64 (+ the x86-64 caveat)
   - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md): the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
