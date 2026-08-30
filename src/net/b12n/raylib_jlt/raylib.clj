@@ -9,8 +9,12 @@
   only by-value struct that crosses the FFI boundary is `Color`, a 4-byte
   {u8 r,g,b,a} packed into a :uint (see `rgba` and README.md). The one exception,
   Camera2D (24 bytes, passed by pointer), lives in net.b12n.raylib-jlt.camera2d, not here."
+  ;; run! is the REPL entry point (see the bottom of this file); the shadowed
+  ;; clojure.core/run! is a reducing form this suite never uses.
+  (:refer-clojure :exclude [run!])
   (:require
-   [jolt.ffi :as ffi]))
+   [jolt.ffi :as ffi]
+   [jolt.host]))
 
 ;; --- Color -------------------------------------------------------------------
 ;; Defined first: every drawing binding below takes a packed Color :uint, and
@@ -1287,3 +1291,33 @@
       (ffi/write-field t texture2d-layout :mipmaps 1)
       (ffi/write-field t texture2d-layout :format PIXELFORMAT-R8G8B8A8)
       (set-shader-value-texture-raw sh loc t))))
+
+;; --- REPL entry point --------------------------------------------------------
+;; InitWindow reaches AppKit through GLFW, and macOS only lets NSApplication
+;; initialize on the process main thread. An nREPL eval runs on a worker thread,
+;; so calling an example's -main straight from a connected editor traps the whole
+;; process: EXC_BREAKPOINT inside -[NSApplication run], with no Clojure exception
+;; to catch and nothing in the REPL but a dropped connection.
+;;
+;; jolt.host/call-on-main-thread-async marshals the call onto the thread `jolt
+;; nrepl-server` parks in its main pump, and invokes it inline when no pump is
+;; running, which is what `bb <example>` does. So the one call is right from both.
+
+(defn run!
+  "Run an example's entry point `f` on the process main thread, the only thread
+  macOS lets raylib open a window from. This is how an example starts from a
+  connected editor:
+
+      (comment
+        (rl/run! -main))
+
+  Calling `(-main)` directly over nREPL instead kills the whole jolt process,
+  editor connection included, because the eval runs on a worker thread and macOS
+  traps any thread but the main one initializing AppKit.
+
+  Returns immediately under `jolt nrepl-server`: the window loop takes the main
+  thread and the REPL stays free. Under `bb <example>` there is no pump and the
+  caller is already the main thread, so `f` runs inline and this wrapper changes
+  nothing."
+  [f]
+  (jolt.host/call-on-main-thread-async f))

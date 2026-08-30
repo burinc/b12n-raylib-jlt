@@ -12,6 +12,16 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
+- **`rl/run!` starts an example from a connected editor.** Evaluating `(-main)`
+  over nREPL killed the whole jolt process on macOS, editor connection included,
+  with no Clojure exception to explain it: raylib opens its window through GLFW,
+  macOS only lets AppKit initialize on the process main thread, and an nREPL eval
+  runs on a worker thread. `(rl/run! -main)` marshals onto the main thread that
+  `jolt nrepl-server` parks in its pump, and invokes inline when no pump is
+  running, so it is also correct under `bb <example>`. A running loop picks up
+  redefined vars, which makes this a real interactive loop and not just a
+  launcher. New guide page: `docs/guide/repl-driven-development.md`.
+
 - **Eighteen more examples, taking the suite to 115.** `clock-of-clocks`,
   `undo-redo`, `window-should-close`, `ellipse-collision`, `input-gestures`,
   `rlgl-triangle`, `random-sequence`, `camera-2d-mouse-zoom`,
