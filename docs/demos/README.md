@@ -600,3 +600,27 @@ swap and recompile the GLSL at runtime
 
 ![shader-hot-reload](shader-hot-reload.gif)
 
+### multi-sampler
+
+two textures blended by a second sampler
+
+![multi-sampler](multi-sampler.gif)
+
+### postprocessing
+
+post-process shaders cycled over a scene
+
+![postprocessing](postprocessing.gif)
+
+### custom-uniform
+
+a mouse-steered swirl over a scene
+
+![custom-uniform](custom-uniform.gif)
+
+### texture-painting
+
+a blank texture painted by a shader
+
+![texture-painting](texture-painting.gif)
+

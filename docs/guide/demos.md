@@ -1,11 +1,7 @@
 # Full-size demo gallery
 
-Every recorded example at full size, linked from [the example
-catalog](example-catalog.md)'s preview thumbnails.
-
-97 of the 101 examples are here. The four render-texture shader examples -
-`postprocessing`, `custom-uniform`, `texture-painting`, `multi-sampler` -
-postdate the last `bb record` pass and will appear after the next one.
+Every example at full size, linked from [the example
+catalog](example-catalog.md)'s preview thumbnails. All 101 are here.
 
 ## games (10)
 
@@ -567,7 +563,7 @@ the sprite-count benchmark (click to add)
 
 ![bunnymark](../demos/bunnymark.gif)
 
-## shaders (6 of 10)
+## shaders (10)
 
 ### julia-set
 
@@ -604,3 +600,27 @@ bands recolored by an ivec3 palette
 swap and recompile the GLSL at runtime
 
 ![shader-hot-reload](../demos/shader-hot-reload.gif)
+
+### postprocessing
+
+post-process shaders cycled over a scene
+
+![postprocessing](../demos/postprocessing.gif)
+
+### custom-uniform
+
+a mouse-steered swirl over a scene
+
+![custom-uniform](../demos/custom-uniform.gif)
+
+### texture-painting
+
+a blank texture painted by a shader
+
+![texture-painting](../demos/texture-painting.gif)
+
+### multi-sampler
+
+two textures blended by a second sampler
+
+![multi-sampler](../demos/multi-sampler.gif)

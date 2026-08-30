@@ -169,9 +169,6 @@ That `[:by-value ...]` support also supersedes the workarounds described in
 pages still describe what the suite currently does elsewhere. A page on the
 by-value API itself is not written yet.
 
-The four render-texture examples have no preview yet - they postdate the last
-`bb record` pass.
-
 | preview | `bb` name | shows |
 |---|---|---|
 | [<img src="../demos/julia-set.gif" width="80">](demos.md#julia-set) | `julia-set` | the Julia set, mouse-steered, in a shader |
@@ -180,10 +177,10 @@ The four render-texture examples have no preview yet - they postdate the last
 | [<img src="../demos/rounded-rect-shader.gif" width="80">](demos.md#rounded-rect-shader) | `rounded-rect-shader` | SDF rounded rects: fill, border, shadow |
 | [<img src="../demos/palette-switch.gif" width="80">](demos.md#palette-switch) | `palette-switch` | bands recolored by an ivec3 palette |
 | [<img src="../demos/shader-hot-reload.gif" width="80">](demos.md#shader-hot-reload) | `shader-hot-reload` | swap and recompile the GLSL at runtime |
-| - | `postprocessing` | post-process shaders cycled over a scene |
-| - | `custom-uniform` | a mouse-steered swirl over a scene |
-| - | `texture-painting` | a blank texture painted by a shader |
-| - | `multi-sampler` | two textures blended by a second sampler |
+| [<img src="../demos/postprocessing.gif" width="80">](demos.md#postprocessing) | `postprocessing` | post-process shaders cycled over a scene |
+| [<img src="../demos/custom-uniform.gif" width="80">](demos.md#custom-uniform) | `custom-uniform` | a mouse-steered swirl over a scene |
+| [<img src="../demos/texture-painting.gif" width="80">](demos.md#texture-painting) | `texture-painting` | a blank texture painted by a shader |
+| [<img src="../demos/multi-sampler.gif" width="80">](demos.md#multi-sampler) | `multi-sampler` | two textures blended by a second sampler |
 
 ## Adding an example: the five touchpoints
 

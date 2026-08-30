@@ -34,7 +34,7 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 - **The full-size gallery was missing the whole shaders group.**
   `docs/guide/demos.md` showed 91 of 97 demos while claiming to show every one, so
   `julia-set`, `mandelbrot-set`, `raymarching`, `rounded-rect-shader`,
-  `palette-switch` and `shader-hot-reload` never appeared. All 97 are there now.
+  `palette-switch` and `shader-hot-reload` never appeared. All 101 are there now.
 - **The suite tracks raylib 6.0**, up from 5.5, and `bb lib:check` now refuses
   anything older. macOS is `brew upgrade raylib`; Linux keeps the apt-or-source
   path with the CI pin moved to the 6.0 tag.
@@ -80,8 +80,10 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
   `EndShaderMode` forces a batch draw and clears rlgl's active-texture table, so
   a sampler registered earlier is silently dropped and samples `texture0`
   instead - it renders a plausible image, which is what makes it worth stating.
-- The four render-texture examples have no demo GIF yet; the catalog lists them
-  without a preview until the next `bb record` pass.
+- All 101 examples now have a committed demo GIF. `multi-sampler` needed a fix
+  to earn one: neither of its textures animates and its mix came from the mouse,
+  so unattended it recorded as a still. Off-window now sweeps the mix with time,
+  and a LEFT/RIGHT press latches manual control.
 - **raylib's textures are reachable now**, which they were not before.
   `LoadTexture` returns a 20-byte `Texture2D` by value, which AArch64
   hands back through the `x8` indirect-result register and Chez's
