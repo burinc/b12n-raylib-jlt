@@ -1,5 +1,16 @@
 # Textures via rlgl: the struct-returning half of raylib, reached from underneath
 
+> **Superseded as a constraint, still current as practice.** This page argues
+> that `LoadTexture` cannot be bound because it returns a struct by value. That
+> was true when it was written and is false now: jolt **0.7.23** added
+> `[:by-value [:struct ...]]`, which reaches `LoadTexture` and the rest of the
+> `Load*` family directly. See [`structs-by-value.md`](structs-by-value.md).
+>
+> The rlgl technique below is still what this suite's texture and framebuffer
+> code actually does, and still the right tool when you want GPU objects
+> without raylib's file loaders - so the page stays as written rather than
+> being rewritten around the newer API.
+
 The three earlier FFI pages are all about arguments going *in*: a `Color` packed
 into a [`:uint`](color-by-value.md), a `Camera2D`
 [passed by pointer](struct-by-value-pointer-trick.md), `Vector2`/`Vector3`
