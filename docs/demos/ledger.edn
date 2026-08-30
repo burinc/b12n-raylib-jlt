@@ -13,7 +13,7 @@
   "bullet-hell" {:sha "40dd908b96b3edb8ef43539747d1a5a2309c8b3e40c3c0c98cc7b27186dc7015", :settings [6 10 480 "gif"], :bytes 389672, :at "2026-08-14T07:57:48.951153Z"}
   "bunnymark" {:sha "eb4499ddbac89a236eb2f1be5e87c6e6284c30a5418f01705a4e57d9238e7d3a", :settings [6 10 480 "gif"], :bytes 1653741, :at "2026-08-22T15:26:04.587673Z"}
   "camera-2d" {:sha "2681b1e9aad5d0f9e68cb0c01308b4b14eb233fe9cd8d1e76e4fe82a0b91120e", :settings [6 10 480 "gif"], :bytes 229432, :at "2026-08-14T07:57:48.951072Z"}
-  "camera-2d-mouse-zoom" {:sha "35f24cff4b7282f0a0b287e768c8b4855385bfe18c319672c419e13e3928e2dc", :settings [6 10 480 "gif"], :bytes 16000, :at "2026-08-30T04:12:29.121310Z"}
+  "camera-2d-mouse-zoom" {:sha "3dc797beb53fb7d6d970563901e61e73b1ec169b4a98b37fb87705d0beab54d5", :settings [6 10 480 "gif"], :bytes 367765, :at "2026-08-30T06:19:21.624360Z"}
   "camera-2d-platformer" {:sha "2219bbabcf2fed93faa5a8423c04206734d0840a08009a8dd9891398d790667e", :settings [10 10 480 "gif"], :bytes 87516, :at "2026-08-30T04:12:29.121367Z"}
   "camera-3d" {:sha "6ca09b79f3d9172cfc6696d8f061ee648e548b24245d5f472be0cea4cf164866", :settings [6 10 480 "gif"], :bytes 415250, :at "2026-08-14T07:57:48.951217Z"}
   "camera-3d-first-person" {:sha "b7564e5979cb5977ef5c435305cb1acf3080057900e30b219f4c4ec02f85ee24", :settings [6 10 480 "gif"], :bytes 105764, :at "2026-08-14T07:57:48.951228Z"}

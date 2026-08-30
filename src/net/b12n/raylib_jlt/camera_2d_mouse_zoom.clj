@@ -98,14 +98,17 @@
               (rl/rect! :x -20 :y -20 :width 40 :height 40 :color rl/RED)
               (rl/circle! :x 200 :y 100 :radius 30 :color rl/BLUE)
               (rl/rect! :x -300 :y 150 :width 120 :height 60 :color rl/LIME)
-              (rl/text! "world origin" :x 24 :y -8 :size 20 :color rl/DARKGRAY)))
+              (rl/text! "world origin" :x 30 :y 30 :size 20 :color rl/DARKGRAY)))
           ;; Crosshair at the cursor, in screen space, so the pinning is obvious.
           (rl/line! :x1 (- mx 12) :y1 my :x2 (+ mx 12) :y2 my :color rl/DARKGRAY)
           (rl/line! :x1 mx :y1 (- my 12) :x2 mx :y2 (+ my 12) :color rl/DARKGRAY)
+          ;; Along the bottom, not the top. The camera starts with offset and
+          ;; target at zero, which puts world (0,0) in the top-left corner, so
+          ;; anything drawn there collides with the world content underneath it.
           (rl/text! "[1] wheel zoom  [2] right-drag zoom  -  left-drag to pan"
-                    :x 10 :y 10 :size 20 :color rl/DARKGRAY)
+                    :x 10 :y (- H 56) :size 20 :color rl/DARKGRAY)
           (rl/text! (str "mode " (name mode) "   zoom " (format "%.3f" (:zoom cam)))
-                    :x 10 :y 36 :size 20 :color rl/MAROON)
+                    :x 10 :y (- H 30) :size 20 :color rl/MAROON)
           (rl/maybe-screenshot! frame 10)
           (rl/end-drawing)
           (recur (inc frame) cam mode mx my)))))
