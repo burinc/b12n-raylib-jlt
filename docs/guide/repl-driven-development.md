@@ -70,7 +70,7 @@ which doubles as a **main-thread pump**. `call-on-main-thread-async` enqueues th
 thunk onto that pump, so the window opens on the thread macOS insists on.
 
 ```mermaid
-flowchart LR
+flowchart TB
   ed["editor<br/>(rl/run! -main)"] --> w["nREPL worker thread"]
   w -->|"enqueue"| q["main-thread queue"]
   q --> m["primordial thread<br/>park-until-interrupt pump"]
