@@ -105,7 +105,8 @@
    ["raymarching"         "raymarching" "shaders" "a raymarched SDF scene in a shader"]
    ["rounded-rect-shader" "rounded-rect-shader" "shaders" "SDF rounded rects: fill, border, shadow"]
    ["palette-switch"      "palette-switch" "shaders" "bands recolored by an ivec3 palette"]
-   ["shader-hot-reload"   "shader-hot-reload" "shaders" "swap and recompile the GLSL at runtime"]])
+   ["shader-hot-reload"   "shader-hot-reload" "shaders" "swap and recompile the GLSL at runtime"]
+   ["multi-sampler"       "multi-sampler" "shaders" "two textures blended by a second sampler"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
