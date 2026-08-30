@@ -210,6 +210,20 @@ with `git commit --no-verify`.
 bb nrepl [port]  # start a jolt nREPL server for interactive dev (default 7888)
 ```
 
+Start an example from a connected editor with `rl/run!`, never a bare `(-main)`:
+
+```clojure
+(comment
+  (rl/run! -main))
+```
+
+raylib opens its window through GLFW, and macOS only lets AppKit initialize on the
+process main thread. An nREPL eval runs on a worker thread, so calling `-main`
+directly traps the whole jolt process, taking the editor connection with it.
+`rl/run!` hops onto the main thread, and runs inline (changing nothing) when there
+is no REPL. See
+[`docs/guide/repl-driven-development.md`](docs/guide/repl-driven-development.md).
+
 ### With jolt directly
 
 Each example is also a `jolt` alias:

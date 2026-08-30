@@ -100,6 +100,14 @@ Nothing about `jolt.ffi` is raylib-specific: it binds any C ABI symbol. The
   keyword-argument wrappers (`text!`/`rect!`/`circle!`/…) on top, and the
   ">3 arguments → keyword args" style convention. Source: `raylib.clj`.
 
+### Working from an editor
+
+- ✅ [`repl-driven-development.md`](repl-driven-development.md): why evaluating
+  `(-main)` over nREPL kills the whole process on macOS (AppKit only initializes
+  on the main thread, an nREPL eval does not run there), the `rl/run!` call that
+  fixes it, and what does and does not work against a running window. Source:
+  `raylib.clj` (`run!`).
+
 ### Verifying without a display
 
 - ✅ [`headless-smoke-testing.md`](headless-smoke-testing.md): how a windowed
