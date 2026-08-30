@@ -124,6 +124,10 @@
            :raymarching {:main-opts ["-m" "net.b12n.raylib-jlt.raymarching"]} ; a raymarched SDF scene in a shader
            :rounded-rect-shader {:main-opts ["-m" "net.b12n.raylib-jlt.rounded-rect-shader"]} ; SDF rounded rects: fill, border, shadow
            :palette-switch {:main-opts ["-m" "net.b12n.raylib-jlt.palette-switch"]} ; bands recolored by an ivec3 palette
-           :shader-hot-reload {:main-opts ["-m" "net.b12n.raylib-jlt.shader-hot-reload"]}} ; swap and recompile the GLSL at runtime
+           :shader-hot-reload {:main-opts ["-m" "net.b12n.raylib-jlt.shader-hot-reload"]} ; swap and recompile the GLSL at runtime
+           :multi-sampler {:main-opts ["-m" "net.b12n.raylib-jlt.multi-sampler"]} ; two textures blended by a second sampler
+           :postprocessing {:main-opts ["-m" "net.b12n.raylib-jlt.postprocessing"]} ; post-process shaders cycled over a scene
+           :custom-uniform {:main-opts ["-m" "net.b12n.raylib-jlt.custom-uniform"]} ; a mouse-steered swirl over a scene
+           :texture-painting {:main-opts ["-m" "net.b12n.raylib-jlt.texture-painting"]}} ; a blank texture painted by a shader
 
  :tasks {run "joltc -M:run"}}

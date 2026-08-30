@@ -1,11 +1,11 @@
 # Full-size demo gallery
 
 Every example at full size, linked from [the example catalog](example-catalog.md)'s
-preview thumbnails.
+preview thumbnails. All 119 are here.
 
-Most are animated GIFs. The newest eighteen are still frames, captured from a real
-run but not yet recorded as animations, so they show what an example draws rather
-than how it moves.
+101 are animated GIFs. The other 18 are still frames, captured from a real run but
+not yet recorded as animations, so they show what an example draws rather than how
+it moves.
 
 ## games (10)
 
@@ -675,7 +675,7 @@ the sprite-count benchmark (click to add)
 
 ![bunnymark](../demos/bunnymark.gif)
 
-## shaders (6)
+## shaders (10)
 
 ### julia-set
 
@@ -712,3 +712,27 @@ bands recolored by an ivec3 palette
 swap and recompile the GLSL at runtime
 
 ![shader-hot-reload](../demos/shader-hot-reload.gif)
+
+### postprocessing
+
+post-process shaders cycled over a scene
+
+![postprocessing](../demos/postprocessing.gif)
+
+### custom-uniform
+
+a mouse-steered swirl over a scene
+
+![custom-uniform](../demos/custom-uniform.gif)
+
+### texture-painting
+
+a blank texture painted by a shader
+
+![texture-painting](../demos/texture-painting.gif)
+
+### multi-sampler
+
+two textures blended by a second sampler
+
+![multi-sampler](../demos/multi-sampler.gif)

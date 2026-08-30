@@ -1138,6 +1138,16 @@
 (ffi/defcfn ^:private unload-shader-raw "UnloadShader"
   [[:by-value [:struct [[:id :uint] [:locs :pointer]]]]] :void)
 
+;; Two by-value structs in one signature, and they take different ABI paths on
+;; arm64: Shader is 16 bytes and rides in general-purpose registers, Texture2D is
+;; 20 and so is passed INDIRECTLY, by a pointer the caller supplies. Both
+;; measured with clang, not assumed.
+(ffi/defcfn ^:private set-shader-value-texture-raw "SetShaderValueTexture"
+  [[:by-value [:struct [[:id :uint] [:locs :pointer]]]]
+   :int
+   [:by-value [:struct [[:id :uint] [:width :int] [:height :int]
+                        [:mipmaps :int] [:format :int]]]]] :void)
+
 (def shader-layout (ffi/layout [:struct [[:id :uint] [:locs :pointer]]]))
 
 ;; ShaderUniformDataType, raylib 6.0. The UINT variants at 8-11 are new in 6.0
@@ -1239,3 +1249,25 @@
   [sh loc ints n]
   (when (nat-int? loc)
     (staged :int ints (fn [p] (set-shader-value-v-raw sh loc p UNIFORM-IVEC3 n)))))
+
+(def texture2d-layout
+  (ffi/layout [:struct [[:id :uint] [:width :int] [:height :int]
+                        [:mipmaps :int] [:format :int]]]))
+
+(defn set-uniform-texture!
+  "Bind a texture id to a `sampler2D` uniform - the second and later samplers,
+  since raylib binds the drawn texture to slot 0 itself.
+
+  This suite carries textures as bare rlgl ids, so the Texture2D raylib wants is
+  staged here from the id plus its dimensions. mipmaps 1 and format RGBA8 match
+  what `texture-from-fn` uploads; raylib only reads `id` for this call, but the
+  rest is filled in truthfully rather than left as whatever the allocation held."
+  [sh loc tex-id w h]
+  (when (nat-int? loc)
+    (ffi/with-layout [t texture2d-layout]
+      (ffi/write-field t texture2d-layout :id tex-id)
+      (ffi/write-field t texture2d-layout :width (int w))
+      (ffi/write-field t texture2d-layout :height (int h))
+      (ffi/write-field t texture2d-layout :mipmaps 1)
+      (ffi/write-field t texture2d-layout :format PIXELFORMAT-R8G8B8A8)
+      (set-shader-value-texture-raw sh loc t))))

@@ -123,7 +123,11 @@
    ["rounded-rect-shader" "rounded-rect-shader" "shaders" "SDF rounded rects: fill, border, shadow"]
    ["window-should-close" "window-should-close" "core" "close is a question: ESC asks before it exits"]
    ["palette-switch"      "palette-switch" "shaders" "bands recolored by an ivec3 palette"]
-   ["shader-hot-reload"   "shader-hot-reload" "shaders" "swap and recompile the GLSL at runtime"]])
+   ["shader-hot-reload"   "shader-hot-reload" "shaders" "swap and recompile the GLSL at runtime"]
+   ["multi-sampler"       "multi-sampler" "shaders" "two textures blended by a second sampler"]
+   ["postprocessing"      "postprocessing" "shaders" "post-process shaders cycled over a scene"]
+   ["custom-uniform"      "custom-uniform" "shaders" "a mouse-steered swirl over a scene"]
+   ["texture-painting"    "texture-painting" "shaders" "a blank texture painted by a shader"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 
