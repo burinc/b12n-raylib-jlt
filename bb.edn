@@ -337,6 +337,7 @@
   multi-sampler     {:doc "▶ two textures blended by a second sampler" :task (run-example "multi-sampler")}
   postprocessing    {:doc "▶ post-process shaders cycled over a scene" :task (run-example "postprocessing")}
   custom-uniform    {:doc "▶ a mouse-steered swirl over a scene" :task (run-example "custom-uniform")}
+  texture-painting  {:doc "▶ a blank texture painted by a shader" :task (run-example "texture-painting")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

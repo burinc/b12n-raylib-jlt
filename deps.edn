@@ -109,6 +109,7 @@
            :shader-hot-reload {:main-opts ["-m" "net.b12n.raylib-jlt.shader-hot-reload"]} ; swap and recompile the GLSL at runtime
            :multi-sampler {:main-opts ["-m" "net.b12n.raylib-jlt.multi-sampler"]} ; two textures blended by a second sampler
            :postprocessing {:main-opts ["-m" "net.b12n.raylib-jlt.postprocessing"]} ; post-process shaders cycled over a scene
-           :custom-uniform {:main-opts ["-m" "net.b12n.raylib-jlt.custom-uniform"]}} ; a mouse-steered swirl over a scene
+           :custom-uniform {:main-opts ["-m" "net.b12n.raylib-jlt.custom-uniform"]} ; a mouse-steered swirl over a scene
+           :texture-painting {:main-opts ["-m" "net.b12n.raylib-jlt.texture-painting"]}} ; a blank texture painted by a shader
 
  :tasks {run "joltc -M:run"}}
