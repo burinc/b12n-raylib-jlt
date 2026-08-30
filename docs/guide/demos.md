@@ -1,6 +1,11 @@
 # Full-size demo gallery
 
-Every example at full size, linked from [the example catalog](example-catalog.md)'s preview thumbnails.
+Every recorded example at full size, linked from [the example
+catalog](example-catalog.md)'s preview thumbnails.
+
+97 of the 101 examples are here. The four render-texture shader examples -
+`postprocessing`, `custom-uniform`, `texture-painting`, `multi-sampler` -
+postdate the last `bb record` pass and will appear after the next one.
 
 ## games (10)
 
@@ -562,7 +567,7 @@ the sprite-count benchmark (click to add)
 
 ![bunnymark](../demos/bunnymark.gif)
 
-## shaders (6)
+## shaders (6 of 10)
 
 ### julia-set
 

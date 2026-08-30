@@ -1,4 +1,4 @@
-# The example catalog: 97 raylib demos in jolt
+# The example catalog: 101 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -155,7 +155,7 @@ native memory rather than loaded from a file. See
 | [<img src="../demos/render-texture.gif" width="80">](demos.md#render-texture) | `render-texture` | a scene drawn off-screen, then reused |
 | [<img src="../demos/bunnymark.gif" width="80">](demos.md#bunnymark) | `bunnymark` | the sprite-count benchmark (click to add) |
 
-## shaders (6)
+## shaders (10)
 
 GLSL compiled at runtime and run over a full-screen quad. raylib's `LoadShader`
 returns a `Shader` by value, which needed jolt's `[:by-value [:struct ...]]` -
@@ -169,16 +169,21 @@ That `[:by-value ...]` support also supersedes the workarounds described in
 pages still describe what the suite currently does elsewhere. A page on the
 by-value API itself is not written yet.
 
-**No previews yet** - these six are not in `bb record` output. Run them.
+The four render-texture examples have no preview yet - they postdate the last
+`bb record` pass.
 
 | preview | `bb` name | shows |
 |---|---|---|
-| - | `julia-set` | the Julia set, mouse-steered, in a shader |
-| - | `mandelbrot-set` | the Mandelbrot set, zoomable, in a shader |
-| - | `raymarching` | a raymarched SDF scene in a shader |
-| - | `rounded-rect-shader` | SDF rounded rects: fill, border, shadow |
-| - | `palette-switch` | bands recolored by an ivec3 palette |
-| - | `shader-hot-reload` | swap and recompile the GLSL at runtime |
+| [<img src="../demos/julia-set.gif" width="80">](demos.md#julia-set) | `julia-set` | the Julia set, mouse-steered, in a shader |
+| [<img src="../demos/mandelbrot-set.gif" width="80">](demos.md#mandelbrot-set) | `mandelbrot-set` | the Mandelbrot set, zoomable, in a shader |
+| [<img src="../demos/raymarching.gif" width="80">](demos.md#raymarching) | `raymarching` | a raymarched SDF scene in a shader |
+| [<img src="../demos/rounded-rect-shader.gif" width="80">](demos.md#rounded-rect-shader) | `rounded-rect-shader` | SDF rounded rects: fill, border, shadow |
+| [<img src="../demos/palette-switch.gif" width="80">](demos.md#palette-switch) | `palette-switch` | bands recolored by an ivec3 palette |
+| [<img src="../demos/shader-hot-reload.gif" width="80">](demos.md#shader-hot-reload) | `shader-hot-reload` | swap and recompile the GLSL at runtime |
+| - | `postprocessing` | post-process shaders cycled over a scene |
+| - | `custom-uniform` | a mouse-steered swirl over a scene |
+| - | `texture-painting` | a blank texture painted by a shader |
+| - | `multi-sampler` | two textures blended by a second sampler |
 
 ## Adding an example: the five touchpoints
 

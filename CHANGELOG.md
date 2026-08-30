@@ -58,19 +58,30 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
   `with-c-string` bind their first symbol, so the lint gate stops reporting it as
   unresolved.
 
-- **The suite is 97 examples, up from 75.** 16 took it to 91, which is parity
+- **The suite is 101 examples, up from 75.** 16 took it to 91, which is parity
   with the JVM port: 4 textures, 7 core (window flags, monitors, clipboard,
   gamepad, touch, virtual controls, letterboxing), 4 in 3D (Lorenz attractor,
   DNA helix, yaw/pitch/roll, first-person maze) and elementary cellular
   automata.
-- **Shaders, a category that was closed.** 6 more: `julia-set`,
-  `mandelbrot-set`, `raymarching`, `rounded-rect-shader`, `palette-switch`,
-  `shader-hot-reload`. `LoadShader` returns a `Shader` by value, which Chez's
+- **Shaders, a category that was closed.** 10 more. Six run a fragment shader
+  over a full-screen quad - `julia-set`, `mandelbrot-set`, `raymarching`,
+  `rounded-rect-shader`, `palette-switch`, `shader-hot-reload` - and four run
+  one over a render texture: `postprocessing`, `custom-uniform`,
+  `texture-painting`, `multi-sampler`. `LoadShader` returns a `Shader` by value, which Chez's
   `foreign-procedure` cannot express - jolt 0.7.23's `[:by-value [:struct ...]]`
   is what opened it, and it **raises the project's jolt floor to 0.7.23**, the
   first hard version floor this suite has had. GLSL lives as a string in each
   namespace rather than a `.glsl` file, so an example stays self-contained.
-- These six have no demo GIFs yet, so the catalog lists them without previews.
+- `multi-sampler` is the one that pushed hardest on the FFI:
+  `SetShaderValueTexture` passes a `Shader` **and** a `Texture2D` by value in one
+  signature, and on arm64 those take different ABI paths - 16 bytes in registers,
+  20 bytes passed indirectly. jolt 0.7.23 handles the pair.
+- Sampler uniforms must be set INSIDE the shader mode, unlike value uniforms.
+  `EndShaderMode` forces a batch draw and clears rlgl's active-texture table, so
+  a sampler registered earlier is silently dropped and samples `texture0`
+  instead - it renders a plausible image, which is what makes it worth stating.
+- The four render-texture examples have no demo GIF yet; the catalog lists them
+  without a preview until the next `bb record` pass.
 - **raylib's textures are reachable now**, which they were not before.
   `LoadTexture` returns a 20-byte `Texture2D` by value, which AArch64
   hands back through the `x8` indirect-result register and Chez's
