@@ -27,6 +27,7 @@
    [net.b12n.raylib-jlt.color-wheel]
    [net.b12n.raylib-jlt.colors]
    [net.b12n.raylib-jlt.core]
+   [net.b12n.raylib-jlt.custom-uniform]
    [net.b12n.raylib-jlt.dashed-line]
    [net.b12n.raylib-jlt.delta-time]
    [net.b12n.raylib-jlt.digital-clock]
