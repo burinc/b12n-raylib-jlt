@@ -120,6 +120,42 @@ a new random value every two seconds
 
 ![random-values](random-values.gif)
 
+### camera-2d-mouse-zoom
+
+zoom toward the cursor, pinning the point under it
+
+![camera-2d-mouse-zoom](camera-2d-mouse-zoom.gif)
+
+### camera-2d-platformer
+
+five ways a camera can follow a jumping player
+
+![camera-2d-platformer](camera-2d-platformer.gif)
+
+### input-gestures
+
+tap, hold, drag and swipe, named as they happen
+
+![input-gestures](input-gestures.gif)
+
+### random-sequence
+
+bars in a shuffled order, each height used once
+
+![random-sequence](random-sequence.gif)
+
+### storage-values
+
+values that survive a restart, via a file
+
+![storage-values](storage-values.gif)
+
+### undo-redo
+
+move a square, then step back through the history
+
+![undo-redo](undo-redo.gif)
+
 ### window-letterbox
 
 a fixed picture letterboxed into the window
@@ -161,6 +197,12 @@ touch points (the mouse is point 0)
 an on-screen D-pad and action button
 
 ![input-virtual-controls](input-virtual-controls.gif)
+
+### window-should-close
+
+close is a question: ESC asks before it exits
+
+![window-should-close](window-should-close.gif)
 
 ## shapes
 
@@ -266,11 +308,59 @@ a rainbow Hilbert space-filling curve
 
 ![hilbert-curve](hilbert-curve.gif)
 
+### circle-sector-drawing
+
+a sector whose segment count you can starve
+
+![circle-sector-drawing](circle-sector-drawing.gif)
+
+### easings-ball
+
+slide, swell and fade, one curve each
+
+![easings-ball](easings-ball.gif)
+
+### easings-box
+
+drop, flatten, spin, grow, fade: five curves
+
+![easings-box](easings-box.gif)
+
+### easings-rectangles
+
+a grid easing out in size and rotation at once
+
+![easings-rectangles](easings-rectangles.gif)
+
+### easings-testbed
+
+one curve at a time, plotted and run
+
+![easings-testbed](easings-testbed.gif)
+
+### ellipse-collision
+
+two ellipses that redden when they overlap
+
+![ellipse-collision](ellipse-collision.gif)
+
+### logo-anim
+
+the raylib logo assembling itself, unsmoothed
+
+![logo-anim](logo-anim.gif)
+
 ### math-angle-rotation
 
 fixed spokes + a spinning line
 
 ![math-angle-rotation](math-angle-rotation.gif)
+
+### rlgl-color-wheel
+
+a hue wheel as a triangle fan, per-vertex colour
+
+![rlgl-color-wheel](rlgl-color-wheel.gif)
 
 ### ball-physics
 
@@ -529,6 +619,12 @@ an L-system fractal plant (grows + regrows)
 particles steered by a flow field (trails)
 
 ![flow-field](flow-field.gif)
+
+### clock-of-clocks
+
+six digits spelled by a grid of clock hands
+
+![clock-of-clocks](clock-of-clocks.gif)
 
 ### cellular-automata
 

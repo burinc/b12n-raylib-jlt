@@ -49,13 +49,13 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/input-gamepad.gif" width="80">](demos.md#input-gamepad) | `input-gamepad` | live sticks, triggers and buttons for gamepad 0 |
 | [<img src="../demos/input-multitouch.gif" width="80">](demos.md#input-multitouch) | `input-multitouch` | touch points (the mouse is point 0) |
 | [<img src="../demos/input-virtual-controls.gif" width="80">](demos.md#input-virtual-controls) | `input-virtual-controls` | an on-screen D-pad and action button |
-| [<img src="../demos/undo-redo.png" width="80">](demos.md#undo-redo) | `undo-redo` | a bounded history, CTRL-Z and CTRL-Y walking it |
-| [<img src="../demos/window-should-close.png" width="80">](demos.md#window-should-close) | `window-should-close` | `SetExitKey` so a close request can be answered |
-| [<img src="../demos/input-gestures.png" width="80">](demos.md#input-gestures) | `input-gestures` | `GetGestureDetected`, named as they happen |
-| [<img src="../demos/random-sequence.png" width="80">](demos.md#random-sequence) | `random-sequence` | a shuffled sequence, each height used once |
-| [<img src="../demos/camera-2d-mouse-zoom.png" width="80">](demos.md#camera-2d-mouse-zoom) | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
-| [<img src="../demos/storage-values.png" width="80">](demos.md#storage-values) | `storage-values` | values that survive a restart, via a file |
-| [<img src="../demos/camera-2d-platformer.png" width="80">](demos.md#camera-2d-platformer) | `camera-2d-platformer` | five ways a camera can follow a jumping player |
+| [<img src="../demos/undo-redo.gif" width="80">](demos.md#undo-redo) | `undo-redo` | a bounded history, CTRL-Z and CTRL-Y walking it |
+| [<img src="../demos/window-should-close.gif" width="80">](demos.md#window-should-close) | `window-should-close` | `SetExitKey` so a close request can be answered |
+| [<img src="../demos/input-gestures.gif" width="80">](demos.md#input-gestures) | `input-gestures` | `GetGestureDetected`, named as they happen |
+| [<img src="../demos/random-sequence.gif" width="80">](demos.md#random-sequence) | `random-sequence` | a shuffled sequence, each height used once |
+| [<img src="../demos/camera-2d-mouse-zoom.gif" width="80">](demos.md#camera-2d-mouse-zoom) | `camera-2d-mouse-zoom` | zoom pinned to the point under the cursor |
+| [<img src="../demos/storage-values.gif" width="80">](demos.md#storage-values) | `storage-values` | values that survive a restart, via a file |
+| [<img src="../demos/camera-2d-platformer.gif" width="80">](demos.md#camera-2d-platformer) | `camera-2d-platformer` | five ways a camera can follow a jumping player |
 
 ## shapes (42)
 
@@ -93,16 +93,16 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/rounded-rectangle.gif" width="80">](demos.md#rounded-rectangle) | `rounded-rectangle` | rounded rects from `sector!` corners |
 | [<img src="../demos/rectangle-scaling.gif" width="80">](demos.md#rectangle-scaling) | `rectangle-scaling` | drag the corner handle to resize a rect |
 | [<img src="../demos/lines-drawing.gif" width="80">](demos.md#lines-drawing) | `lines-drawing` | a rotating fan of thick `rl/line-ex!` lines |
-| [<img src="../demos/ellipse-collision.png" width="80">](demos.md#ellipse-collision) | `ellipse-collision` | two ellipses reddening when they overlap |
+| [<img src="../demos/ellipse-collision.gif" width="80">](demos.md#ellipse-collision) | `ellipse-collision` | two ellipses reddening when they overlap |
 | [<img src="../demos/rlgl-triangle.png" width="80">](demos.md#rlgl-triangle) | `rlgl-triangle` | per-vertex colour interpolated across a face |
-| [<img src="../demos/rlgl-color-wheel.png" width="80">](demos.md#rlgl-color-wheel) | `rlgl-color-wheel` | a hue wheel as a triangle fan |
-| [<img src="../demos/circle-sector-drawing.png" width="80">](demos.md#circle-sector-drawing) | `circle-sector-drawing` | a sector starved of segments |
-| [<img src="../demos/easings-rectangles.png" width="80">](demos.md#easings-rectangles) | `easings-rectangles` | size and rotation on one easing curve |
-| [<img src="../demos/easings-ball.png" width="80">](demos.md#easings-ball) | `easings-ball` | slide, swell and fade, one curve each |
-| [<img src="../demos/easings-box.png" width="80">](demos.md#easings-box) | `easings-box` | drop, flatten, spin, grow, fade: five curves |
-| [<img src="../demos/logo-anim.png" width="80">](demos.md#logo-anim) | `logo-anim` | the raylib logo assembling itself, unsmoothed |
+| [<img src="../demos/rlgl-color-wheel.gif" width="80">](demos.md#rlgl-color-wheel) | `rlgl-color-wheel` | a hue wheel as a triangle fan |
+| [<img src="../demos/circle-sector-drawing.gif" width="80">](demos.md#circle-sector-drawing) | `circle-sector-drawing` | a sector starved of segments |
+| [<img src="../demos/easings-rectangles.gif" width="80">](demos.md#easings-rectangles) | `easings-rectangles` | size and rotation on one easing curve |
+| [<img src="../demos/easings-ball.gif" width="80">](demos.md#easings-ball) | `easings-ball` | slide, swell and fade, one curve each |
+| [<img src="../demos/easings-box.gif" width="80">](demos.md#easings-box) | `easings-box` | drop, flatten, spin, grow, fade: five curves |
+| [<img src="../demos/logo-anim.gif" width="80">](demos.md#logo-anim) | `logo-anim` | the raylib logo assembling itself, unsmoothed |
 | [<img src="../demos/rectangle-advanced.png" width="80">](demos.md#rectangle-advanced) | `rectangle-advanced` | per-side roundness with a horizontal gradient |
-| [<img src="../demos/easings-testbed.png" width="80">](demos.md#easings-testbed) | `easings-testbed` | one curve at a time, plotted and run |
+| [<img src="../demos/easings-testbed.gif" width="80">](demos.md#easings-testbed) | `easings-testbed` | one curve at a time, plotted and run |
 
 ## text (5)
 
@@ -152,7 +152,7 @@ The 3D set stands entirely on two building blocks from
 | [<img src="../demos/l-system.gif" width="80">](demos.md#l-system) | `l-system` | an L-system fractal plant (grows + regrows) |
 | [<img src="../demos/flow-field.gif" width="80">](demos.md#flow-field) | `flow-field` | particles steered by a flow field (trails) |
 | [<img src="../demos/cellular-automata.gif" width="80">](demos.md#cellular-automata) | `cellular-automata` | Wolfram's elementary automata |
-| [<img src="../demos/clock-of-clocks.png" width="80">](demos.md#clock-of-clocks) | `clock-of-clocks` | six digits spelled by a grid of clock hands |
+| [<img src="../demos/clock-of-clocks.gif" width="80">](demos.md#clock-of-clocks) | `clock-of-clocks` | six digits spelled by a grid of clock hands |
 
 All eight are pure math + the drawing API, no new bindings. They showcase the
 suite as a generative-art canvas: cellular automata, agent flocking, particle

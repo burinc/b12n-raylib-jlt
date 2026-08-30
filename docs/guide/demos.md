@@ -3,9 +3,10 @@
 Every example at full size, linked from [the example catalog](example-catalog.md)'s
 preview thumbnails. All 119 are here.
 
-101 are animated GIFs. The other 18 are still frames, captured from a real run but
-not yet recorded as animations, so they show what an example draws rather than how
-it moves.
+117 are animated GIFs. Two are still frames: `rectangle-advanced` and
+`rlgl-triangle` draw something fixed and only move when you drive them, so a
+recording of either would be a valid animation of one repeated image. A still is
+the honest form for those two.
 
 ## games (10)
 
@@ -171,43 +172,43 @@ an on-screen D-pad and action button
 
 a bounded history, CTRL-Z and CTRL-Y walking it
 
-![undo-redo](../demos/undo-redo.png)
+![undo-redo](../demos/undo-redo.gif)
 
 ### window-should-close
 
 `SetExitKey` so a close request can be answered
 
-![window-should-close](../demos/window-should-close.png)
+![window-should-close](../demos/window-should-close.gif)
 
 ### input-gestures
 
 `GetGestureDetected`, named as they happen
 
-![input-gestures](../demos/input-gestures.png)
+![input-gestures](../demos/input-gestures.gif)
 
 ### random-sequence
 
 a shuffled sequence, each height used once
 
-![random-sequence](../demos/random-sequence.png)
+![random-sequence](../demos/random-sequence.gif)
 
 ### camera-2d-mouse-zoom
 
 zoom pinned to the point under the cursor
 
-![camera-2d-mouse-zoom](../demos/camera-2d-mouse-zoom.png)
+![camera-2d-mouse-zoom](../demos/camera-2d-mouse-zoom.gif)
 
 ### storage-values
 
 values that survive a restart, via a file
 
-![storage-values](../demos/storage-values.png)
+![storage-values](../demos/storage-values.gif)
 
 ### camera-2d-platformer
 
 five ways a camera can follow a jumping player
 
-![camera-2d-platformer](../demos/camera-2d-platformer.png)
+![camera-2d-platformer](../demos/camera-2d-platformer.gif)
 
 ## shapes (42)
 
@@ -407,7 +408,7 @@ a rotating fan of thick lines (line-ex!)
 
 two ellipses reddening when they overlap
 
-![ellipse-collision](../demos/ellipse-collision.png)
+![ellipse-collision](../demos/ellipse-collision.gif)
 
 ### rlgl-triangle
 
@@ -419,37 +420,37 @@ per-vertex colour interpolated across a face
 
 a hue wheel as a triangle fan
 
-![rlgl-color-wheel](../demos/rlgl-color-wheel.png)
+![rlgl-color-wheel](../demos/rlgl-color-wheel.gif)
 
 ### circle-sector-drawing
 
 a sector starved of segments
 
-![circle-sector-drawing](../demos/circle-sector-drawing.png)
+![circle-sector-drawing](../demos/circle-sector-drawing.gif)
 
 ### easings-rectangles
 
 size and rotation on one easing curve
 
-![easings-rectangles](../demos/easings-rectangles.png)
+![easings-rectangles](../demos/easings-rectangles.gif)
 
 ### easings-ball
 
 slide, swell and fade, one curve each
 
-![easings-ball](../demos/easings-ball.png)
+![easings-ball](../demos/easings-ball.gif)
 
 ### easings-box
 
 drop, flatten, spin, grow, fade: five curves
 
-![easings-box](../demos/easings-box.png)
+![easings-box](../demos/easings-box.gif)
 
 ### logo-anim
 
 the raylib logo assembling itself, unsmoothed
 
-![logo-anim](../demos/logo-anim.png)
+![logo-anim](../demos/logo-anim.gif)
 
 ### rectangle-advanced
 
@@ -461,7 +462,7 @@ per-side roundness with a horizontal gradient
 
 one curve at a time, plotted and run
 
-![easings-testbed](../demos/easings-testbed.png)
+![easings-testbed](../demos/easings-testbed.gif)
 
 ## text (5)
 
@@ -647,7 +648,7 @@ Wolfram's elementary automata
 
 six digits spelled by a grid of clock hands
 
-![clock-of-clocks](../demos/clock-of-clocks.png)
+![clock-of-clocks](../demos/clock-of-clocks.gif)
 
 ## textures (4)
 

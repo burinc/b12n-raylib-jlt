@@ -52,6 +52,43 @@
   "splines"                 {:duration 8
                              :input [[2.0 :key "space"] [4.0 :key "space"] [6.0 :key "space"]]}
 
+  ;; --- added with the 119-example suite -----------------------------------
+  ;; Steering only where an example is driven by input. The rest animate on
+  ;; their own and record fine untouched. Keys, never clicks: synthetic clicks
+  ;; are pid-routed and raylib ignores them, as input-virtual-controls notes.
+  "circle-sector-drawing"   {:duration 8
+                             :input [[0.8 :key "w"] [1.2 :key "w"] [1.6 :key "w"] [2.0 :key "w"]
+                                     [3.0 :key "f"] [3.4 :key "f"] [3.8 :key "f"] [4.2 :key "f"]
+                                     [5.5 :key "r"] [5.9 :key "r"] [6.3 :key "e"] [6.7 :key "e"]]}
+  "easings-testbed"         {:duration 10
+                             :input [[1.5 :key "right"] [3.5 :key "right"]
+                                     [5.5 :key "right"] [7.5 :key "right"]]}
+  "random-sequence"         {:duration 8
+                             :input [[1.0 :key "space"] [2.5 :key "up"] [2.9 :key "up"] [3.3 :key "up"]
+                                     [4.5 :key "space"] [6.0 :key "down"] [6.4 :key "down"]]}
+  "undo-redo"               {:duration 10
+                             :input [[0.8 :key "right"] [1.2 :key "right"] [1.6 :key "down"]
+                                     [2.0 :key "down"] [2.4 :key "left"] [2.8 :key "space"]
+                                     [3.4 :key "up"] [3.8 :key "right"]
+                                     [5.0 :key "z"] [5.4 :key "z"] [5.8 :key "z"]
+                                     [7.0 :key "y"] [7.4 :key "y"]]}
+  "camera-2d-platformer"    {:duration 10
+                             :input [[0.8 :key "right"] [1.4 :key "space"] [2.0 :key "right"]
+                                     [2.6 :key "space"] [3.4 :key "left"]
+                                     [4.5 :key "c"] [5.2 :key "right"] [5.8 :key "space"]
+                                     [7.0 :key "c"] [7.6 :key "left"] [8.2 :key "space"]]}
+  "storage-values"          {:duration 8
+                             :input [[1.0 :key "r"] [2.5 :key "enter"] [4.0 :key "r"]
+                                     [5.5 :key "space"]]}
+  "rlgl-color-wheel"        {:duration 8
+                             :input [[1.0 :key "up"] [1.4 :key "up"] [1.8 :key "up"]
+                                     [3.0 :key "left"] [3.4 :key "left"]
+                                     [4.5 :key "space"] [6.0 :key "space"] [6.5 :key "down"]]}
+  ;; ESC raises the confirmation, N dismisses it, ESC raises it again. Never Y,
+  ;; which would close the window mid-recording.
+  "window-should-close"     {:duration 8
+                             :input [[1.5 :key "escape"] [3.5 :key "n"] [5.5 :key "escape"]]}
+
   ;; --- added with the 91-example suite ------------------------------------
   "texture-procedural"      {:input [[1.5 :key "space"] [3.0 :key "space"] [4.5 :key "space"]]}
   "texture-tiling"          {:duration 8
