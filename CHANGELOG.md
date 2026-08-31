@@ -182,7 +182,9 @@ Highlights:
   `Vector2`/`Vector3` geometry is drawn through rlgl's scalar immediate
   mode.
 - An animated GIF for every one of the 75, in [`docs/demos/`](docs/demos),
-  with a guide and full gallery published at <https://raylib-jlt.b12n.app>.
+  with a guide and full gallery published at `raylib-jlt.b12n.app`. That
+  address is retired; the site now lives at
+  <https://jlt-commons.github.io/raylib-jlt/>.
 - A CI workflow that falls back to building raylib from source when the
   distro package is absent.
 
