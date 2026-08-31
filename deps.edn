@@ -1,4 +1,9 @@
-{:paths ["src"]
+{;; jolt.ffi/write takes the value BEFORE the offset as of jolt 0.8.0, and the
+ ;; two spellings are both integers — an older runtime writes to the wrong
+ ;; place rather than failing. Declare the floor so it refuses instead.
+ :jolt/min-version "0.8.0"
+
+ :paths ["src"]
 
  ;; raylib is called directly over its C ABI via jolt.ffi (see src/net/b12n/raylib_jlt/core.clj).
  ;; The shared library is the system libraylib 6.0+, install with `brew install raylib`
