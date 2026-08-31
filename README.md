@@ -331,6 +331,9 @@ jolt -M:check      # requires every example namespace; prints "compiled OK"
 | `rounded-rectangle` | shapes/shapes_rounded_rectangle_drawing | rounded rects from `sector!` corners + rects |
 | `rectangle-scaling` | shapes/shapes_rectangle_scaling | drag the corner handle to resize a rectangle |
 | `lines-drawing` | shapes/shapes_lines_drawing | a rotating fan of thick lines via `rl/line-ex!` |
+| `helitorus` | (showcase) | a helix wound around a torus, swept into a tube: hand-rolled projection, painter's-algorithm depth, ~10k vertices/frame from primitive arrays |
+| `doom` | (showcase) | a textured raycaster: one ray per screen column, procedural atlas via `rl/texture-from-fn`, sprites depth-tested against a per-column z-buffer |
+| `pacman` | (game) | pac-man with the classic ghost personalities (Blinky/Pinky/Inky/Clyde), buffered turns, `rl/sector!` for the mouth |
 
 ### Verification status
 
@@ -418,7 +421,7 @@ inline.
   - [`textures-via-rlgl.md`](docs/guide/textures-via-rlgl.md): why `LoadTexture` has no binding, and reaching textures and framebuffers from underneath it
   - [`kwarg-drawing-api.md`](docs/guide/kwarg-drawing-api.md): the positional-binds / keyword-wrappers two-layer design
   - [`headless-smoke-testing.md`](docs/guide/headless-smoke-testing.md): `RAYLIB_APP_AUTO_QUIT_MS` + `RAYLIB_APP_SHOT` proof without a person
-  - [`example-catalog.md`](docs/guide/example-catalog.md): a tour of all 119, and the five-touchpoint recipe for adding one
+  - [`example-catalog.md`](docs/guide/example-catalog.md): a tour of all 122, and the five-touchpoint recipe for adding one
 
 - Two galleries show the same 119 recordings for different purposes. 117 are
   animated GIFs. Two are still frames, because `rectangle-advanced` and

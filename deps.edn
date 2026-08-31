@@ -128,6 +128,9 @@
            :multi-sampler {:main-opts ["-m" "net.b12n.raylib-jlt.multi-sampler"]} ; two textures blended by a second sampler
            :postprocessing {:main-opts ["-m" "net.b12n.raylib-jlt.postprocessing"]} ; post-process shaders cycled over a scene
            :custom-uniform {:main-opts ["-m" "net.b12n.raylib-jlt.custom-uniform"]} ; a mouse-steered swirl over a scene
-           :texture-painting {:main-opts ["-m" "net.b12n.raylib-jlt.texture-painting"]}} ; a blank texture painted by a shader
+           :texture-painting {:main-opts ["-m" "net.b12n.raylib-jlt.texture-painting"]} ; a blank texture painted by a shader
+           :helitorus {:main-opts ["-m" "net.b12n.raylib-jlt.helitorus"]} ; a helix wound around a torus, swept into a tube
+           :doom {:main-opts ["-m" "net.b12n.raylib-jlt.doom"]} ; a textured raycaster: one ray per screen column
+           :pacman {:main-opts ["-m" "net.b12n.raylib-jlt.pacman"]}} ; pac-man, with the classic ghost personalities
 
  :tasks {run "joltc -M:run"}}

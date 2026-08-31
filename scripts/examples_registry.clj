@@ -127,7 +127,10 @@
    ["multi-sampler"       "multi-sampler" "shaders" "two textures blended by a second sampler"]
    ["postprocessing"      "postprocessing" "shaders" "post-process shaders cycled over a scene"]
    ["custom-uniform"      "custom-uniform" "shaders" "a mouse-steered swirl over a scene"]
-   ["texture-painting"    "texture-painting" "shaders" "a blank texture painted by a shader"]])
+   ["texture-painting"    "texture-painting" "shaders" "a blank texture painted by a shader"]
+   ["helitorus"           "helitorus" "3d"     "a helix wound around a torus, swept into a tube"]
+   ["doom"                "doom"      "3d"     "a textured raycaster: one ray per screen column"]
+   ["pacman"              "pacman"    "games"  "pac-man, with the classic ghost personalities"]])
 
 (def by-name (into {} (map (fn [row] [(nth row 0) row]) examples)))
 

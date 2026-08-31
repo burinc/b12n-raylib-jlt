@@ -45,6 +45,9 @@
   "flappy-bird"             {:input [[0.5 :key "space"] [1.5 :key "space"] [2.5 :key "space"] [3.5 :key "space"] [4.5 :key "space"]]}
   "game-2048"               {:input [[1.0 :key "left"] [2.0 :key "up"] [3.0 :key "right"] [4.0 :key "down"]]}
   "minesweeper"             {:input [[1.0 :click 100 100] [2.0 :click 150 150] [3.0 :click 200 100]]}
+  "pacman"                  {:input [[1.0 :key "left"] [2.0 :key "up"] [3.0 :key "right"] [4.0 :key "down"]]}
+  "doom"                    {:input [[1.0 :key "w"] [2.0 :key "space"] [2.5 :key "right"] [3.5 :key "w"] [4.5 :key "space"]]}
+  "helitorus"               {:input [[1.5 :key "right"] [2.5 :key "right"] [3.5 :key "up"] [4.5 :key "left"]]}
   "basic-screen-manager"    {:duration 8
                              :input [[1.5 :key "enter"] [3.5 :key "enter"] [5.5 :key "enter"]]}
   "orthographic-projection" {:duration 8
