@@ -410,6 +410,9 @@
   postprocessing    {:doc "▶ post-process shaders cycled over a scene" :task (run-example "postprocessing")}
   custom-uniform    {:doc "▶ a mouse-steered swirl over a scene" :task (run-example "custom-uniform")}
   texture-painting  {:doc "▶ a blank texture painted by a shader" :task (run-example "texture-painting")}
+  helitorus         {:doc "▶ a helix wound around a torus, swept into a tube" :task (run-example "helitorus")}
+  doom              {:doc "▶ a textured raycaster: one ray per screen column" :task (run-example "doom")}
+  pacman            {:doc "▶ pac-man, with the classic ghost personalities" :task (run-example "pacman")}
 
   ;; --- meta tasks -----------------------------------------------------------
   run

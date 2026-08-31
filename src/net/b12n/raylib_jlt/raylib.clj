@@ -1321,3 +1321,24 @@
   nothing."
   [f]
   (jolt.host/call-on-main-thread-async f))
+
+;; --- backface culling --------------------------------------------------------
+;; raylib culls back faces by default, which is why the fans and quads above are
+;; wound to raylib's front-facing order (see the note in sector!). An example
+;; that decides visibility ITSELF needs the cull switched off, because a
+;; screen-space test is not a winding rule and the two disagree: helitorus keeps
+;; a triangle when the 2D cross product of its edges is positive, which is
+;; exactly the orientation raylib treats as back-facing, so with culling on the
+;; faces it keeps are the faces raylib drops and the surface renders inside-out.
+;; Disable it, do the test, and both windings reach the rasterizer.
+(ffi/defcfn rl-disable-backface-culling "rlDisableBackfaceCulling" [] :void)
+(ffi/defcfn rl-enable-backface-culling  "rlEnableBackfaceCulling"  [] :void)
+
+;; --- mouse position / cursor -------------------------------------------------
+;; SetMousePosition warps the pointer; HideCursor and ShowCursor toggle whether
+;; it is drawn. Together they are mouse-look: read the offset from the window
+;; centre, turn by it, warp back to the centre, and the pointer can turn forever
+;; without leaving the window or being visible while it does (doom).
+(ffi/defcfn set-mouse-position "SetMousePosition" [:int :int] :void)
+(ffi/defcfn hide-cursor        "HideCursor"       [] :void)
+(ffi/defcfn show-cursor        "ShowCursor"       [] :void)
