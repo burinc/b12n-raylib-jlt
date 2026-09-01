@@ -20,12 +20,26 @@ on:
   workflow_dispatch:
     inputs:
       jolt-version:
-        description: "jolt version to install (blank = latest release)"
+        description: "jolt version to install (blank = the pinned JOLT_VERSION below)"
         required: false
         default: ""
 
 permissions:
   contents: read
+
+# jolt is pinned for the same reason the other tool versions below are pinned:
+# a floating `latest` lets a release published overnight turn CI red on a tree
+# nobody touched. That is not hypothetical here. jolt v0.8.0 published on
+# 2026-09-01 and reverses jolt.ffi/write's last two arguments (jolt-lang/jolt#802),
+# and both spellings are plain integers, so an older or newer runtime than the
+# code expects writes to the wrong place and reports nothing.
+#
+# Moving this pin IS the cutover commit for a breaking jolt change. Bump it and
+# adapt the call sites together, in one reviewed commit. To try a candidate
+# first, use a workflow_dispatch run with the jolt-version input, which
+# overrides this for that run only.
+env:
+  JOLT_VERSION: ${{ inputs.jolt-version || '0.8.0' }}
 
 jobs:
   gates:
@@ -82,15 +96,11 @@ jobs:
       # Passed through env rather than interpolated into the script body, so
       # the input can't be used for shell injection.
       - name: Install jolt
-        env:
-          JOLT_VERSION: ${{ inputs.jolt-version }}
         run: |
-          if [ -n "$JOLT_VERSION" ]; then
-            curl -sSL https://raw.githubusercontent.com/jolt-lang/jolt/main/install \
-              | bash -s -- --version "$JOLT_VERSION"
-          else
-            curl -sSL https://raw.githubusercontent.com/jolt-lang/jolt/main/install | bash
-          fi
+          set -euo pipefail
+          : "${JOLT_VERSION:?empty; the workflow-level pin did not resolve}"
+          curl -sSL https://raw.githubusercontent.com/jolt-lang/jolt/main/install \
+            | bash -s -- --version "$JOLT_VERSION"
           jolt --version
 
       # Versions are pinned to match what the maintainer runs locally and what
