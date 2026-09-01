@@ -21,8 +21,8 @@ permissions:
 # slightly stale one, so main is never cancelled. Pull request builds are
 # scoped per ref and cancel their own earlier runs.
 concurrency:
-  group: site-${ github.ref }
-  cancel-in-progress: ${ github.ref != 'refs/heads/main' }
+  group: site-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   site:
