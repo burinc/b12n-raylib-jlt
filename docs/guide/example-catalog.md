@@ -1,4 +1,4 @@
-# The example catalog: 119 raylib demos in jolt
+# The example catalog: 122 raylib demos in jolt
 
 A map of the whole suite. Each example is one namespace under
 `src/net/b12n/raylib_jlt/`, runnable by a friendly `bb <name>` task or the underlying
@@ -14,7 +14,7 @@ bb info            # the grouped cheat-sheet below
 bb run-all [secs]  # every example, N seconds each (unattended)
 ```
 
-## games (10)
+## games (11)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -28,6 +28,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/flappy-bird.gif" width="80">](demos.md#flappy-bird) | `flappy-bird` | flap through the pipe gaps (SPACE) |
 | [<img src="../demos/game-2048.gif" width="80">](demos.md#game-2048) | `game-2048` | 2048: 4x4 tile-merge puzzle (arrow keys) |
 | [<img src="../demos/minesweeper.gif" width="80">](demos.md#minesweeper) | `minesweeper` | reveal/flag grid (mouse L reveal, R flag) |
+| *not recorded yet* | `pacman` | the four classic ghost personalities, buffered turns |
 
 ## core (23)
 
@@ -114,7 +115,7 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/words-alignment.gif" width="80">](demos.md#words-alignment) | `words-alignment` | align a word inside a box with `MeasureText` |
 | [<img src="../demos/input-box.gif" width="80">](demos.md#input-box) | `input-box` | type into a text box (GetCharPressed) |
 
-## 3d (16)
+## 3d (18)
 
 | preview | `bb` name | shows |
 |---|---|---|
@@ -134,11 +135,21 @@ bb run-all [secs]  # every example, N seconds each (unattended)
 | [<img src="../demos/dna-helix.gif" width="80">](demos.md#dna-helix) | `dna-helix` | a turning double helix with coloured base pairs |
 | [<img src="../demos/yaw-pitch-roll.gif" width="80">](demos.md#yaw-pitch-roll) | `yaw-pitch-roll` | the three aircraft rotations in 3D |
 | [<img src="../demos/first-person-maze.gif" width="80">](demos.md#first-person-maze) | `first-person-maze` | walk a grid maze in first person, with a minimap |
+| *not recorded yet* | `helitorus` | a helix wound around a torus, projected and depth-sorted in jolt |
+| *not recorded yet* | `doom` | a textured raycaster: one ray per screen column, no 3D geometry |
 
-The 3D set stands entirely on two building blocks from
+Most of the 3D set stands on two building blocks from
 [`rlgl-immediate-mode.md`](rlgl-immediate-mode.md) and
 [`struct-by-value-pointer-trick.md`](struct-by-value-pointer-trick.md): `with-camera-3d`
 (the camera, by pointer) and `cube!` (the geometry, by rlgl vertices).
+
+`helitorus` and `doom` are the two that don't, and that is why they're worth
+reading next to the others. `helitorus` does projection, lighting and
+hidden-surface removal itself, so it shows how far the rlgl layer alone reaches
+without a `Camera3D`. `doom` casts one ray per screen column and draws each hit as
+a textured vertical strip, with no 3D geometry and no camera matrix anywhere; put
+it beside `first-person-maze`, which walks a grid of real cubes under a
+`Camera3D`, and the two techniques for the same picture sit side by side.
 
 ## generative (9)
 
@@ -177,7 +188,9 @@ native memory rather than loaded from a file. See
 
 GLSL compiled at runtime and run over a full-screen quad. raylib's `LoadShader`
 returns a `Shader` by value, which needed jolt's `[:by-value [:struct ...]]` -
-so these are the first examples with a hard jolt floor (0.7.23). The source
+so these were the first examples to put a hard jolt floor under the suite, at
+0.7.23. The floor is higher now, 0.8.0, for an unrelated `ffi/write` change the
+[README](../../README.md#jolt) explains. The source
 lives as a string in each namespace rather than a `.glsl` file, so an example
 stays one self-contained file.
 

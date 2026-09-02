@@ -56,12 +56,48 @@ the task tells you so if the tool is absent.
 ### jolt
 
 ```sh
-jolt --version               # requires jolt v0.7.23 or newer
+jolt --version               # requires jolt 0.8.0 or newer
 ```
 
-**0.7.23 is a hard floor**, not a suggestion: `DrawCircleGradient` is bound with
-`[:by-value [:struct ...]]`, which does not exist before it. Older jolt fails at
-compile with a type error rather than at runtime.
+`deps.edn` declares `:jolt/min-version "0.8.0"`, and jolt v0.8.0 was released on
+2026-09-01, so a current jolt satisfies it and nothing extra is needed. The reason
+for the floor is `jolt.ffi/write`: as of 0.8.0 it takes the value *before* the
+offset, `(write p type value offset)`, which is `babashka.ffi`'s order, where it
+used to be `(write p type offset value)`. Both spellings are integers, so nothing
+raises and nothing warns. An older jolt running this code writes every camera and
+uniform field to the wrong address, then draws something subtly wrong instead of
+failing.
+
+**The floor is a forward guard, not protection against that particular break.**
+jolt honours `:jolt/min-version` only from the release that introduced the key, and
+that commit is the direct child of the one that moved `ffi/write`. The two sets
+don't overlap: any jolt new enough to read the key already has the new argument
+order, and any jolt with the old order is too old to know the key and ignores it,
+exactly as it ignores every key it doesn't recognise. So on jolt v0.7.29 or below
+nothing refuses anything, the suite still compiles, and the writes land in the wrong
+place. Upgrading is the only thing that fixes that; the declaration earns its place
+against the *next* break.
+
+One case still needs the escape hatch. A jolt built from `main` between the
+`ffi/write` change and the v0.8.0 tag reports a version like
+`v0.7.29-25-gd4e92a43`, whose numeric prefix reads as `0.7.29` and therefore sorts
+below the floor even though it carries the new behaviour. A build tagged v0.8.0 or
+later parses as `[0 8 0]` and passes normally. For the in-between case:
+
+```sh
+JOLT_SKIP_MIN_VERSION=1 bb check
+```
+
+Reach for it only when you know your build is past the `ffi/write` change. On jolt
+v0.7.29 or below it is a no-op, because no such release reads the key at all, so it
+is never a substitute for checking what you are actually running. Installing v0.8.0
+is the better answer in both cases.
+
+An older floor still appears in the guide pages, and it is still accurate as history:
+**jolt 0.7.23** is what added `[:by-value [:struct ...]]`, which `DrawCircleGradient`
+is bound with, and below that the binding fails at compile with a type error. So
+0.7.23 is where these bindings became expressible, while 0.8.0 is what the suite
+needs today.
 
 One thing to know if you edit the shared binding layer
 (`src/net/b12n/raylib_jlt/raylib.clj`): since **jolt 0.4.0** unresolved symbols are a
@@ -398,7 +434,7 @@ passing is the cause; switch to the rlgl-matrix approach.
 The same pointer approach scales to 3D: `BeginMode3D(Camera3D)` takes a 44-byte
 struct (three `Vector3` + `fovy` + `projection`), which is `>16` bytes so it goes
 by pointer too; `net.b12n.raylib-jlt.raylib/with-camera-3d` builds it (`ffi/alloc` 44 +
-`ffi/write` nine floats + an `:int`). But 3D shape helpers (`DrawCube`,
+`ffi/write` ten floats + an `:int`). But 3D shape helpers (`DrawCube`,
 `DrawSphere`, `DrawLine3D`) take a `Vector3` **by value**, a 12-byte float struct
 passed in FP registers, which the pointer trick does **not** cover. So `camera-3d`
 draws its cube with rlgl immediate mode (`rlVertex3f`, scalar) inside `BeginMode3D`;
@@ -414,7 +450,7 @@ inline.
 
 - [`docs/guide/`](docs/guide/index.md): patterns & pitfalls, each with source
   citations:
-  - [`structs-by-value.md`](docs/guide/structs-by-value.md): `[:by-value [:struct ...]]` in both directions, and the jolt 0.7.23 floor
+  - [`structs-by-value.md`](docs/guide/structs-by-value.md): `[:by-value [:struct ...]]` in both directions, and where the jolt floor comes from
   - [`color-by-value.md`](docs/guide/color-by-value.md): why `Color` crosses the FFI as a packed `:uint`
   - [`struct-by-value-pointer-trick.md`](docs/guide/struct-by-value-pointer-trick.md): `Camera2D`/`Camera3D` by pointer on AArch64 (+ the x86-64 caveat)
   - [`rlgl-immediate-mode.md`](docs/guide/rlgl-immediate-mode.md): the fallback for by-value `Vector2`/`Vector3` geometry, + the matrix stack
@@ -430,6 +466,12 @@ inline.
   `bb record` from `scripts/demo_manifest.edn` (don't hand-edit it), while
   [`docs/guide/demos.md`](docs/guide/demos.md) is the full-size companion to the
   example catalog's thumbnails.
+
+  119 recordings against 122 examples is not a mismatch to fix in the docs.
+  `helitorus`, `doom` and `pacman` landed with their `demo_manifest.edn` entries
+  but have not been recorded yet, and recording is a maintainer step that needs
+  the unreleased capture tool. Run them with `bb helitorus`, `bb doom` or
+  `bb pacman` in the meantime.
 
 - Publishing is automatic. `.github/workflows/site.yml` builds the site on every
   pull request and deploys it from `main`, so a merged docs change is live without

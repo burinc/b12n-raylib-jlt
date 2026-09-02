@@ -1,7 +1,10 @@
 # Full-size demo gallery
 
-Every example at full size, linked from [the example catalog](example-catalog.md)'s
-preview thumbnails. All 119 are here.
+Every recorded example at full size, linked from
+[the example catalog](example-catalog.md)'s preview thumbnails. All 119 recordings
+are here, covering 119 of the suite's 122 examples: `helitorus`, `doom` and
+`pacman` have not been recorded yet, so run them with `bb helitorus`, `bb doom`
+or `bb pacman`.
 
 117 are animated GIFs. Two are still frames: `rectangle-advanced` and
 `rlgl-triangle` draw something fixed and only move when you drive them, so a

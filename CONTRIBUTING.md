@@ -14,13 +14,32 @@ this repo's `docs/guide/`; edit the Markdown here, never the site.
 You need two things:
 
 ```sh
-jolt --version    # any recent jolt; tested against v0.7.16
+jolt --version    # jolt 0.8.0 or newer (deps.edn declares :jolt/min-version)
 bb lib:check      # is the native libraylib installed for this OS/arch?
 ```
 
 If `bb lib:check` says no, `bb lib:install` will install it via your platform's
 package manager (brew / pacman / apt / dnf / zypper / apk), or `bb lib:install
 --dry-run` prints the command it would run so you can do it yourself.
+
+If any task stops with `this project needs jolt 0.8.0 or newer`, your jolt is below
+the floor `deps.edn` declares. jolt v0.8.0 was released on 2026-09-01, so installing
+a current jolt is the fix. The one exception is a build from `main` made between the
+`ffi/write` change and that tag: it reports something like `v0.7.29-25-gd4e92a43`,
+whose numeric prefix sorts below the floor even though it carries the new behaviour.
+Prefix the command with `JOLT_SKIP_MIN_VERSION=1` in that case only. The
+[README](README.md#jolt) explains why the floor exists, and why it could not have
+caught an older jolt in the first place.
+
+CI and your machine can be on different jolts, and that is deliberate rather than
+a fault. The workflow pins `JOLT_VERSION` (0.8.0 at the time of writing), while
+local development here tracks jolt's `main`, which runs ahead of the pin: 45
+commits ahead as of 2026-09-02. So a regression introduced upstream shows up
+locally and stays invisible in CI, and an upstream fix does the opposite. If a
+failure you see locally goes green in CI, compare `jolt --version` on both sides
+before concluding the failure was yours. To test a different runtime without
+moving the pin, run the workflow via `workflow_dispatch` with the `jolt-version`
+input.
 
 [babashka](https://babashka.org) is optional but makes everything friendlier:
 every example has a `bb <name>` task. Without it, use `jolt -M:<alias>` directly.
