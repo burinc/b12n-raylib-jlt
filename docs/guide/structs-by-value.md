@@ -5,9 +5,17 @@ C struct by value, and each works around that in a different way. jolt
 **0.7.23** added `[:by-value ...]` and the workarounds became optional. This
 page is what to write now.
 
-The suite pins jolt 0.7.23 as a hard floor for exactly this reason - it is the
-first version where `LoadShader` is callable at all, and the ten `shaders`
-examples all depend on it.
+0.7.23 is the first version where `LoadShader` is callable at all, and the ten
+`shaders` examples all depend on it, so nothing in this page works below it.
+
+The suite's declared floor is higher now. `deps.edn` says
+`:jolt/min-version "0.8.0"`, for an unrelated reason: 0.8.0 moved `ffi/write`'s
+value argument in front of the offset, and the old and new spellings are both
+integers, so an older runtime writes to the wrong place without complaining. The
+declaration is a forward guard rather than a cure, since a jolt old enough to have
+the old order is also too old to read the key. See the
+[README's jolt requirements](../../README.md#jolt) for the full story and for
+`JOLT_SKIP_MIN_VERSION=1`.
 
 ## Both directions, one descriptor
 

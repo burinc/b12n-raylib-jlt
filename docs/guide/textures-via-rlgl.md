@@ -77,7 +77,7 @@ byte-for-byte the RGBA8 layout OpenGL wants. That makes each texel a single
     (try
       (dotimes [y h]
         (dotimes [x w]
-          (ffi/write buf :uint (* 4 (+ x (* y w))) (f x y))))
+          (ffi/write buf :uint (f x y) (* 4 (+ x (* y w))))))
       (let [id (rl-load-texture buf w h PIXELFORMAT-R8G8B8A8 1)]
         (texture-filter! id RL-TEXTURE-FILTER-NEAREST)
         (texture-wrap! id RL-TEXTURE-WRAP-REPEAT)

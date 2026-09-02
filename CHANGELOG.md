@@ -12,6 +12,41 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
+- **BREAKING: the suite now needs jolt 0.8.0 or newer.** `deps.edn` declares
+  `:jolt/min-version "0.8.0"`, so a runtime that reads the key and sits below the
+  floor refuses to load the project instead of running it. jolt 0.8.0 moved
+  `jolt.ffi/write`'s value argument in front of the offset, `(write p type value offset)`, matching
+  `babashka.ffi`. All 25 call sites in the binding layer were rewritten. The two
+  spellings are both integers, so nothing raises and nothing warns: an older jolt
+  would write every camera, matrix and uniform field to the wrong address and
+  draw something subtly wrong rather than failing. The floor is a forward
+  guard rather than a fix for that: jolt reads `:jolt/min-version` only from the
+  release that added the key, and that commit is the direct child of the one that
+  moved `ffi/write`, so every runtime old enough to have the old order is also too
+  old to read the key and ignores it. It will stop the next break, not this one.
+  jolt v0.8.0 was released on 2026-09-01, so a current jolt satisfies the floor
+  directly. Only a build made from `main` between the `ffi/write` change and that
+  tag needs `JOLT_SKIP_MIN_VERSION=1`, because it reports a version like
+  `v0.7.29-25-gd4e92a43` whose numeric prefix sorts below 0.8.0 despite carrying
+  the new behaviour. `read` and `write-field` are unchanged, and this suite has no
+  `[:array ...]` layouts, so jolt's other breaking change in the same release does
+  not reach it.
+
+- **Three more examples, taking the suite to 122.** `helitorus` (3d) winds a
+  helix around a torus and sweeps it into a tube, doing projection, lighting and
+  hidden-surface removal in jolt rather than in raylib, which shows how far the
+  rlgl layer reaches on its own. `doom` (3d) is a textured raycaster: one ray per
+  screen column, each hit drawn as a vertical strip, with the per-column distance
+  doubling as the z-buffer the sprite pass tests against. It sits next to
+  `first-person-maze` deliberately, since that walks real 3D cubes under a
+  `Camera3D` and this uses no 3D geometry at all. `pacman` (games) has the four
+  classic ghost personalities and buffers a turn until the next legal tile
+  centre. Four new bindings come with them:
+  `rl-disable-backface-culling` / `rl-enable-backface-culling`, and
+  `set-mouse-position` with `hide-cursor` / `show-cursor` for `doom`'s
+  mouse-look. None of the three is recorded yet, so the galleries still show 119
+  recordings.
+
 - **The site's diagrams fit the column they are drawn in.** The homepage's
   "How it fits together" flowchart was laid out left to right and came out
   1458px wide against a 1120px content column, so the browser scaled the whole

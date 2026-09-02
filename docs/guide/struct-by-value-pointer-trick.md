@@ -55,12 +55,12 @@ the struct with `ffi/alloc` + six little-endian `ffi/write :float`s:
     :or {offset-x 0 offset-y 0 target-x 0 target-y 0 rotation 0 zoom 1.0}} f]
   (let [p (ffi/alloc 24)]
     (try
-      (ffi/write p :float 0  (double offset-x))
-      (ffi/write p :float 4  (double offset-y))
-      (ffi/write p :float 8  (double target-x))
-      (ffi/write p :float 12 (double target-y))
-      (ffi/write p :float 16 (double rotation))
-      (ffi/write p :float 20 (double zoom))
+      (ffi/write p :float (double offset-x) 0)
+      (ffi/write p :float (double offset-y) 4)
+      (ffi/write p :float (double target-x) 8)
+      (ffi/write p :float (double target-y) 12)
+      (ffi/write p :float (double rotation) 16)
+      (ffi/write p :float (double zoom) 20)
       (begin-mode-2d-ptr p)
       (f)
       (end-mode-2d)
@@ -83,14 +83,14 @@ flowchart LR
 ## Camera3D is the same recipe, bigger
 
 `Camera3D` is 44 bytes: three `Vector3` (position, target, up) + a `float fovy` +
-an `int projection`. `with-camera-3d` allocates 44 and writes nine floats then one
+an `int projection`. `with-camera-3d` allocates 44 and writes ten floats then one
 int:
 
 ```clojure
 (let [p (ffi/alloc 44)]
-  ;; … nine (ffi/write p :float …) at offsets 0..36 …
-  (ffi/write p :float 36 (double fovy))
-  (ffi/write p :int   40 (int projection))   ; 0 = perspective
+  ;; … nine (ffi/write p :float …) at offsets 0..32 …
+  (ffi/write p :float (double fovy) 36)
+  (ffi/write p :int (int projection) 40)     ; 0 = perspective
   (begin-mode-3d-ptr p) (f) (end-mode-3d))
 ```
 
