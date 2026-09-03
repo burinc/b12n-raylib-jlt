@@ -171,6 +171,7 @@ bb bouncing-ball        # run one example (opens a window)
 bb run following-eyes   # …or run one by argument
 bb run-all [secs]       # demo reel / smoke test: every example, N seconds each (default 15)
 bb check                # headless compile-check of every example (no window)
+bb test                 # unit suite: ffi/write argument order
 bb lib:check            # is the native libraylib installed for this OS/arch?
 bb lib:install          # install libraylib via the platform package manager
 bb tasks                # raw babashka task list
@@ -206,9 +207,12 @@ bb check:positional-args         # find fns with 3+ positional args (report only
 bb check:positional-args:strict  # bb check:positional-args, but exit non-zero if any found
 ```
 
-`bb check` and `bb lint`/`bb lsp:format-check` are the gates worth running before a
-commit: `check` compiles every example namespace, `lint` runs clj-kondo (static
-analysis), `lsp:format-check` runs clojure-lsp (formatting). **Formatting is owned
+`bb check`, `bb test` and `bb lint`/`bb lsp:format-check` are the gates worth
+running before a commit: `check` compiles every example namespace, `test` round-trips
+`ffi/write` to prove the value lands where the offset says, `lint` runs clj-kondo
+(static analysis), `lsp:format-check` runs clojure-lsp (formatting). `check` alone
+cannot catch an `ffi/write` argument flip, because both arguments are integers and
+the swapped call compiles cleanly, which is what `test` is there for. **Formatting is owned
 by clojure-lsp, not cljfmt**; the two disagree on some compact literal tables
 (e.g. `digital_clock.clj`'s seven-segment map), so only one formatter runs against
 `src`; clojure-lsp was chosen so `lsp:clean-ns` (no cljfmt equivalent) and
@@ -520,7 +524,7 @@ The [example catalog](docs/guide/example-catalog.md) walks through all four unde
 
 New examples are welcome; the suite is deliberately mechanical to grow, and the
 four touchpoints above are the whole recipe. See [`CONTRIBUTING.md`](CONTRIBUTING.md)
-for setup, the three pre-PR gates (`bb check`, `bb lint:strict`,
+for setup, the four pre-PR gates (`bb check`, `bb test`, `bb lint:strict`,
 `bb lsp:format-check`), and what to know before touching the shared binding layer.
 
 ## License

@@ -32,7 +32,7 @@ Prefix the command with `JOLT_SKIP_MIN_VERSION=1` in that case only. The
 caught an older jolt in the first place.
 
 CI and your machine can be on different jolts, and that is deliberate rather than
-a fault. The workflow pins `JOLT_VERSION` (0.8.0 at the time of writing), while
+a fault. The workflow pins `JOLT_VERSION` (0.8.1 at the time of writing), while
 local development here tracks jolt's `main`, which runs ahead of the pin: 45
 commits ahead as of 2026-09-02. So a regression introduced upstream shows up
 locally and stays invisible in CI, and an upstream fix does the opposite. If a
@@ -46,13 +46,19 @@ every example has a `bb <name>` task. Without it, use `jolt -M:<alias>` directly
 
 ## Before you open a PR
 
-Run the gates. All three are fast and none needs a JVM at runtime:
+Run the gates. All four are fast and none needs a JVM at runtime:
 
 ```sh
 bb check              # headless compile-check of every example (no window opens)
+bb test               # unit suite: ffi/write puts the value where the offset says
 bb lint:strict        # clj-kondo over src, non-zero exit on any finding
 bb lsp:format-check   # clojure-lsp formatting, dry run
 ```
+
+`bb test` earns its place by catching what `bb check` structurally cannot. An
+`ffi/write` argument flip swaps two integers, so the wrong call compiles exactly
+as cleanly as the right one, and a compile-only gate reports green while every
+write lands at the wrong address.
 
 `bb lsp:fix` applies formatting and ns cleanup in place if `lsp:format-check`
 complains. **Formatting is owned by clojure-lsp, not cljfmt**; please don't run
