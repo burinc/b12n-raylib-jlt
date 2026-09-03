@@ -486,6 +486,10 @@
            (println "Native library: `bb lib:check` (is libraylib installed?) · `bb lib:install`")
            (println "Git hooks: `bb hooks:install` (fast) · `bb hooks:install:full` · nREPL: `bb nrepl [port]`"))}
 
+  test
+  {:doc "Unit suite: ffi/write argument order"
+   :task (shell "jolt" "-M:test")}
+
   check
   {:doc "Headless compile-check of every example (no window)"
    :task (shell jolt-cmd "-M:check")}

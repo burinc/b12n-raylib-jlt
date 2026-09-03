@@ -145,6 +145,14 @@ jobs:
       # what check.clj requires, so an example missing from that list is never
       # compiled and the run still reports success. Needs no jolt and no
       # libraylib, so it is the cheapest gate here and runs first.
+      # The only gate here that EXECUTES code rather than compiling it. Every
+      # 4-argument ffi/write in this project is written in jolt 0.8.0's argument
+      # order, and a runtime with the old order writes to the wrong address and
+      # reports nothing, so a compile-only gate cannot see it. Measured: this
+      # suite exits 0 on jolt 0.8.1 and exits 1 on v0.7.29.
+      - name: Unit suite
+        run: bb test
+
       - name: Registration touchpoints
         run: bb check:registration
 
