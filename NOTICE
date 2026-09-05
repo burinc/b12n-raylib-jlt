@@ -1,13 +1,16 @@
 Third-party attribution
 =======================
 
-This project is released under the zlib License; see LICENSE.
+This project is licensed under the Eclipse Public License 2.0; see LICENSE.
+It was zlib until 2026-09-05, chosen to match raylib. EPL 2.0 relicenses
+nothing that arrived under another licence: the whole is EPL 2.0 and each
+part below keeps what it came with, and its notice travels with it here.
 
 raylib
 ------
   Copyright (c) 2013-2026 Ramon Santamaria (@raysan5)
   https://github.com/raysan5/raylib
-  Licensed under the zlib/libpng license (the same license as this project).
+  Licensed under the zlib/libpng license, reproduced below.
 
   This project does not vendor or redistribute raylib itself: it loads the
   system-installed libraylib shared library at runtime over its C ABI.
@@ -15,5 +18,26 @@ raylib
   Many examples in src/net/b12n/raylib_jlt/ are Clojure ports of raylib's
   own example programs. The README's example table names the upstream
   source for each (e.g. core/core_basic_window, shapes/shapes_bouncing_ball).
-  Those examples are likewise zlib/libpng licensed, and this project is
-  released under the same license so that the original terms carry through.
+  Those originals are zlib/libpng licensed and the ports remain derived
+  works of them. zlib requires that altered source versions be plainly
+  marked as such and not misrepresented as the original; the README table
+  is that marking, and it has to stay accurate.
+
+  raylib's licence notice, as shipped in its LICENSE file:
+
+    Copyright (c) 2013-2026 Ramon Santamaria (@raysan5)
+
+    This software is provided "as-is", without any express or implied warranty. In no event
+    will the authors be held liable for any damages arising from the use of this software.
+
+    Permission is granted to anyone to use this software for any purpose, including commercial
+    applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+      1. The origin of this software must not be misrepresented; you must not claim that you
+      wrote the original software. If you use this software in a product, an acknowledgment
+      in the product documentation would be appreciated but is not required.
+
+      2. Altered source versions must be plainly marked as such, and must not be misrepresented
+      as being the original software.
+
+      3. This notice may not be removed or altered from any source distribution.

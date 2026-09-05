@@ -529,13 +529,23 @@ for setup, the four pre-PR gates (`bb check`, `bb test`, `bb lint:strict`,
 
 ## License
 
-Released under the **zlib/libpng license**; see [`LICENSE`](LICENSE).
-Third-party attribution lives in [`NOTICE`](NOTICE).
+Released under the [Eclipse Public License 2.0](LICENSE), matching the rest of
+jlt-commons and jolt itself. SPDX identifier: `EPL-2.0`. Third-party attribution
+lives in [`NOTICE`](NOTICE).
 
-That's the same license raylib itself uses, chosen deliberately: many examples here
-are Clojure ports of raylib's own example programs (the table above names the
-upstream source for each), so matching licenses lets the original terms carry
-through unchanged. raylib is Copyright (c) 2013-2026 Ramon Santamaria (@raysan5).
+It was zlib until 2026-09-05, chosen so the licence matched raylib, since many
+examples here are Clojure ports of raylib's own example programs. The org's own
+convention won instead, since one exception across the organisation is harder to
+explain than that symmetry was worth.
+
+Changing the outbound licence relicenses nothing that arrived under another one,
+because those files are not ours to relicense. The ported examples remain derived
+from raylib's zlib-licensed originals (raylib is Copyright (c) 2013-2026 Ramon
+Santamaria, @raysan5). zlib is permissive and imposes nothing EPL 2.0 conflicts
+with, so the combination distributes cleanly provided raylib's notice travels with
+it, which is what `NOTICE` is for. zlib's requirement that altered sources be
+plainly marked survives the change: the example table above names the upstream
+source of every port, and it has to keep doing so.
 
 This project does not vendor or redistribute raylib; it loads the system-installed
 `libraylib` at runtime over its C ABI.

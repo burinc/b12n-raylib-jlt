@@ -12,6 +12,13 @@ Examples read at <https://jlt-commons.github.io/raylib-jlt/>.
 
 ## Unreleased
 
+- **Relicensed from zlib to the Eclipse Public License 2.0**, matching the rest of
+  jlt-commons and jolt itself. zlib was chosen to match raylib, since many examples
+  are ports of raylib's own, but one exception across the organisation was harder to
+  explain than that symmetry was worth. Nothing that arrived under another licence
+  is relicensed: the ported examples remain derived from raylib's zlib originals,
+  whose notice now travels in `NOTICE`, and the README table naming each upstream
+  source is what satisfies zlib's altered-source marking.
 - **BREAKING: the suite now needs jolt 0.8.0 or newer.** `deps.edn` declares
   `:jolt/min-version "0.8.0"`, so a runtime that reads the key and sits below the
   floor refuses to load the project instead of running it. jolt 0.8.0 moved

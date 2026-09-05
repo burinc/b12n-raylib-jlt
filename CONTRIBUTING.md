@@ -144,8 +144,10 @@ repo, but the pull request build is the authority.
 
 ## Licensing
 
-This project is released under the zlib/libpng license, the same license as raylib
-itself. By contributing, you agree your contribution is licensed under those terms.
-If your example is a port of an upstream raylib example, please name the original in
-the README table (e.g. `shapes/shapes_bouncing_ball`) so the attribution stays
+This project is released under the Eclipse Public License 2.0 (`EPL-2.0`), the
+licence used across jlt-commons; it was zlib until 2026-09-05. By contributing, you
+agree your contribution is licensed under those terms. If your example is a port of
+an upstream raylib example, please name the original in the README table (e.g.
+`shapes/shapes_bouncing_ball`): that is both the attribution and the plain marking
+of an altered source that raylib's zlib licence requires, so it has to stay
 traceable.
